@@ -27,5 +27,3 @@ Users can also co-create stories together through a **Community Story Chain**.
 - **Deployment**: GitHub Pages  
 
 ---
-ory chain  
-- **Deployment**: GitHub Pages  
