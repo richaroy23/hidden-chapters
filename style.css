@@ -1,0 +1,79 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+h1, h2, h3 {
+    font-family: 'Lora', serif;
+}
+.nav-link {
+    transition: all 0.3s ease;
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f7b267;
+    transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+}
+.section {
+    display: none;
+}
+.section.active {
+    display: block;
+}
+.mood-card, .wrapped-book {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mood-card:hover, .wrapped-book:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+/* Custom scrollbar for a more thematic feel */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #162447;
+}
+::-webkit-scrollbar-thumb {
+    background: #f7b267;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #f4a24f;
+}
+
+/* Flip card animation for book reveal */
+.flip-card {
+    perspective: 1000px;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.flip-card.revealed .flip-card-inner {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0.5rem;
+}
+.flip-card-back {
+    transform: rotateY(180deg);
+}
