@@ -255,6 +255,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listener to the static close button in the HTML
     document.getElementById('close-modal-btn').addEventListener('click', closeModal);
 
+    // --- BOOK OF THE DAY ---
+    function displayBookOfTheDay() {
+        const bookOfTheDayContainer = document.getElementById('book-of-the-day');
+        if (!bookOfTheDayContainer) return;
+
+        // Create a "day number" from 1 to 366
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const dayOfYear = Math.floor(diff / oneDay);
+
+        // Use the day number to pick a book. This ensures the same book all day.
+        const bookIndex = dayOfYear % books.length;
+        const dailyBook = books[bookIndex];
+
+        // Create the HTML for the book of the day
+        bookOfTheDayContainer.innerHTML = `
+            <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">Today's Hidden Gem</h3>
+            <p class="text-lg text-gray-400 mb-6">A special recommendation, just for today.</p>
+            <div class="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+                <img src="${dailyBook.cover}" alt="Cover of ${dailyBook.title}" class="w-48 rounded-lg shadow-lg">
+                <div class="text-left">
+                    <h4 class="text-3xl font-bold text-white">${dailyBook.title}</h4>
+                    <p class="text-xl text-gray-400 mb-4">by ${dailyBook.author}</p>
+                    <p class="text-gray-300 italic mb-6">"${dailyBook.teaser}"</p>
+                    <button id="reveal-daily-book-btn" class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-400 transition duration-300">Learn More</button>
+                </div>
+            </div>
+        `;
+
+        // Add a click listener to the button to open the modal
+        document.getElementById('reveal-daily-book-btn').addEventListener('click', () => {
+            showBookModal(dailyBook);
+        });
+    }
 
     // --- STORY CHAIN ---
     const storyDisplay = document.getElementById('story-display');
