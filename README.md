@@ -12,8 +12,7 @@ Users can also co-create stories together through a **Community Story Chain**.
 - 📝 **Collaborative Story Chain:** Join a community story! Add a line, get an AI-powered continuation, and share the complete story with a one-click "copy to clipboard" button.  
 - 📚 **Read online** → redirect to free/public-domain books
 - 💎 **Book of the Day:** A new "hidden gem" is featured every day to encourage repeat visits.
-- 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back. 
-- 🔮 **Daily surprise pick** (expandable feature)  
+- 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back.   
 
 ---
 
