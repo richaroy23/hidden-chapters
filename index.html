@@ -19,18 +19,20 @@
                 <span class="text-[#f7b267]">Hidden</span> Chapters
             </h1>
             <div class="hidden md:flex items-center space-x-8 text-lg">
-                <a href="#mood" class="nav-link active" data-section="mood-discovery">🎭 Mood Discovery</a>
-                <a href="#blind-date" class="nav-link" data-section="blind-date">🎁 Blind Date</a>
-                <a href="#story-chain" class="nav-link" data-section="story-chain">📝 Story Chain</a>
+                <a href="#mood" class="nav-link active flex items-center" data-section="mood-discovery"><i data-lucide="smile" class="w-5 h-5 mr-2"></i> Mood Discovery</a>
+                <a href="#blind-date" class="nav-link flex items-center" data-section="blind-date"><i data-lucide="gift" class="w-5 h-5 mr-2"></i> Blind Date</a>
+                <a href="#story-chain" class="nav-link flex items-center" data-section="story-chain"><i data-lucide="link-2" class="w-5 h-5 mr-2"></i> Story Chain</a>
+                <a href="#about" class="nav-link flex items-center" data-section="about"><i data-lucide="info" class="w-5 h-5 mr-2"></i> About</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden">
                 <i data-lucide="menu"></i>
             </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
-            <a href="#mood" class="block py-2 nav-link active" data-section="mood-discovery">🎭 Mood Discovery</a>
-            <a href="#blind-date" class="block py-2 nav-link" data-section="blind-date">🎁 Blind Date</a>
-            <a href="#story-chain" class="block py-2 nav-link" data-section="story-chain">📝 Story Chain</a>
+            <a href="#mood" class="block py-2 nav-link active" data-section="mood-discovery"><i data-lucide="smile" class="inline-block w-5 h-5 mr-2"></i> Mood Discovery</a>
+            <a href="#blind-date" class="block py-2 nav-link" data-section="blind-date"><i data-lucide="gift" class="inline-block w-5 h-5 mr-2"></i> Blind Date</a>
+            <a href="#story-chain" class="block py-2 nav-link" data-section="story-chain"><i data-lucide="link-2" class="inline-block w-5 h-5 mr-2"></i> Story Chain</a>
+            <a href="#about" class="block py-2 nav-link" data-section="about"><i data-lucide="info" class="inline-block w-5 h-5 mr-2"></i> About</a>
         </div>
     </header>
 
@@ -112,7 +114,52 @@
             </div>
         </section>
 
-    </main>
+        <section id="about" class="section">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">About Hidden Chapters</h2>
+                <p class="text-lg text-gray-400">Rediscover the joy of reading, one surprise at a time.</p>
+            </div>
+            <div class="max-w-5xl mx-auto bg-[#1f294a] p-8 md:p-12 rounded-lg shadow-xl">
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div class="text-gray-300 space-y-4">
+                        <h3 class="text-3xl font-bold text-[#f7b267] mb-4">Our Mission</h3>
+                        <p>
+                            <strong>Hidden Chapters</strong> is a mood-based <strong>"blind date with a book"</strong> platform designed to help readers discover new books in a playful and engaging way. We believe in the magic of stumbling upon a story you weren't looking for.
+                        </p>
+                        <p>
+                            Instead of judging a book by its cover, we invite you to choose a mood, get a mysterious teaser, and unwrap a literary surprise.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-[#f7b267] mb-4">Core Features</h3>
+                        <ul class="space-y-5">
+                            <li class="flex items-start">
+                                <i data-lucide="drama" class="w-7 h-7 mr-4 text-[#f7b267] flex-shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-lg text-white">Mood-based Discovery</strong><br>
+                                    Pick a feeling—adventurous, romantic, or mysterious—and let us find a book to match.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="gift" class="w-7 h-7 mr-4 text-[#f7b267] flex-shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-lg text-white">Blind Reveal</strong><br>
+                                    Read a captivating teaser before the title and cover are revealed, creating a moment of pure discovery.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="pencil-line" class="w-7 h-7 mr-4 text-[#f7b267] flex-shrink-0 mt-1"></i>
+                                <div>
+                                    <strong class="text-lg text-white">Community Story Chain</strong><br>
+                                     Co-create a unique story with fellow readers by adding one line at a time.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </main>
 
     <footer class="text-center py-8 mt-12 border-t border-gray-800">
         <p class="text-gray-500">&copy; 2025 Hidden Chapters. Discover your next favorite book.</p>
