@@ -7,11 +7,12 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## ✨ Features
-- 🎭 **Mood-based discovery** → pick a mood (romantic, adventurous, mystery, etc.)  
-- 🎁 **Blind reveal** → see a teaser before the actual title & cover  
+- 🎭 **Mood-based discovery** → Pick from over 15 moods and get a surprise book recommendation that matches your feelings.
+- 🎁 **Interactive Blind Reveal:** Books are presented as wrapped gifts. Read a mysterious teaser before revealing the title and cover with a satisfying card-flip animation.
+- 📝 **Collaborative Story Chain:** Join a community story! Add a line, get an AI-powered continuation, and share the complete story with a one-click "copy to clipboard" button.  
 - 📚 **Read online** → redirect to free/public-domain books
-- 📝 **Community Story Chain** → add one line to a shared story  
-- 💾 **Local storage** → story chain persists on your device  (expandable feature) 
+- 💎 **Book of the Day:** A new "hidden gem" is featured every day to encourage repeat visits.
+- 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back. 
 - 🔮 **Daily surprise pick** (expandable feature)  
 
 ---
@@ -22,7 +23,9 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## 📂 Tech Stack
-- **Frontend**: HTML, CSS, JavaScript    
+- **Frontend**: HTML, CSS, JavaScript  
+- **Data:** Book data is managed via an external `books.json` file and loaded asynchronously.
+- **APIs:** Google Gemini API for AI-powered story continuation, Web Clipboard API for sharing.
 - **Deployment**: GitHub Pages  
 
 ---
