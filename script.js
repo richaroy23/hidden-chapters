@@ -121,23 +121,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="text-xl font-semibold">${mood.name}</span>
             `;
             moodSelector.appendChild(moodCard);
-            moodCard.addEventListener('click', () => handleMoodSelection(mood.name.toLowerCase()));
+            moodCard.addEventListener('click', (e) => handleMoodSelection(mood.name.toLowerCase(), e.currentTarget));
+        
         });
         lucide.createIcons();
     }
 
-    function handleMoodSelection(mood) {
-        currentSelectedMood = mood;
-        const possibleBooks = books.filter(book => book.moods.includes(mood));
-        if (possibleBooks.length > 0) {
-            currentMoodBook = possibleBooks[Math.floor(Math.random() * possibleBooks.length)];
-            displayMoodBookTeaser();
-        } else {
-            // Fallback to a random book if no book for the selected mood is found
-            currentMoodBook = books[Math.floor(Math.random() * books.length)];
-            displayMoodBookTeaser();
-        }
+    function handleMoodSelection(mood, clickedCard) {
+    
+    const allMoodCards = document.querySelectorAll('.mood-card');
+    allMoodCards.forEach(card => card.classList.remove('active'));
+
+    if (clickedCard) {
+        clickedCard.classList.add('active');
     }
+
+    currentSelectedMood = mood;
+    const possibleBooks = books.filter(book => book.moods.includes(mood));
+    if (possibleBooks.length > 0) {
+        currentMoodBook = possibleBooks[Math.floor(Math.random() * possibleBooks.length)];
+        displayMoodBookTeaser();
+    } else {
+        
+        currentMoodBook = books[Math.floor(Math.random() * books.length)];
+        displayMoodBookTeaser();
+    }
+}
     
     function displayMoodBookTeaser(isLoading = false, loadingText = "Finding a book...") {
           moodBookSuggestion.classList.remove('hidden');
