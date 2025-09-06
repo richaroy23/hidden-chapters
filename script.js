@@ -1,23 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DATA ---
-    const books = [
-        { id: 1, title: "The Midnight Library", author: "Matt Haig", moods: ['thought-provoking', 'hopeful'], genre: "Fantasy Fiction", teaser: "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.", cover: "https://placehold.co/400x600/1E293B/FFFFFF?text=The+Midnight\nLibrary", downloadLink: "#" },
-        { id: 2, title: "Project Hail Mary", author: "Andy Weir", moods: ['adventurous', 'humorous', 'sci-fi'], genre: "Science Fiction", teaser: "A lone astronaut awakens on a mission to save humanity, with no memory of who he is or how he got there. His only companions are two corpses... and a friendly alien.", cover: "https://placehold.co/400x600/4F46E5/FFFFFF?text=Project\nHail+Mary", downloadLink: "#" },
-        { id: 3, title: "The Silent Patient", author: "Alex Michaelides", moods: ['mysterious', 'suspenseful'], genre: "Thriller", teaser: "A famous painter shoots her husband and then never speaks another word. A psychotherapist is determined to unravel the mystery of her silence.", cover: "https://placehold.co/400x600/DC2626/FFFFFF?text=The+Silent\nPatient", downloadLink: "#" },
-        { id: 4, title: "Circe", author: "Madeline Miller", moods: ['mythological', 'empowering', 'fantasy'], genre: "Fantasy", teaser: "Born in the house of Helios, a strange child, neither powerful like her father nor alluring like her mother, discovers she possesses the power of witchcraft.", cover: "https://placehold.co/400x600/F59E0B/FFFFFF?text=Circe", downloadLink: "#" },
-        { id: 5, title: "Pride and Prejudice", author: "Jane Austen", moods: ['romantic', 'classic'], genre: "Classic Romance", teaser: "A story of the five Bennet sisters in Georgian England, as they navigate issues of marriage, morality, and misconceptions. It is a truth universally acknowledged...", cover: "https://placehold.co/400x600/EC4899/FFFFFF?text=Pride+and\nPrejudice", downloadLink: "#" },
-        { id: 6, title: "Dune", author: "Frank Herbert", moods: ['epic', 'sci-fi', 'adventurous'], genre: "Science Fiction", teaser: "Set on a desert planet, a noble family is thrust into a war for control of the most valuable asset in the galaxy: a spice that extends life and enhances consciousness.", cover: "https://placehold.co/400x600/D97706/FFFFFF?text=Dune", downloadLink: "#" },
-        { id: 7, title: "The Song of Achilles", author: "Madeline Miller", moods: ['romantic', 'heartbreaking', 'mythological', 'tragedy'], genre: "Historical Fiction", teaser: "An exiled prince forms an inseparable bond with the golden hero Achilles. As the Trojan War looms, they are tested by fate, gods, and their own hearts.", cover: "https://placehold.co/400x600/3B82F6/FFFFFF?text=The+Song+of\nAchilles", downloadLink: "#" },
-        { id: 8, title: "Educated", author: "Tara Westover", moods: ['inspiring', 'thought-provoking'], genre: "Memoir", teaser: "A young girl, kept out of school, leaves her survivalist family and goes on to earn a PhD from Cambridge University, discovering the transformative power of education.", cover: "https://placehold.co/400x600/10B981/FFFFFF?text=Educated", downloadLink: "#" },
-        { id: 9, title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", moods: ['dramatic', 'romantic', 'drama'], genre: "Historical Fiction", teaser: "A reclusive Old Hollywood movie icon decides to give a final interview to an unknown magazine reporter, revealing the secrets of her glamorous and scandalous life.", cover: "https://placehold.co/400x600/8B5CF6/FFFFFF?text=Evelyn\nHugo", downloadLink: "#" },
-        { id: 10, title: "A Man Called Ove", author: "Fredrik Backman", moods: ['humorous', 'heartwarming', 'hopeful'], genre: "Contemporary Fiction", teaser: "He's a curmudgeon with strict principles and a short fuse. But behind the cranky exterior is a story of love and loss, and his life is about to be turned upside down by a boisterous young family.", cover: "https://placehold.co/400x600/6366F1/FFFFFF?text=A+Man\nCalled+Ove", downloadLink: "#" },
-        { id: 11, title: "Gone Girl", author: "Gillian Flynn", moods: ['suspenseful', 'mysterious'], genre: "Thriller", teaser: "On the day of their fifth wedding anniversary, a woman disappears. Her husband becomes the prime suspect, but the truth is far more twisted than anyone can imagine.", cover: "https://placehold.co/400x600/4B5563/FFFFFF?text=Gone\nGirl", downloadLink: "#" },
-        { id: 12, title: "Atomic Habits", author: "James Clear", moods: ['inspiring', 'self-help'], genre: "Non-Fiction", teaser: "An easy and proven way to build good habits and break bad ones. Learn how tiny changes can lead to remarkable results over time.", cover: "https://placehold.co/400x600/EF4444/FFFFFF?text=Atomic\nHabits", downloadLink: "#" },
-        { id: 13, title: "It", author: "Stephen King", moods: ['scary', 'suspenseful'], genre: "Horror", teaser: "Seven children in a small town are terrorized by an evil entity that preys on their worst fears, clowning around in the sewers.", cover: "https://placehold.co/400x600/C2410C/FFFFFF?text=It", downloadLink: "#" },
-        { id: 14, title: "Haunting Adeline", author: "H.D. Carlton", moods: ['dark romance', 'suspenseful', 'sexy'], genre: "Dark Romance", teaser: "A woman moves into her family's old manor and discovers the journals of her great-grandmother, who was stalked by a mysterious man. Soon, she finds herself the object of a new obsession.", cover: "https://placehold.co/400x600/171717/FFFFFF?text=Haunting\nAdeline", downloadLink: "#" },
-        { id: 15, title: "Red, White & Royal Blue", author: "Casey McQuiston", moods: ['romantic', 'humorous', 'bl romance'], genre: "Contemporary Romance", teaser: "America's First Son falls in love with a British prince, and their secret relationship could upend two nations and begs the question: can love save the world?", cover: "https://placehold.co/400x600/3B82F6/FFFFFF?text=Red,+White\n&+Royal+Blue", downloadLink: "#" },
-        { id: 16, title: "The Hobbit", author: "J.R.R. Tolkien", moods: ['adventurous', 'fantasy'], genre: "Fantasy", teaser: "A comfortable hobbit is swept into an epic quest to reclaim a stolen treasure from a fearsome dragon, alongside a company of dwarves.", cover: "https://placehold.co/400x600/16A34A/FFFFFF?text=The+Hobbit", downloadLink: "#"}
-    ];
+
+    let books = []; // We use 'let' because we will fill this array later
     
     const moods = [
         { name: 'Adventurous', icon: 'compass', color: 'bg-orange-500' },
@@ -324,13 +307,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- INITIALIZATION ---
-    function init() {
-        initMoods();
-        initBlindDate();
-        renderStory();
-        lucide.createIcons();
-        setActiveSection('mood-discovery');
+    async function init() {
+    // First, try to load the book data from our JSON file
+    try {
+        const response = await fetch('books.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        books = await response.json();
+    } catch (error) {
+        console.error("Fatal Error: Could not load book data from books.json. Please check the file.", error);
+        // Optionally, display an error message on the page for the user
+        document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50px;"><h1>Error</h1><p>Could not load book data. Please try again later.</p></div>';
+        return; // Stop the app from running if books aren't loaded
     }
+
+    // The rest of the original init function
+    initMoods();
+    initBlindDate();
+    renderStory();
+    lucide.createIcons();
+    setActiveSection('mood-discovery');
+}
 
     init();
 });
