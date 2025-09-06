@@ -340,10 +340,12 @@ document.addEventListener('DOMContentLoaded', () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         books = await response.json();
-    } catch (error) {
+        } catch (error) {
         console.error("Fatal Error: Could not load book data from books.json. Please check the file.", error);
         document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50px;"><h1>Error</h1><p>Could not load book data. Please try again later.</p></div>';
-        return; 
+        return; // Stop the app if books fail to load
+    }
+    
     initMoods();
     initBlindDate();
     renderStory();
