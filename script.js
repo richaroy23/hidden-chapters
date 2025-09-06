@@ -209,10 +209,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const surpriseMeBtn = document.getElementById('surprise-me-btn');
 
     function initBlindDate() {
-        const shuffledBooks = [...books].sort(() => 0.5 - Math.random());
-        const selectedBooks = shuffledBooks.slice(0, 12); // Show 12 random books
+    const loader = document.getElementById('blind-date-loader');
+    const grid = document.getElementById('blind-date-grid');
 
-        blindDateGrid.innerHTML = '';
+    grid.innerHTML = '';
+    loader.classList.remove('hidden');
+    grid.appendChild(loader);
+
+    setTimeout(() => {
+        loader.classList.add('hidden');
+
+        const shuffledBooks = [...books].sort(() => 0.5 - Math.random());
+        const selectedBooks = shuffledBooks.slice(0, 12);
+
         selectedBooks.forEach(book => {
             const bookWrapper = document.createElement('div');
             bookWrapper.className = 'wrapped-book bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer flex flex-col justify-between text-center border-2 border-dashed border-gray-600';
@@ -224,10 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="mt-4 text-sm font-semibold text-[#f7b267]">Click to unwrap</span>
             `;
             bookWrapper.addEventListener('click', () => showBookModal(book));
-            blindDateGrid.appendChild(bookWrapper);
+            grid.appendChild(bookWrapper);
         });
-         lucide.createIcons();
-    }
+        lucide.createIcons();
+    }, 500);
+}  
 
     surpriseMeBtn.addEventListener('click', () => {
     if (books.length > 0) {
@@ -269,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(e.target === modal) closeModal();
     });
     
-    // Add event listener to the static close button in the HTML
     document.getElementById('close-modal-btn').addEventListener('click', closeModal);
 
     // --- BOOK OF THE DAY ---
@@ -277,18 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookOfTheDayContainer = document.getElementById('book-of-the-day');
         if (!bookOfTheDayContainer) return;
 
-        // Create a "day number" from 1 to 366
         const now = new Date();
         const start = new Date(now.getFullYear(), 0, 0);
         const diff = now - start;
         const oneDay = 1000 * 60 * 60 * 24;
         const dayOfYear = Math.floor(diff / oneDay);
 
-        // Use the day number to pick a book. This ensures the same book all day.
         const bookIndex = dayOfYear % books.length;
         const dailyBook = books[bookIndex];
 
-        // Create the HTML for the book of the day
         bookOfTheDayContainer.innerHTML = `
             <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">Today's Hidden Gem</h3>
             <p class="text-lg text-gray-400 mb-6">A special recommendation, just for today.</p>
@@ -303,7 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Add a click listener to the button to open the modal
         document.getElementById('reveal-daily-book-btn').addEventListener('click', () => {
             showBookModal(dailyBook);
         });
