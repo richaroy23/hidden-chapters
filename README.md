@@ -9,8 +9,10 @@ Users can also co-create stories together through a **Community Story Chain**.
 ## ✨ Features
 - 🎭 **Mood-based discovery** → Pick from over 15 moods and get a surprise book recommendation that matches your feelings.
 - 🎁 **Interactive Blind Reveal:** Books are presented as wrapped gifts. Read a mysterious teaser before revealing the title and cover with a satisfying card-flip animation.
+- 🔍 **Genre Filtering** → Fine-tune your 'Blind Date' experience by filtering the mystery books by genre.
 - 📝 **Collaborative Story Chain:** Join a community story! Add a line, get an AI-powered continuation, and share the complete story with a one-click "copy to clipboard" button.  
-- 📚 **Read online** → redirect to free/public-domain books
+- 🔗 **Get the Book** → Provides a direct link to buy the book, with a separate download option for public-domain titles.
+- 📤 **Share Your Discoveries** → Easily share a specific book you've unwrapped with a pre-formatted message copied to your clipboard.
 - 💎 **Book of the Day:** A new "hidden gem" is featured every day to encourage repeat visits.
 - 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back.   
 
@@ -38,11 +40,7 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## 🛠️ Setup Instructions
-1. Clone the repo  
-2. Open `index.html` in your browser  
-
-## 🛠️ How to Run Locally (from ZIP)
-1. Unzip the folder  
+1. Clone the repo or Unzip the folder  
 2. Open `index.html` in your browser
 ---
 
