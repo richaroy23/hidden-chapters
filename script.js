@@ -322,6 +322,9 @@ function showBookModal(book) {
                 <p class="text-lg leading-relaxed">${book.teaser}</p>
                 
                 <a href="${book.buyLink}" target="_blank" class="inline-block mt-6 bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-400 transition duration-300"><i data-lucide="shopping-cart" class="inline mr-2"></i>Link to Buy</a>
+                
+                <button id="share-book-btn" class="inline-block mt-6 ml-4 bg-blue-500 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-400 transition duration-300"><i data-lucide="share-2" class="inline mr-2"></i>Share Discovery</button>
+                
                 ${downloadButtonHTML}
             </div>
         </div>
@@ -333,10 +336,25 @@ function showBookModal(book) {
     setTimeout(() => modalContent.classList.remove('scale-95'), 10);
     lucide.createIcons();
     
-    // The share button listener is already here and correct
+    // This event listener will now work correctly because the button exists
     document.getElementById('share-book-btn').addEventListener('click', () => {
         const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
-        // ... (rest of the share logic)
+    
+        navigator.clipboard.writeText(shareText).then(() => {
+            const notification = document.getElementById('clipboard-notification');
+            notification.textContent = 'Book details copied to clipboard!';
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+                // Use another timeout to reset the text after the fade-out transition
+                setTimeout(() => {
+                    notification.textContent = 'Story copied to clipboard!';
+                }, 500);
+            }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy book details: ', err);
+            alert("Failed to copy book details.");
+        });
     });
     document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
 }
