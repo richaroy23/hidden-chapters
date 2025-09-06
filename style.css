@@ -98,3 +98,12 @@ h1, h2, h3 {
     box-shadow: 0 0 0 3px #f7b267;
     transform: translateY(-8px); 
 }
+/* Style for genre filter buttons */
+.genre-filter-btn {
+    transition: all 0.2s ease-in-out;
+}
+.genre-filter-btn.active {
+    background-color: #f7b267;
+    color: #121829;
+    font-weight: bold;
+}
