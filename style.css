@@ -89,3 +89,7 @@ h1, h2, h3 {
 .flip-card-back {
     transform: rotateY(180deg);
 }
+#clipboard-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
