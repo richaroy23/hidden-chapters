@@ -335,27 +335,24 @@ function showBookModal(book) {
     modal.classList.remove('hidden');
     setTimeout(() => modalContent.classList.remove('scale-95'), 10);
     lucide.createIcons();
-    
-    // This event listener will now work correctly because the button exists
-    document.getElementById('share-book-btn').addEventListener('click', () => {
-        const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
-    
-        navigator.clipboard.writeText(shareText).then(() => {
-            const notification = document.getElementById('clipboard-notification');
-            notification.textContent = 'Book details copied to clipboard!';
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-                // Use another timeout to reset the text after the fade-out transition
-                setTimeout(() => {
-                    notification.textContent = 'Story copied to clipboard!';
-                }, 500);
-            }, 3000);
-        }).catch(err => {
-            console.error('Failed to copy book details: ', err);
-            alert("Failed to copy book details.");
-        });
+
+    // This is inside the showBookModal function
+document.getElementById('share-book-btn').addEventListener('click', () => {
+    const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
+
+    navigator.clipboard.writeText(shareText).then(() => {
+        const notification = document.getElementById('clipboard-notification');
+        notification.textContent = 'Book details copied to clipboard!';
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }).catch(err => {
+        console.error('Failed to copy book details: ', err);
+        alert("Failed to copy book details.");
     });
+});
+
     document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
 }
 
@@ -456,19 +453,20 @@ function showBookModal(book) {
     });
 
     shareStoryBtn.addEventListener('click', async () => {
-    const fullStory = storyChain.join('\n\n'); // Join with double newline for paragraphs
-    if (!navigator.clipboard) {
-        alert("Clipboard access is not available on your browser.");
-        return;
+        const fullStory = storyChain.join('\n\n');
+        if (!navigator.clipboard) {
+            alert("Clipboard access is not available on your browser.");
+            return;
     }
 
     try {
         await navigator.clipboard.writeText(fullStory);
 
-        // Show the notification
+        const notification = document.getElementById('clipboard-notification');
+        // FIX: Explicitly set the text content every time
+        notification.textContent = 'Story copied to clipboard!';
         notification.classList.add('show');
 
-        // Hide it again after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
         }, 3000);
