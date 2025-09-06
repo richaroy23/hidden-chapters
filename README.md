@@ -30,6 +30,20 @@ Users can also co-create stories together through a **Community Story Chain**.
 
 ---
 
+## 🔮 Future Scope
+- User accounts & story uploads  
+- Ratings, reviews, favorites  
+- Marketplace for premium books (with payments)  
+- Mobile app version  
+
+---
+
+## 🛠️ Setup Instructions
+1. Clone the repo  
+2. Open `index.html` in your browser  
+
+---
+
 ## ⚠️ Important: API Key Setup
 
 The Community Story Chain uses the Google Gemini API to generate AI-powered continuations. To enable this feature, you must get your own free API key from Google AI Studio.
