@@ -261,6 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const storyForm = document.getElementById('story-form');
     const storyInput = document.getElementById('story-input');
     const aiContinueBtn = document.getElementById('ai-continue-btn');
+    const shareStoryBtn = document.getElementById('share-story-btn');
+    const notification = document.getElementById('clipboard-notification');
 
     function renderStory() {
         storyDisplay.innerHTML = '';
@@ -306,10 +308,33 @@ document.addEventListener('DOMContentLoaded', () => {
         button.innerHTML = '✨ AI Continue';
     });
 
+    shareStoryBtn.addEventListener('click', async () => {
+    const fullStory = storyChain.join('\n\n'); // Join with double newline for paragraphs
+    if (!navigator.clipboard) {
+        alert("Clipboard access is not available on your browser.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(fullStory);
+
+        // Show the notification
+        notification.classList.add('show');
+
+        // Hide it again after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+
+    } catch (err) {
+        console.error('Failed to copy story: ', err);
+        alert("Failed to copy the story. Please try again.");
+    }
+});
+
     // --- INITIALIZATION ---
     async function init() {
-    // First, try to load the book data from our JSON file
-    try {
+        try {
         const response = await fetch('books.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -317,12 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
         books = await response.json();
     } catch (error) {
         console.error("Fatal Error: Could not load book data from books.json. Please check the file.", error);
-        // Optionally, display an error message on the page for the user
         document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50px;"><h1>Error</h1><p>Could not load book data. Please try again later.</p></div>';
-        return; // Stop the app from running if books aren't loaded
-    }
-
-    // The rest of the original init function
+        return; 
     initMoods();
     initBlindDate();
     renderStory();
