@@ -386,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBlindDate();
     renderStory();
     lucide.createIcons();
+    displayBookOfTheDay();
     setActiveSection('mood-discovery');
 }
 
