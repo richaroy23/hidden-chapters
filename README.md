@@ -41,6 +41,9 @@ Users can also co-create stories together through a **Community Story Chain**.
 1. Clone the repo  
 2. Open `index.html` in your browser  
 
+## 🛠️ How to Run Locally (from ZIP)
+1. Unzip the folder  
+2. Open `index.html` in your browser
 ---
 
 ## ⚠️ Important: API Key Setup
