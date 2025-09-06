@@ -110,6 +110,7 @@
                     <input type="text" id="story-input" class="flex-grow bg-gray-800 border-2 border-gray-600 rounded-full py-3 px-6 text-white focus:outline-none focus:ring-2 focus:ring-[#f7b267] focus:border-transparent" placeholder="Contribute your line to the story..." required>
                     <button type="submit" class="bg-[#f7b267] text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-[#f4a24f] transition duration-300 flex-shrink-0">Add to Story</button>
                     <button type="button" id="ai-continue-btn" class="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:bg-teal-400 transition duration-300 flex-shrink-0">✨ AI Continue</button>
+                    <button type="button" id="share-story-btn" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-400 transition duration-300 flex-shrink-0">🔗 Share Story</button>
                 </form>
             </div>
         </section>
@@ -166,5 +167,8 @@
     </footer>
 
     <script src="script.js"></script>
+    <div id="clipboard-notification" class="fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-500">
+    Story copied to clipboard!
+</div>
 </body>
 </html>
