@@ -22,8 +22,7 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## 📂 Tech Stack
-- **Frontend**: HTML, Tailwind CSS, JavaScript  
-- **Data**: JSON objects for books, arrays for story chain  
+- **Frontend**: HTML, CSS, JavaScript    
 - **Deployment**: GitHub Pages  
 
 ---
