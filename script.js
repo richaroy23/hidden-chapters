@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.innerHTML = `<p class="col-span-full text-center text-gray-400">No books found for this genre. Try another!</p>`;
             return;
         }
-        
+
         selectedBooks.forEach(book => {
             const bookWrapper = document.createElement('div');
             bookWrapper.className = 'wrapped-book bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer flex flex-col justify-between text-center border-2 border-dashed border-gray-600';
@@ -302,6 +302,7 @@ function initGenreFilters() {
                     </div>
                     <p class="text-lg leading-relaxed">${book.teaser}</p>
                     <a href="${book.downloadLink}" target="_blank" class="inline-block mt-6 bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-400 transition duration-300"><i data-lucide="download" class="inline mr-2"></i>Get Download Link</a>
+                    <button id="share-book-btn" class="inline-block mt-6 ml-4 bg-blue-500 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-400 transition duration-300"><i data-lucide="share-2" class="inline mr-2"></i>Share Discovery</button>
                 </div>
             </div>
              <button id="close-modal-btn-inner" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
@@ -311,7 +312,24 @@ function initGenreFilters() {
         modal.classList.remove('hidden');
         setTimeout(() => modalContent.classList.remove('scale-95'), 10);
         lucide.createIcons();
-        document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
+        document.getElementById('share-book-btn').addEventListener('click', () => {
+            const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
+    
+        navigator.clipboard.writeText(shareText).then(() => {
+            // Reuse the existing notification element
+            const notification = document.getElementById('clipboard-notification');
+            notification.textContent = 'Book details copied to clipboard!'; // Customize text
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.textContent = 'Story copied to clipboard!'; // Reset text
+        }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy book details: ', err);
+            alert("Failed to copy book details.");
+        });
+});
+document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
     }
 
     function closeModal() {
