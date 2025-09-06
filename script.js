@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 7, title: "The Song of Achilles", author: "Madeline Miller", moods: ['romantic', 'heartbreaking', 'mythological', 'tragedy'], genre: "Historical Fiction", teaser: "An exiled prince forms an inseparable bond with the golden hero Achilles. As the Trojan War looms, they are tested by fate, gods, and their own hearts.", cover: "https://placehold.co/400x600/3B82F6/FFFFFF?text=The+Song+of\nAchilles", downloadLink: "#" },
         { id: 8, title: "Educated", author: "Tara Westover", moods: ['inspiring', 'thought-provoking'], genre: "Memoir", teaser: "A young girl, kept out of school, leaves her survivalist family and goes on to earn a PhD from Cambridge University, discovering the transformative power of education.", cover: "https://placehold.co/400x600/10B981/FFFFFF?text=Educated", downloadLink: "#" },
         { id: 9, title: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", moods: ['dramatic', 'romantic', 'drama'], genre: "Historical Fiction", teaser: "A reclusive Old Hollywood movie icon decides to give a final interview to an unknown magazine reporter, revealing the secrets of her glamorous and scandalous life.", cover: "https://placehold.co/400x600/8B5CF6/FFFFFF?text=Evelyn\nHugo", downloadLink: "#" },
-        { id: 10, "title": "A Man Called Ove", author: "Fredrik Backman", moods: ['humorous', 'heartwarming', 'hopeful'], genre: "Contemporary Fiction", teaser: "He's a curmudgeon with strict principles and a short fuse. But behind the cranky exterior is a story of love and loss, and his life is about to be turned upside down by a boisterous young family.", cover: "https://placehold.co/400x600/6366F1/FFFFFF?text=A+Man\nCalled+Ove", downloadLink: "#" },
+        { id: 10, title: "A Man Called Ove", author: "Fredrik Backman", moods: ['humorous', 'heartwarming', 'hopeful'], genre: "Contemporary Fiction", teaser: "He's a curmudgeon with strict principles and a short fuse. But behind the cranky exterior is a story of love and loss, and his life is about to be turned upside down by a boisterous young family.", cover: "https://placehold.co/400x600/6366F1/FFFFFF?text=A+Man\nCalled+Ove", downloadLink: "#" },
         { id: 11, title: "Gone Girl", author: "Gillian Flynn", moods: ['suspenseful', 'mysterious'], genre: "Thriller", teaser: "On the day of their fifth wedding anniversary, a woman disappears. Her husband becomes the prime suspect, but the truth is far more twisted than anyone can imagine.", cover: "https://placehold.co/400x600/4B5563/FFFFFF?text=Gone\nGirl", downloadLink: "#" },
         { id: 12, title: "Atomic Habits", author: "James Clear", moods: ['inspiring', 'self-help'], genre: "Non-Fiction", teaser: "An easy and proven way to build good habits and break bad ones. Learn how tiny changes can lead to remarkable results over time.", cover: "https://placehold.co/400x600/EF4444/FFFFFF?text=Atomic\nHabits", downloadLink: "#" },
         { id: 13, title: "It", author: "Stephen King", moods: ['scary', 'suspenseful'], genre: "Horror", teaser: "Seven children in a small town are terrorized by an evil entity that preys on their worst fears, clowning around in the sewers.", cover: "https://placehold.co/400x600/C2410C/FFFFFF?text=It", downloadLink: "#" },
@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Fantasy', icon: 'sparkles', color: 'bg-teal-500' }
     ];
 
-    let storyChain = [
+    // Load story from localStorage or use default
+    let storyChain = JSON.parse(localStorage.getItem('storyChain')) || [
         "The old lighthouse stood on the cliff's edge, its lamp dark for the first time in a century.",
         "A small, leather-bound book appeared on its doorstep with the morning fog, holding a single, cryptic sentence inside.",
         "'The sea remembers what the land forgets,' it read, in a script that seemed to shift before the reader's eyes."
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function initMoods() {
         moods.forEach(mood => {
-            const moodCard = document.createElement('div');
+            const moodCard = document.createElement('button');
             moodCard.className = `mood-card ${mood.color} text-white p-6 rounded-lg shadow-lg cursor-pointer flex flex-col items-center justify-center text-center`;
             moodCard.dataset.mood = mood.name.toLowerCase();
             moodCard.innerHTML = `
@@ -295,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             storyChain.push(newLine);
             renderStory();
             storyInput.value = '';
+            localStorage.setItem('storyChain', JSON.stringify(storyChain));
         }
     });
 
@@ -312,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextLine) {
             storyChain.push(nextLine.trim().replace(/^"|"$/g, '')); // Also remove quotes if AI adds them
             renderStory();
+            localStorage.setItem('storyChain', JSON.stringify(storyChain));
         } else {
             alert("The AI couldn't think of a line right now. Please check your API key or try again!");
         }

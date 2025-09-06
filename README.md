@@ -26,3 +26,12 @@ Users can also co-create stories together through a **Community Story Chain**.
 - **Deployment**: GitHub Pages  
 
 ---
+
+## ⚠️ Important: API Key Setup
+
+The Community Story Chain uses the Google Gemini API to generate AI-powered continuations. To enable this feature, you must get your own free API key from Google AI Studio.
+
+1.  Obtain your API key from [Google AI Studio](https://aistudio.google.com/).
+2.  Open the `script.js` file.
+3.  Find the line `const API_KEY = "";`.
+4.  Paste your secret API key inside the quotes.
