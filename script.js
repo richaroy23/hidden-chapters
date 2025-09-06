@@ -197,7 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const blindDateGrid = document.getElementById('blind-date-grid');
     const modal = document.getElementById('book-modal');
     const modalContent = document.getElementById('book-modal-content');
-    
+    const surpriseMeBtn = document.getElementById('surprise-me-btn');
+
     function initBlindDate() {
         const shuffledBooks = [...books].sort(() => 0.5 - Math.random());
         const selectedBooks = shuffledBooks.slice(0, 12); // Show 12 random books
@@ -218,6 +219,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
          lucide.createIcons();
     }
+
+    surpriseMeBtn.addEventListener('click', () => {
+    if (books.length > 0) {
+        const randomBook = books[Math.floor(Math.random() * books.length)];
+        showBookModal(randomBook);
+    }
+});
     
     function showBookModal(book) {
         modalContent.innerHTML = `
