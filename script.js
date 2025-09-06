@@ -208,20 +208,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalContent = document.getElementById('book-modal-content');
     const surpriseMeBtn = document.getElementById('surprise-me-btn');
 
-    function initBlindDate() {
+    function initBlindDate(genreFilter = 'all') {
     const loader = document.getElementById('blind-date-loader');
     const grid = document.getElementById('blind-date-grid');
 
     grid.innerHTML = '';
-    loader.classList.remove('hidden');
     grid.appendChild(loader);
-
+    loader.classList.remove('hidden');
+    
     setTimeout(() => {
-        loader.classList.add('hidden');
+        
+        // Filter books by genre if a filter is applied
+        const filteredBooks = genreFilter === 'all' 
+            ? [...books] 
+            : books.filter(book => book.genre.toLowerCase() === genreFilter.toLowerCase());
 
-        const shuffledBooks = [...books].sort(() => 0.5 - Math.random());
+        const shuffledBooks = [...filteredBooks].sort(() => 0.5 - Math.random()); // Show 12 random books
         const selectedBooks = shuffledBooks.slice(0, 12);
 
+        grid.innerHTML = '';
         selectedBooks.forEach(book => {
             const bookWrapper = document.createElement('div');
             bookWrapper.className = 'wrapped-book bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer flex flex-col justify-between text-center border-2 border-dashed border-gray-600';
@@ -238,6 +243,36 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     }, 500);
 }  
+// ADD THE NEW FUNCTION HERE
+function initGenreFilters() {
+    const filterContainer = document.getElementById('genre-filter-container');
+    if (!filterContainer) return;
+
+    // Get unique genres from the books data
+    const genres = ['all', ...new Set(books.map(book => book.genre.toLowerCase()))];
+
+    filterContainer.innerHTML = ''; // Clear existing buttons
+    genres.forEach(genre => {
+        const button = document.createElement('button');
+        button.className = 'genre-filter-btn bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm';
+        button.textContent = genre.charAt(0).toUpperCase() + genre.slice(1); // Capitalize
+        button.dataset.genre = genre;
+
+        if (genre === 'all') {
+            button.classList.add('active'); // Set 'All' as active by default
+        }
+
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            document.querySelectorAll('.genre-filter-btn').forEach(btn => btn.classList.remove('active'));
+            // Add active class to the clicked one
+            button.classList.add('active');
+            // Re-initialize the blind date grid with the selected genre
+            initBlindDate(genre);
+        });
+        filterContainer.appendChild(button);
+    });
+}
 
     surpriseMeBtn.addEventListener('click', () => {
     if (books.length > 0) {
@@ -406,9 +441,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initMoods();
     initBlindDate();
+    initGenreFilters();
     renderStory();
     lucide.createIcons();
-    displayBookOfTheDay(); // <-- FIX: Call the new function
+    displayBookOfTheDay(); 
     setActiveSection('mood-discovery');
 }
 
