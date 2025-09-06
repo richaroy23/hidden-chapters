@@ -7,7 +7,8 @@
         "genre": "Fantasy Fiction",
         "teaser": "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.",
         "cover": "https://m.media-amazon.com/images/I/71ls-I6A5KL._UF1000,1000_QL80_.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/52578297-the-midnight-library?ac=1&from_search=true&qid=sB4N0IDdXf&rank=1"
+        "buyLink": "https://www.goodreads.com/book/show/52578297-the-midnight-library?ac=1&from_search=true&qid=sB4N0IDdXf&rank=1"
+        ,"downloadLink": ""
     },
     {
         "id": 2,
@@ -17,7 +18,8 @@
         "genre": "Science Fiction",
         "teaser": "A lone astronaut awakens on a mission to save humanity, with no memory of who he is or how he got there. His only companions are two corpses... and a friendly alien.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1597695864i/54493401.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/54493401-project-hail-mary?from_search=true&from_srp=true&qid=FmiwABDybo&rank=1"
+        "buyLink": "https://www.goodreads.com/book/show/54493401-project-hail-mary?from_search=true&from_srp=true&qid=FmiwABDybo&rank=1"
+        ,"downloadLink": ""
     },
     {
         "id": 3,
@@ -27,7 +29,8 @@
         "genre": "Thriller",
         "teaser": "A famous painter shoots her husband and then never speaks another word. A psychotherapist is determined to unravel the mystery of her silence.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1668782119i/40097951.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/40097951-the-silent-patient?ref=nav_sb_ss_1_18"
+        "buyLink": "https://www.goodreads.com/book/show/40097951-the-silent-patient?ref=nav_sb_ss_1_18"
+        ,"downloadLink": ""
     },
     {
         "id": 4,
@@ -37,6 +40,7 @@
         "genre": "Fantasy",
         "teaser": "Born in the house of Helios, a strange child, neither powerful like her father nor alluring like her mother, discovers she possesses the power of witchcraft.",
         "cover": "https://m.media-amazon.com/images/I/91c0yRVm+0L._UF1000,1000_QL80_.jpg",
+        "buyLink": "",
         "downloadLink": "https://archive.org/details/2019-Circe"
     },
     {
@@ -47,7 +51,8 @@
         "genre": "Classic Romance",
         "teaser": "A story of the five Bennet sisters in Georgian England, as they navigate issues of marriage, morality, and misconceptions. It is a truth universally acknowledged...",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1681804503i/129915654.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/129915654-pride-and-prejudice?ac=1&from_search=true&qid=NputgiWhXs&rank=1"
+        "buyLink": "https://www.goodreads.com/book/show/129915654-pride-and-prejudice?ac=1&from_search=true&qid=NputgiWhXs&rank=1"
+        ,"downloadLink": ""
     },
     {
         "id": 6,
@@ -57,7 +62,8 @@
         "genre": "Science Fiction",
         "teaser": "Set on a desert planet, a noble family is thrust into a war for control of the most valuable asset in the galaxy: a spice that extends life and enhances consciousness.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1555447414i/44767458.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/44767458-dune?ref=nav_sb_ss_1_5"
+        "buyLink": "https://www.goodreads.com/book/show/44767458-dune?ref=nav_sb_ss_1_5"
+        ,"downloadLink": ""
     },
     {
         "id": 7,
@@ -67,7 +73,8 @@
         "genre": "Historical Fiction",
         "teaser": "An exiled prince forms an inseparable bond with the golden hero Achilles. As the Trojan War looms, they are tested by fate, gods, and their own hearts.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1357177533i/13623848.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/13623848-the-song-of-achilles?ref=nav_sb_ss_1_20"
+        "buyLink": "https://www.goodreads.com/book/show/13623848-the-song-of-achilles?ref=nav_sb_ss_1_20"
+        ,"downloadLink": ""
     },
     {
         "id": 8,
@@ -77,7 +84,8 @@
         "genre": "Memoir",
         "teaser": "A young girl, kept out of school, leaves her survivalist family and goes on to earn a PhD from Cambridge University, discovering the transformative power of education.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1506026635i/35133922.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/35133922-educated?ref=nav_sb_ss_1_8"
+        "buyLink": "https://www.goodreads.com/book/show/35133922-educated?ref=nav_sb_ss_1_8"
+        ,"downloadLink": ""
     },
     {
         "id": 9,
@@ -87,7 +95,8 @@
         "genre": "Historical Fiction",
         "teaser": "A reclusive Old Hollywood movie icon decides to give a final interview to an unknown magazine reporter, revealing the secrets of her glamorous and scandalous life.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1664458703i/32620332.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/32620332-the-seven-husbands-of-evelyn-hugo?ref=nav_sb_ss_1_33"
+        "buyLink": "https://www.goodreads.com/book/show/32620332-the-seven-husbands-of-evelyn-hugo?ref=nav_sb_ss_1_33"
+        ,"downloadLink": ""
     },
     {
         "id": 10,
@@ -97,7 +106,8 @@
         "genre": "Contemporary Fiction",
         "teaser": "He's a curmudgeon with strict principles and a short fuse. But behind the cranky exterior is a story of love and loss, and his life is about to be turned upside down by a boisterous young family.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1405259930i/18774964.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/18774964-a-man-called-ove?ref=nav_sb_ss_1_16"
+        "buyLink": "https://www.goodreads.com/book/show/18774964-a-man-called-ove?ref=nav_sb_ss_1_16"
+        ,"downloadLink": ""
     },
     {
         "id": 11,
@@ -107,7 +117,8 @@
         "genre": "Thriller",
         "teaser": "On the day of their fifth wedding anniversary, a woman disappears. Her husband becomes the prime suspect, but the truth is far more twisted than anyone can imagine.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1554086139i/19288043.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/19288043-gone-girl?from_search=true&from_srp=true&qid=geA2vuQHeC&rank=1"
+        "buyLink": "https://www.goodreads.com/book/show/19288043-gone-girl?from_search=true&from_srp=true&qid=geA2vuQHeC&rank=1"
+        ,"downloadLink": ""
     },
     {
         "id": 12,
@@ -117,7 +128,8 @@
         "genre": "Non-Fiction",
         "teaser": "An easy and proven way to build good habits and break bad ones. Learn how tiny changes can lead to remarkable results over time.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1655988385i/40121378.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/40121378-atomic-habits?ref=nav_sb_ss_1_6"
+        "buyLink": "https://www.goodreads.com/book/show/40121378-atomic-habits?ref=nav_sb_ss_1_6"
+        ,"downloadLink": ""
     },
     {
         "id": 13,
@@ -127,7 +139,8 @@
         "genre": "Horror",
         "teaser": "Seven children in a small town are terrorized by an evil entity that preys on their worst fears, clowning around in the sewers.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1334416842i/830502.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/830502.It?ref=nav_sb_ss_3_3"
+        "buyLink": "https://www.goodreads.com/book/show/830502.It?ref=nav_sb_ss_3_3"
+        ,"downloadLink": ""
     },
     {
         "id": 14,
@@ -137,7 +150,8 @@
         "genre": "Dark Romance",
         "teaser": "A woman moves into her family's old manor and discovers the journals of her great-grandmother, who was stalked by a mysterious man. Soon, she finds herself the object of a new obsession.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1628900532i/58763686.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/58763686-haunting-adeline?ref=nav_sb_ss_1_16"
+        "buyLink": "https://www.goodreads.com/book/show/58763686-haunting-adeline?ref=nav_sb_ss_1_16"
+        ,"downloadLink": ""
     },
     {
         "id": 15,
@@ -147,7 +161,8 @@
         "genre": "Contemporary Romance",
         "teaser": "America's First Son falls in love with a British prince, and their secret relationship could upend two nations and begs the question: can love save the world?",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1566742512i/41150487.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/41150487-red-white-royal-blue?from_search=true&from_srp=true&qid=Vysj8GKoMz&rank=1"
+        "buyLink": "https://www.goodreads.com/book/show/41150487-red-white-royal-blue?from_search=true&from_srp=true&qid=Vysj8GKoMz&rank=1"
+        ,"downloadLink": ""
     },
     {
         "id": 16,
@@ -157,6 +172,7 @@
         "genre": "Fantasy",
         "teaser": "A comfortable hobbit is swept into an epic quest to reclaim a stolen treasure from a fearsome dragon, alongside a company of dwarves.",
         "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546071216i/5907.jpg",
-        "downloadLink": "https://www.goodreads.com/book/show/5907.The_Hobbit_or_There_and_Back_Again?ref=nav_sb_ss_1_10"
+        "buyLink": "https://www.goodreads.com/book/show/5907.The_Hobbit_or_There_and_Back_Again?ref=nav_sb_ss_1_10"
+        ,"downloadLink": ""
     }
 ]
