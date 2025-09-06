@@ -116,4 +116,47 @@
         "moods": ["inspiring", "self-help"],
         "genre": "Non-Fiction",
         "teaser": "An easy and proven way to build good habits and break bad ones. Learn how tiny changes can lead to remarkable results over time.",
-        "cover": "
+        "cover": "https://placehold.co/400x600/EF4444/FFFFFF?text=Atomic\nHabits",
+        "downloadLink": "#"
+    },
+    {
+        "id": 13,
+        "title": "It",
+        "author": "Stephen King",
+        "moods": ["scary", "suspenseful"],
+        "genre": "Horror",
+        "teaser": "Seven children in a small town are terrorized by an evil entity that preys on their worst fears, clowning around in the sewers.",
+        "cover": "https://placehold.co/400x600/C2410C/FFFFFF?text=It",
+        "downloadLink": "#"
+    },
+    {
+        "id": 14,
+        "title": "Haunting Adeline",
+        "author": "H.D. Carlton",
+        "moods": ["dark romance", "suspenseful", "sexy"],
+        "genre": "Dark Romance",
+        "teaser": "A woman moves into her family's old manor and discovers the journals of her great-grandmother, who was stalked by a mysterious man. Soon, she finds herself the object of a new obsession.",
+        "cover": "https://placehold.co/400x600/171717/FFFFFF?text=Haunting\nAdeline",
+        "downloadLink": "#"
+    },
+    {
+        "id": 15,
+        "title": "Red, White & Royal Blue",
+        "author": "Casey McQuiston",
+        "moods": ["romantic", "humorous", "bl romance"],
+        "genre": "Contemporary Romance",
+        "teaser": "America's First Son falls in love with a British prince, and their secret relationship could upend two nations and begs the question: can love save the world?",
+        "cover": "https://placehold.co/400x600/3B82F6/FFFFFF?text=Red,+White\n&+Royal+Blue",
+        "downloadLink": "#"
+    },
+    {
+        "id": 16,
+        "title": "The Hobbit",
+        "author": "J.R.R. Tolkien",
+        "moods": ["adventurous", "fantasy"],
+        "genre": "Fantasy",
+        "teaser": "A comfortable hobbit is swept into an epic quest to reclaim a stolen treasure from a fearsome dragon, alongside a company of dwarves.",
+        "cover": "https://placehold.co/400x600/16A34A/FFFFFF?text=The+Hobbit",
+        "downloadLink": "#"
+    }
+]
