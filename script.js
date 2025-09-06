@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSelectedMood = '';
 
     // --- GEMINI API INTEGRATION ---
-    // IMPORTANT: To use the AI feature, you must get your own API key from Google AI Studio
-    // and paste it here. For security, it's best to use a backend to handle API keys.
     const API_KEY = ""; // PASTE YOUR GOOGLE GEMINI API KEY HERE
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
@@ -97,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            setActiveSection(e.target.dataset.section);
+            // A small fix to make sure clicking the icon inside the link also works
+            const sectionId = e.target.closest('.nav-link').dataset.section;
+            setActiveSection(sectionId);
         });
     });
 
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBlindDate();
     renderStory();
     lucide.createIcons();
-    displayBookOfTheDay();
+    displayBookOfTheDay(); // <-- FIX: Call the new function
     setActiveSection('mood-discovery');
 }
 
