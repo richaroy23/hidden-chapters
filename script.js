@@ -208,16 +208,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalContent = document.getElementById('book-modal-content');
     const surpriseMeBtn = document.getElementById('surprise-me-btn');
 
+    const blindDateLoaderHTML = `
+    <div class="col-span-full flex flex-col items-center justify-center p-8">
+        <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-[#f7b267]"></div>
+        <p class="mt-4 text-lg text-gray-400">Finding some mysterious dates...</p>
+    </div>
+`;
+
     function initBlindDate(genreFilter = 'all') {
-    const loader = document.getElementById('blind-date-loader');
     const grid = document.getElementById('blind-date-grid');
 
-    grid.innerHTML = '';
-    grid.appendChild(loader);
-    loader.classList.remove('hidden');
-    
-    setTimeout(() => {
+    grid.innerHTML = blindDateLoaderHTML;
         
+    setTimeout(() => {
         // Filter books by genre if a filter is applied
         const filteredBooks = genreFilter === 'all' 
             ? [...books] 
@@ -227,6 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedBooks = shuffledBooks.slice(0, 12);
 
         grid.innerHTML = '';
+
+        if (selectedBooks.length === 0) {
+            grid.innerHTML = `<p class="col-span-full text-center text-gray-400">No books found for this genre. Try another!</p>`;
+            return;
+        }
+        
         selectedBooks.forEach(book => {
             const bookWrapper = document.createElement('div');
             bookWrapper.className = 'wrapped-book bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer flex flex-col justify-between text-center border-2 border-dashed border-gray-600';
