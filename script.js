@@ -304,16 +304,17 @@ function initGenreFilters() {
     }
 });
 
-function showBookModal(book) {
-    // Conditionally create the download button HTML only if a download link exists
+async function showBookModal(book) {
+    // 1. Conditionally create the download button
     const downloadButtonHTML = book.downloadLink
         ? `<a href="${book.downloadLink}" target="_blank" class="inline-block mt-6 ml-4 bg-gray-600 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-500 transition duration-300"><i data-lucide="download" class="inline mr-2"></i>Download Book</a>`
-        : ''; // If no link, this will be an empty string
+        : '';
 
+    // 2. Set the basic modal content
     modalContent.innerHTML = `
         <div class="flex flex-col md:flex-row gap-8">
             <img src="${book.cover}" alt="${book.title}" class="w-full md:w-1/3 h-auto object-cover rounded-lg shadow-lg">
-            <div class="md:w-2/3">
+            <div class="md:w-2/3" id="modal-text-content">
                 <h2 class="text-4xl font-bold mb-2 text-white">${book.title}</h2>
                 <p class="text-xl text-gray-400 mb-4">by ${book.author}</p>
                 <div class="flex flex-wrap gap-2 mb-4">
@@ -326,32 +327,56 @@ function showBookModal(book) {
                 <button id="share-book-btn" class="inline-block mt-6 ml-4 bg-blue-500 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-400 transition duration-300"><i data-lucide="share-2" class="inline mr-2"></i>Share Discovery</button>
                 
                 ${downloadButtonHTML}
+
+                <div id="ai-recommendations" class="mt-8 pt-6 border-t border-gray-700 hidden">
+                    <h4 class="text-xl font-bold text-[#f7b267] mb-3 flex items-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> AI: More Like This
+                    </h4>
+                    <div id="rec-list" class="flex flex-wrap gap-2">
+                        </div>
+                </div>
             </div>
         </div>
-         <button id="close-modal-btn-inner" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
-             <i data-lucide="x" class="w-8 h-8"></i>
-         </button>
+        <button id="close-modal-btn-inner" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
     `;
+
     modal.classList.remove('hidden');
     setTimeout(() => modalContent.classList.remove('scale-95'), 10);
     lucide.createIcons();
 
-    // This is inside the showBookModal function
-document.getElementById('share-book-btn').addEventListener('click', () => {
-    const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
+    // 3. --- NEW: FETCH AI RECOMMENDATIONS ---
+    try {
+        const recResponse = await fetch(`http://127.0.0.1:5000/api/recommend/${book.id}`);
+        if (recResponse.ok) {
+            const recommendations = await recResponse.json();
+            const recSection = document.getElementById('ai-recommendations');
+            const recList = document.getElementById('rec-list');
 
-    navigator.clipboard.writeText(shareText).then(() => {
-        const notification = document.getElementById('clipboard-notification');
-        notification.textContent = 'Book details copied to clipboard!';
-        notification.classList.add('show');
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-    }).catch(err => {
-        console.error('Failed to copy book details: ', err);
-        alert("Failed to copy book details.");
+            if (recommendations.length > 0) {
+                recSection.classList.remove('hidden');
+                recList.innerHTML = recommendations.map(r => `
+                    <span class="bg-[#1f294a] border border-gray-600 text-gray-300 px-3 py-1 rounded-full text-sm">
+                        ${r.title}
+                    </span>
+                `).join('');
+            }
+        }
+    } catch (err) {
+        console.error("AI recommendations failed to load:", err);
+    }
+
+    // 4. Set up event listeners
+    document.getElementById('share-book-btn').addEventListener('click', () => {
+        const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
+        navigator.clipboard.writeText(shareText).then(() => {
+            const notification = document.getElementById('clipboard-notification');
+            notification.textContent = 'Book details copied to clipboard!';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        });
     });
-});
 
     document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
 }
@@ -478,27 +503,49 @@ document.getElementById('share-book-btn').addEventListener('click', () => {
 });
 
     // --- INITIALIZATION ---
-    async function init() {
-        try {
-        const response = await fetch('books.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        books = await response.json();
-        } catch (error) {
-        console.error("Fatal Error: Could not load book data from books.json. Please check the file.", error);
-        document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50px;"><h1>Error</h1><p>Could not load book data. Please try again later.</p></div>';
-        return; // Stop the app if books fail to load
-    }
-    
-    initMoods();
-    initBlindDate();
-    initGenreFilters();
-    renderStory();
-    lucide.createIcons();
-    displayBookOfTheDay(); 
-    setActiveSection('mood-discovery');
-}
+async function init() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/books');
+        if (!response.ok) throw new Error(`Server responded with ${response.status}`);
 
-    init();
+        const rawBooks = await response.json();
+
+        books = rawBooks.map(book => {
+            // Ensure moods is a string before splitting
+            let moodArray = [];
+            if (book.moods) {
+                moodArray = book.moods.split(',').map(m => m.trim().toLowerCase());
+            }
+
+            return {
+                id: book.id,
+                title: book.title || "Untitled",
+                author: book.author || "Unknown",
+                moods: moodArray,
+                genre: (book.genre || "Uncategorized").toLowerCase(),
+                teaser: book.teaser || "No teaser available.",
+                cover: book.cover || "https://placehold.co/400x600?text=No+Cover",
+                buyLink: book.buyLink || "#",
+                downloadLink: book.downloadLink || null
+            };
+        });
+
+        // Initialize the UI components
+        initMoods();
+        initBlindDate();
+        initGenreFilters();
+        renderStory();
+        displayBookOfTheDay(); 
+        setActiveSection('mood-discovery');
+        if (window.lucide) lucide.createIcons();
+
+    } catch (error) {
+        console.error("Frontend Error:", error);
+        const moodSelector = document.getElementById('mood-selector');
+        if (moodSelector) {
+            moodSelector.innerHTML = `<p class="col-span-full text-red-400">Failed to load books. Is the Flask server running?</p>`;
+        }
+    }
+}
+init();
 });
