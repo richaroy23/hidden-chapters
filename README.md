@@ -14,7 +14,8 @@ Users can also co-create stories together through a **Community Story Chain**.
 - 🔗 **Get the Book** → Provides a direct link to buy the book, with a separate download option for public-domain titles.
 - 📤 **Share Your Discoveries** → Easily share a specific book you've unwrapped with a pre-formatted message copied to your clipboard.
 - 💎 **Book of the Day:** A new "hidden gem" is featured every day to encourage repeat visits.
-- 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back.   
+- 💾 **Persistent Story:** The community story is saved in your browser using Local Storage, so it's always there when you come back.
+- 🗃️ **MySQL Integration**: Persistent book data managed via a robust MySQL database for scalable content management.   
 
 ---
 
@@ -24,8 +25,9 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## 📂 Tech Stack
-- **Frontend**: HTML, CSS, JavaScript  
-- **Data:** Book data is managed via an external `books.json` file and loaded asynchronously.
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Flask (Python)  
+- **Database**: MySQL
 - **APIs:** Google Gemini API for AI-powered story continuation, Web Clipboard API for sharing.
 - **Deployment**: GitHub Pages  
 
@@ -40,11 +42,17 @@ Users can also co-create stories together through a **Community Story Chain**.
 ---
 
 ## 🛠️ Setup Instructions
-1. Clone the repo or Unzip the folder  
-2. Open `index.html` in your browser
----
 
-## ⚠️ Important: API Key Setup
+### 1. Database Setup
+1. Install MySQL and create a database named `hidden_chapters`.
+2. Run the provided SQL script to create the `books` table and insert initial data.
+3. Update the `db_config` in `app.py` with your MySQL `user` and `password`.
+
+### 2. Backend Setup
+1. Install dependencies: `pip install flask flask-cors mysql-connector-python pandas scikit-learn`.
+2. Run the server: `python app.py`.
+
+### 3. API Key Setup
 
 The Community Story Chain uses the Google Gemini API to generate AI-powered continuations. To enable this feature, you must get your own free API key from Google AI Studio.
 
