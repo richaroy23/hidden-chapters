@@ -19,11 +19,6 @@ Users can also co-create stories together through a **Community Story Chain**.
 
 ---
 
-## 🚀 Live Demo
-👉 [Hidden Chapters on GitHub Pages](https://richaroy23.github.io/hidden-chapters/)  
-
----
-
 ## 📂 Tech Stack
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Flask (Python)  
