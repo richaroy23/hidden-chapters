@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleMoodSelection(mood, clickedCard) {
-    
+
     const allMoodCards = document.querySelectorAll('.mood-card');
     allMoodCards.forEach(card => card.classList.remove('active'));
 
@@ -165,17 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     currentSelectedMood = mood;
-    const genres = moodToGenreMap[mood] || [];
 
-    const possibleBooks = books.filter(book =>
-        genres.some(g => book.genre.includes(g))
-    );
+    const selectedMood = mood.toLowerCase();
+
+    const possibleBooks = books.filter(book => {
+        const moodsArray = book.moods.toLowerCase().split(',');
+        return moodsArray.includes(selectedMood);
+    });
 
     if (possibleBooks.length > 0) {
         currentMoodBook = possibleBooks[Math.floor(Math.random() * possibleBooks.length)];
         displayMoodBookTeaser();
     } else {
-        
         currentMoodBook = books[Math.floor(Math.random() * books.length)];
         displayMoodBookTeaser();
     }
@@ -369,7 +370,11 @@ async function showBookModal(book) {
                 <h2 class="text-4xl font-bold mb-2 text-white">${book.title}</h2>
                 <p class="text-xl text-gray-400 mb-4">by ${book.author}</p>
                 <div class="flex flex-wrap gap-2 mb-4">
-                    ${book.moods.map(mood => `<span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">${mood}</span>`).join('')}
+                    ${book.moods.split(',').map(mood => `
+                        <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">
+                            ${mood}
+                        </span>
+                    `).join('')}
                 </div>
                 <p class="text-lg leading-relaxed">${book.teaser}</p>
                 
@@ -634,28 +639,18 @@ async function init() {
 
         const rawBooks = await response.json();
 
-        books = rawBooks.map(book => {
 
-            let moodArray = [];
-            if (book.genre) {
-                moodArray = [book.genre.toLowerCase()];
-            }
-
-            return {
-                id: book.id,
-                title: book.title || "Untitled",
-                author: book.author || "Unknown",
-                moods: moodArray,
-                genre: (book.genre || "Uncategorized").toLowerCase(),
-                teaser: book.teaser || "No teaser available.",
-
-                // ✅ GENERATED COVER
-                cover: generateCover(book),
-
-                buyLink: book.buyLink || "#",
-                downloadLink: book.downloadLink || null
-            };
-        });
+        books = rawBooks.map(book => ({
+            id: book.id,
+            title: book.title || "Untitled",
+            author: book.author || "Unknown",
+            moods: book.moods || "",   // ✅ USE DATABASE VALUE
+            genre: (book.genre || "Uncategorized").toLowerCase(),
+            teaser: book.teaser || "No teaser available.",
+            cover: generateCover(book),
+            buyLink: book.buyLink || "#",
+            downloadLink: book.downloadLink || null
+        }));
 
         // Initialize the UI components
         initMoods();

@@ -23,7 +23,7 @@ def load_recommendation_data():
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, title, teaser, genre, author FROM books")
+        cursor.execute("SELECT id, title, author, genre, teaser, moods FROM books")
         all_books = cursor.fetchall()
         cursor.close()
         conn.close()
