@@ -22,6 +22,44 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Tragedy', icon: 'skull', color: 'bg-slate-600' },
         { name: 'Fantasy', icon: 'sparkles', color: 'bg-teal-500' }
     ];
+    const moodToGenreMap = {
+        "adventurous": ["adventure", "fantasy", "fiction"],
+        "romantic": ["romance", "fiction"],
+        "mysterious": ["mystery", "thriller", "fiction"],
+        "suspenseful": ["thriller", "crime", "fiction"],
+        "humorous": ["comedy", "fiction"],
+        "hopeful": ["fiction", "self-help"],
+        "heartbreaking": ["drama", "fiction"],
+        "inspiring": ["biography", "self-help"],
+        "thought-provoking": ["philosophy", "history"],
+        "sci-fi": ["science fiction", "fiction"],
+        "scary": ["horror", "thriller"],
+        "dark romance": ["romance", "drama"],
+        "sexy": ["romance"],
+        "bl romance": ["romance"],
+        "gl romance": ["romance"],
+        "drama": ["drama"],
+        "tragedy": ["drama"],
+        "fantasy": ["fantasy"]
+    };
+    function generateCover(book) {
+        const colors = {
+            "fiction": ["1f2937", "f59e0b"],
+            "romance": ["7f1d1d", "fda4af"],
+            "fantasy": ["0f172a", "38bdf8"],
+            "science": ["111827", "22c55e"],
+            "history": ["3f3f46", "fbbf24"],
+            "thriller": ["000000", "ef4444"],
+            "default": ["111827", "f7b267"]
+        };
+
+        const genre = (book.genre || "default").toLowerCase();
+        const [bg, text] = colors[genre] || colors["default"];
+
+        const title = encodeURIComponent(book.title.slice(0, 40));
+
+        return `https://placehold.co/400x600/${bg}/${text}?text=${title}`;
+    }
 
     // Load story from localStorage or use default
     let storyChain = JSON.parse(localStorage.getItem('storyChain')) || [
@@ -37,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = ""; // PASTE YOUR GOOGLE GEMINI API KEY HERE
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
+    
     async function callGeminiAPI(payload, retries = 3, delay = 1000) {
         if (!API_KEY) {
             alert("API Key is missing. Please add your Gemini API key to script.js to use the AI feature.");
@@ -126,7 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     currentSelectedMood = mood;
-    const possibleBooks = books.filter(book => book.moods.includes(mood));
+    const genres = moodToGenreMap[mood] || [];
+
+    const possibleBooks = books.filter(book =>
+        genres.some(g => book.genre.includes(g))
+    );
+
     if (possibleBooks.length > 0) {
         currentMoodBook = possibleBooks[Math.floor(Math.random() * possibleBooks.length)];
         displayMoodBookTeaser();
@@ -138,39 +182,55 @@ document.addEventListener('DOMContentLoaded', () => {
 }
     
     function displayMoodBookTeaser(isLoading = false, loadingText = "Finding a book...") {
-          moodBookSuggestion.classList.remove('hidden');
-          moodBookCard.classList.remove('revealed');
+    moodBookSuggestion.classList.remove('hidden');
+    moodBookCard.classList.remove('revealed');
 
-          const frontCard = document.querySelector('.flip-card-front');
-          if (isLoading) {
-              frontCard.innerHTML = `
-                  <div class="flex flex-col items-center justify-center h-full">
-                      <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-[#f7b267] mb-4"></div>
-                      <p class="text-lg text-[#f7b267]">${loadingText}</p>
-                  </div>
-              `;
-          } else {
-              frontCard.innerHTML = `
-                  <div class="w-full">
-                      <div class="flex justify-center mb-4"><i data-lucide="gift" class="w-16 h-16 text-[#f7b267]"></i></div>
-                      <h4 class="text-xl font-semibold mb-2" id="mood-book-teaser-genre">A ${currentMoodBook.genre} novel...</h4>
-                      <p class="text-gray-300 italic" id="mood-book-teaser-blurb">"${currentMoodBook.teaser}"</p>
-                  </div>
-                  <p class="text-sm text-gray-500">Click "Reveal Book" to unwrap your surprise!</p>
-              `;
-              lucide.createIcons();
-          }
+    const frontCard = document.querySelector('.flip-card-front');
 
-          document.getElementById('mood-reveal-controls').classList.remove('hidden');
-          document.getElementById('mood-book-revealed-info').classList.add('hidden');
-        
-          const backCard = document.getElementById('mood-book-back');
-          if(currentMoodBook && !isLoading) {
-              backCard.innerHTML = `<img src="${currentMoodBook.cover}" alt="${currentMoodBook.title}" class="w-full h-full object-cover rounded-lg">`;
-          }
-
-          setTimeout(() => moodBookSuggestion.scrollIntoView({ behavior: 'smooth' }), 100);
+    if (isLoading) {
+        frontCard.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full">
+                <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-[#f7b267] mb-4"></div>
+                <p class="text-lg text-[#f7b267]">${loadingText}</p>
+            </div>
+        `;
+    } else {
+        frontCard.innerHTML = `
+            <div class="w-full">
+                <div class="flex justify-center mb-4">
+                    <i data-lucide="gift" class="w-16 h-16 text-[#f7b267]"></i>
+                </div>
+                <h4 class="text-xl font-semibold mb-2">
+                    A ${currentMoodBook.genre} novel...
+                </h4>
+                <p class="text-gray-300 italic">
+                    "${currentMoodBook.teaser}"
+                </p>
+            </div>
+            <p class="text-sm text-gray-500">
+                Click "Reveal Book" to unwrap your surprise!
+            </p>
+        `;
+        lucide.createIcons();
     }
+
+    document.getElementById('mood-reveal-controls').classList.remove('hidden');
+    document.getElementById('mood-book-revealed-info').classList.add('hidden');
+
+    const backCard = document.getElementById('mood-book-back');
+
+    if (currentMoodBook && !isLoading) {
+        backCard.innerHTML = `
+            <div class="cover-card">
+                ${generateCoverHTML(currentMoodBook)}
+            </div>
+        `;
+
+        setTimeout(() => {
+            moodBookSuggestion.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+}
 
     document.getElementById('reveal-mood-book-btn').addEventListener('click', () => {
     moodBookCard.classList.add('revealed');
@@ -302,7 +362,9 @@ async function showBookModal(book) {
     // 2. Set the basic modal content
     modalContent.innerHTML = `
         <div class="flex flex-col md:flex-row gap-8">
-            <img src="${book.cover}" alt="${book.title}" class="w-full md:w-1/3 h-auto object-cover rounded-lg shadow-lg">
+            <div class="cover-card w-full md:w-1/3">
+                ${generateCoverHTML(book)}
+            </div>
             <div class="md:w-2/3" id="modal-text-content">
                 <h2 class="text-4xl font-bold mb-2 text-white">${book.title}</h2>
                 <p class="text-xl text-gray-400 mb-4">by ${book.author}</p>
@@ -399,8 +461,9 @@ async function showBookModal(book) {
             <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">Today's Hidden Gem</h3>
             <p class="text-lg text-gray-400 mb-6">A special recommendation, just for today.</p>
             <div class="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
-                <img src="${dailyBook.cover}" alt="Cover of ${dailyBook.title}" class="w-48 rounded-lg shadow-lg">
-                <div class="text-left">
+                <div class="cover-card w-48">
+                    ${generateCoverHTML(dailyBook)}
+                </div>
                     <h4 class="text-3xl font-bold text-white">${dailyBook.title}</h4>
                     <p class="text-xl text-gray-400 mb-4">by ${dailyBook.author}</p>
                     <p class="text-gray-300 italic mb-6">"${dailyBook.teaser}"</p>
@@ -491,6 +554,78 @@ async function showBookModal(book) {
     }
 });
 
+    function generateCoverHTML(book) {
+    const colors = {
+        "fiction": ["#1f2937", "#f59e0b"],
+        "romance": ["#7f1d1d", "#fda4af"],
+        "fantasy": ["#0f172a", "#38bdf8"],
+        "thriller": ["#000000", "#ef4444"],
+        "history": ["#3f3f46", "#fbbf24"],
+        "science": ["#064e3b", "#22c55e"],
+        "default": ["#111827", "#f7b267"]
+    };
+
+    const genre = (book.genre || "default").toLowerCase();
+    const [bg1, bg2] = colors[genre] || colors["default"];
+
+    return `
+        <div style="
+            width:100%;
+            height:100%;
+            border-radius:12px;
+            background: linear-gradient(135deg, ${bg1}, ${bg2});
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            padding:16px;
+            color:white;
+            position:relative;
+            font-family:'Lora', serif;
+        ">
+
+            <!-- subtle texture -->
+            <div style="
+                position:absolute;
+                inset:0;
+                background:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+                background-size:3px 3px;
+                opacity:0.15;
+            "></div>
+
+            <div style="font-size:12px; opacity:0.7; z-index:1;">
+                ${book.genre}
+            </div>
+
+            <div style="
+                flex:1;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+                z-index:1;
+            ">
+                <h2 style="
+                    font-size:16px;
+                    font-weight:bold;
+                    line-height:1.3;
+                ">
+                    ${book.title}
+                </h2>
+            </div>
+
+            <div style="
+                font-size:12px;
+                text-align:right;
+                opacity:0.8;
+                z-index:1;
+            ">
+                — ${book.author}
+            </div>
+
+        </div>
+    `;
+}
+
     // --- INITIALIZATION ---
 async function init() {
     try {
@@ -500,7 +635,7 @@ async function init() {
         const rawBooks = await response.json();
 
         books = rawBooks.map(book => {
-            // Ensure moods is a string before splitting
+
             let moodArray = [];
             if (book.genre) {
                 moodArray = [book.genre.toLowerCase()];
@@ -513,7 +648,10 @@ async function init() {
                 moods: moodArray,
                 genre: (book.genre || "Uncategorized").toLowerCase(),
                 teaser: book.teaser || "No teaser available.",
-                cover: book.cover || "https://placehold.co/400x600?text=No+Cover",
+
+                // ✅ GENERATED COVER
+                cover: generateCover(book),
+
                 buyLink: book.buyLink || "#",
                 downloadLink: book.downloadLink || null
             };
