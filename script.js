@@ -82,18 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const setActiveSection = (sectionId) => {
         sections.forEach(section => {
             section.classList.toggle('active', section.id === sectionId);
-        });
-        navLinks.forEach(link => {
-            link.classList.toggle('active', link.dataset.section === sectionId);
-        });
-        window.scrollTo(0,0);
-         if (!mobileMenu.classList.contains('hidden')) {
-             mobileMenu.classList.add('hidden');
-         }
-    };
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        }); navLinks.forEach(link => { link.classList.toggle('active', link.dataset.section === sectionId); }); window.scrollTo(0,0); if (!mobileMenu.classList.contains('hidden')) { mobileMenu.classList.add('hidden'); } }; navLinks.forEach(link => { link.addEventListener('click', (e) => {
             e.preventDefault();
             // A small fix to make sure clicking the icon inside the link also works
             const sectionId = e.target.closest('.nav-link').dataset.section;
@@ -513,8 +502,8 @@ async function init() {
         books = rawBooks.map(book => {
             // Ensure moods is a string before splitting
             let moodArray = [];
-            if (book.moods) {
-                moodArray = book.moods.split(',').map(m => m.trim().toLowerCase());
+            if (book.genre) {
+                moodArray = [book.genre.toLowerCase()];
             }
 
             return {
