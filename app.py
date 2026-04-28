@@ -12,7 +12,7 @@ CORS(app)  # Enables cross-origin requests
 
 # --- DATABASE CONFIGURATION ---
 # Recommendation data (computed once at startup)
-rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author'])
+rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author', 'moods'])
 tfidf_vectorizer = None
 tfidf_matrix = None
 cosine_sim = None
@@ -30,13 +30,22 @@ def load_recommendation_data():
 
         rec_df = pd.DataFrame(all_books)
         if rec_df.empty:
-            rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author', 'content'])
+            rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author', 'moods', 'content'])
             cosine_sim = None
             return
 
         rec_df.fillna('', inplace=True)
         rec_df['id'] = rec_df['id'].astype(int)
-        rec_df['content'] = rec_df['teaser'] + ' ' + rec_df['genre'] + ' ' + rec_df['author']
+
+        # Give the mood tags extra weight so similarity tracks the project theme.
+        moods_text = rec_df['moods'].astype(str).str.replace(',', ' ', regex=False)
+        rec_df['content'] = (
+            rec_df['teaser'] + ' ' +
+            rec_df['genre'] + ' ' +
+            rec_df['author'] + ' ' +
+            moods_text + ' ' +
+            moods_text
+        )
 
         tfidf_vectorizer = TfidfVectorizer(stop_words='english')
         tfidf_matrix = tfidf_vectorizer.fit_transform(rec_df['content'])
@@ -46,7 +55,7 @@ def load_recommendation_data():
 
     except Exception as e:
         print('REC LOAD ERROR:', e)
-        rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author', 'content'])
+        rec_df = pd.DataFrame(columns=['id', 'title', 'teaser', 'genre', 'author', 'moods', 'content'])
         cosine_sim = None
 
 db_config = {
