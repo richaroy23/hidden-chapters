@@ -1,215 +1,179 @@
 # 📖 Hidden Chapters
 
-**Hidden Chapters** is a mood-based **“blind date with a book”** platform designed to transform book discovery into an emotional and immersive experience.
+**Hidden Chapters** is a mood-based **"blind date with a book"** platform designed to transform book discovery into an emotional and immersive experience.
 
 Instead of browsing endless lists, users **choose a mood → receive a mysterious teaser → reveal a hidden book**.
 
 ---
 
-# 🎯 Project Evolution
+## 🎯 Project Evolution
 
 This project was built in two stages to demonstrate progressive enhancement:
 
 ### 🟡 Version 1 — Static Prototype
 
-* Built using HTML, CSS, and JavaScript
-* Used a **small, manually curated dataset**
-* Book suggestions were:
-
-  * Random or rule-based
-  * Limited in diversity
-* Focus: UI/UX concept and interaction design
+- Built using HTML, CSS, and JavaScript
+- Used a **small, manually curated dataset**
+- Book suggestions were:
+  - Random or rule-based
+  - Limited in diversity
+- Focus: UI/UX concept and interaction design
 
 ---
 
-### 🟢 Version 2 — Full AI-Integrated System (Current)
+### 🟢 Version 2 — Full Stack Mood-Based System (Current)
 
-* Integrated **real-world dataset (3000+ books)**
-* Backend powered by **Flask + MySQL**
-* Implemented **content-based recommendation system** using:
-
-  * TF-IDF Vectorization
-  * Cosine Similarity
-* Dynamic data flow:
+- Backend powered by **Flask + MySQL**
+- Uses a **carefully curated dataset of high-quality books**
+- Introduces **multi-mood tagging system**:
+  - Each book is tagged with multiple emotional states
+  - Enables more accurate and meaningful recommendations
+- Dynamic data flow:
 
 ```text
-Frontend → Flask API → MySQL → AI Recommendation → Frontend
+Frontend → Flask API → MySQL → Mood Matching → Frontend
 ```
 
-👉 This version transforms the project into a **complete AI-powered full-stack application**
+---
+
+## ✨ Features
+
+### 🎭 Mood-Based Discovery
+Choose from multiple emotional states and receive a book that matches your mood.
+
+### 🎁 Blind Reveal Experience
+- Books appear as "wrapped gifts"
+- Only a teaser is shown initially
+- Users reveal the book through an interactive animation
+
+### 🎯 Curated Recommendation System
+- Uses multi-mood tagging
+- Matches books directly based on emotional context
+- Ensures relevant and intentional suggestions
+
+### 🧠 Intelligent Data Design
+Each book contains:
+- Title
+- Author
+- Genre
+- Teaser
+- Multiple moods
+
+Eliminates noisy or low-quality data.
+
+### 📝 Community Story Chain
+- Users contribute to a shared story
+- AI (Google Gemini) generates the next line
+
+### 📤 Share Discoveries
+- One-click copy-to-clipboard sharing
+
+### 💎 Book of the Day
+- Daily rotating recommendation
+
+### 💾 Persistent Story Storage
+- Uses LocalStorage to maintain story progress
 
 ---
 
-# ✨ Features
+## 🧠 Recommendation Logic
 
-## 🎭 Mood-Based Discovery
+Instead of heavy ML models, the system uses:
 
-Choose from multiple emotional states and receive a personalized book suggestion.
+- Mood-based filtering
+- Multi-tag matching
+- Randomized selection within relevant results
 
-## 🎁 Blind Reveal Experience
+This approach ensures:
 
-* Books appear as “wrapped gifts”
-* Only a teaser is shown initially
-* Users reveal the book through an interactive animation
-
-## 🤖 AI-Powered Recommendations
-
-* Uses **TF-IDF + cosine similarity**
-* Suggests similar books dynamically based on content
-
-## 🔍 Genre Filtering
-
-Refine your discovery experience with genre-based filtering.
-
-## 📝 Community Story Chain
-
-* Users contribute to a shared story
-* AI (Google Gemini) generates the next line
-
-## 📤 Share Discoveries
-
-* One-click copy-to-clipboard sharing
-
-## 💎 Book of the Day
-
-* Daily rotating recommendation
-
-## 💾 Persistent Story Storage
-
-* Uses LocalStorage to maintain story progress
+- 👉 Better control over quality
+- 👉 More meaningful user experience
+- 👉 Faster performance
 
 ---
 
-# 🧠 AI & Data Processing
+## 🗃️ Tech Stack
 
-The recommendation system uses:
-
-* **Text Feature Engineering**
-
-  * Combines:
-
-    * Description (teaser)
-    * Genre
-    * Author
-
-* **TF-IDF Vectorization**
-
-* **Cosine Similarity**
-
-This enables:
-👉 Content-based book recommendations without user history
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | HTML, CSS, JavaScript |
+| **Backend** | Flask (Python) |
+| **Database** | MySQL |
+| **Data Handling** | Pandas (for preprocessing) |
+| **APIs** | Google Gemini API, Web Clipboard API |
 
 ---
 
-# 🗃️ Tech Stack
+## 🛠️ Setup Instructions
 
-## Frontend
-
-* HTML
-* CSS
-* JavaScript
-
-## Backend
-
-* Flask (Python)
-
-## Database
-
-* MySQL
-
-## Machine Learning
-
-* Pandas
-* Scikit-learn
-
-## APIs
-
-* Google Gemini API (story continuation)
-* Web Clipboard API
-
----
-
-# 🛠️ Setup Instructions
-
-## 1️⃣ Database Setup
+### 1️⃣ Database Setup
 
 1. Install MySQL
-2. Create database:
+2. Create the database:
 
 ```sql
 CREATE DATABASE hidden_chapters;
 ```
 
-3. Import cleaned dataset (`cleaned_books.csv`) into `books` table
+3. Import your dataset (`books.csv`) into the `books` table
 
----
-
-## 2️⃣ Backend Setup
+### 2️⃣ Backend Setup
 
 Install dependencies:
 
 ```bash
-pip install flask flask-cors mysql-connector-python pandas scikit-learn
+pip install flask flask-cors mysql-connector-python pandas
 ```
 
-Run server:
+Run the server:
 
 ```bash
 python app.py
 ```
 
----
+### 3️⃣ Frontend Setup
 
-## 3️⃣ Frontend Setup
+Open `index.html` directly, or run with Live Server:
 
-Simply open:
-
-```text
-index.html
 ```
-
-or use:
-
-```text
 http://127.0.0.1:5500/
 ```
 
----
-
-## 4️⃣ API Key Setup (Optional)
+### 4️⃣ API Key Setup *(Optional)*
 
 For AI Story Chain:
 
-1. Get key from Google AI Studio
+1. Get your key from [Google AI Studio](https://aistudio.google.com/)
 2. Open `script.js`
-3. Add:
+3. Add the following:
 
-```js
+```javascript
 const API_KEY = "YOUR_API_KEY";
 ```
 
 ---
 
-# 🚀 Future Scope
+## 🚀 Future Scope
 
-* User authentication & profiles
-* Personalized recommendations (collaborative filtering)
-* Book ratings & reviews
-* Mobile application
-* Payment integration for premium books
-
----
-
-# 💬 Key Highlights
-
-✔ Full-stack AI project
-✔ Real dataset integration
-✔ Content-based recommendation system
-✔ Interactive and unique UX
+- User authentication & profiles
+- Personalized recommendations (hybrid systems)
+- Ratings, reviews, and favorites
+- Mobile application
+- Advanced AI-based recommendation models
 
 ---
 
-# 📌 Final Note
+## 💬 Key Highlights
 
-Hidden Chapters is not just a book recommendation system—
-it is an **experience-driven platform** that blends storytelling, emotion, and AI to redefine how users discover books.
+✔ Full-stack project  
+✔ Curated high-quality dataset  
+✔ Multi-mood recommendation system  
+✔ Unique, immersive UX  
+
+---
+
+## 📌 Final Note
+
+> **Hidden Chapters** is not just a book recommendation system —
+> it is an experience-driven platform that blends storytelling and emotion
+> to redefine how users discover books.
