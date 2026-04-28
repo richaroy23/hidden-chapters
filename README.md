@@ -80,8 +80,9 @@ Eliminates noisy or low-quality data.
 
 Instead of heavy ML models, the system uses:
 
-- Mood-based filtering
-- Multi-tag matching
+- Frontend mood-based filtering from the `moods` field
+- Backend text similarity using **TF-IDF + cosine similarity**
+- Mood tags included in the recommendation content so similar books feel more aligned
 - Randomized selection within relevant results
 
 This approach ensures:
@@ -89,6 +90,13 @@ This approach ensures:
 - 👉 Better control over quality
 - 👉 More meaningful user experience
 - 👉 Faster performance
+
+### How recommendations work
+
+1. The frontend loads all books from the Flask API.
+2. When a user selects a mood, the app filters books whose `moods` field contains that mood.
+3. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
+4. The interface displays those suggestions in the **More Like This** panel.
 
 ---
 
