@@ -10,6 +10,7 @@ import os
 load_dotenv()  # This loads the .env file
 app_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder=app_dir)
+app.config['JSON_AS_ASCII'] = False
 CORS(app)
 
 # ✅ STEP 1: db_config comes FIRST now

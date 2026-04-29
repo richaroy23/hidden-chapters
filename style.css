@@ -111,30 +111,109 @@ h1, h2, h3 {
 /* === BOOK COVER DESIGN === */
 
 .cover-card {
+    position: relative;
     aspect-ratio: 2 / 3;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .cover-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
 }
 
-/* Typography inside cover */
-.cover-card h2 {
-    font-family: 'Lora', serif;
-    letter-spacing: 0.5px;
+.book-cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 1.2rem 1rem 1rem 1.3rem;
+    border-radius: 14px;
+    overflow: hidden;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 45%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%),
+        var(--cover-bg);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 -24px 45px rgba(0, 0, 0, 0.35),
+        0 10px 24px rgba(0, 0, 0, 0.4);
 }
 
-/* Slight texture feel */
-.cover-card::after {
-    content: "";
+.book-cover__spine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 42%), var(--cover-accent);
+    box-shadow: inset -2px 0 8px rgba(0, 0, 0, 0.35);
+}
+
+.book-cover__grain {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-    background-size: 3px 3px;
-    opacity: 0.15;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 4px 4px, 5px 5px;
+    opacity: 0.2;
     pointer-events: none;
+}
+
+.book-cover__badge {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    margin-bottom: 0.9rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #0b1220;
+    background: var(--cover-accent);
+}
+
+.book-cover__title {
+    position: relative;
+    z-index: 1;
+    font-family: 'Lora', serif;
+    font-size: clamp(1.25rem, 2.1vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    color: #f8fafc;
+    word-break: break-word;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.book-cover__author {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.75rem;
+    font-size: clamp(0.85rem, 1.45vw, 0.98rem);
+    color: var(--cover-accent);
+    font-weight: 500;
+}
+
+.book-cover__monogram {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.75rem;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0b1220;
+    background: var(--cover-accent);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }

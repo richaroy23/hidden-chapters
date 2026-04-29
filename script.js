@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "tragedy": ["drama"],
         "fantasy": ["fantasy"]
     };
-    function generateCover(book) {
+    function generateCoverTheme(book) {
         const colors = {
             "fiction": ["#1f2937", "#f59e0b"],
             "romance": ["#7f1d1d", "#fda4af"],
@@ -50,22 +50,47 @@ document.addEventListener('DOMContentLoaded', () => {
             "thriller": ["#000000", "#ef4444"],
             "history": ["#3f3f46", "#fbbf24"],
             "science": ["#064e3b", "#22c55e"],
+            "sci-fi": ["#082f49", "#67e8f9"],
+            "horror": ["#1c1917", "#f97316"],
+            "drama": ["#172554", "#a5b4fc"],
             "default": ["#111827", "#f7b267"]
         };
 
         const genre = (book.genre || "default").toLowerCase();
-        const [bg1, bg2] = colors[genre] || colors["default"];
+        const [bg, accent] = colors[genre] || colors["default"];
 
-        const title = encodeURIComponent(book.title.slice(0, 40));
+        return { bg, accent };
+    }
 
-        return `https://placehold.co/400x600/${bg1}/${bg2}?text=${title}`;
+    function escapeHTML(value = '') {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function getInitials(title = '') {
+        const parts = title.trim().split(/\s+/).filter(Boolean);
+        return parts.slice(0, 2).map(part => part[0].toUpperCase()).join('') || 'BK';
     }
 
     function generateCoverHTML(book) {
-        const coverUrl = generateCover(book);
+        const { bg, accent } = generateCoverTheme(book);
+        const safeTitle = escapeHTML(book.title || 'Unknown Title');
+        const safeAuthor = escapeHTML(book.author || 'Unknown Author');
+        const safeGenre = escapeHTML(book.genre || 'Fiction');
+        const initials = getInitials(book.title || 'Book');
+
         return `
-            <div class="bg-gray-700 rounded-lg overflow-hidden shadow-lg">
-                <img src="${coverUrl}" alt="Cover for ${book.title}" class="w-full h-full object-cover">
+            <div class="book-cover" style="--cover-bg:${bg}; --cover-accent:${accent};" aria-label="Cover for ${safeTitle}">
+                <div class="book-cover__spine"></div>
+                <div class="book-cover__grain"></div>
+                <div class="book-cover__badge">${safeGenre}</div>
+                <div class="book-cover__title">${safeTitle}</div>
+                <div class="book-cover__author">by ${safeAuthor}</div>
+                <div class="book-cover__monogram">${initials}</div>
             </div>
         `;
     }
