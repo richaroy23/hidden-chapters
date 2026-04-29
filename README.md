@@ -146,7 +146,7 @@ python import_to_mysql.py
 Install dependencies:
 
 ```bash
-pip install flask flask-cors mysql-connector-python pandas scikit-learn python-dotenv requests
+pip install flask flask-cors mysql-connector-python pandas scikit-learn python-dotenv
 ```
 
 Run the server:

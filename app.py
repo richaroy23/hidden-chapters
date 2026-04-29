@@ -1,11 +1,15 @@
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
+import json
+import os
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+
 import mysql.connector
 import pandas as pd
+from dotenv import load_dotenv
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from dotenv import load_dotenv
-import os
 
 load_dotenv()  # This loads the .env file
 app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -104,20 +108,49 @@ def recommend_books(book_id):
 
 @app.route('/api/story/continue', methods=['POST'])
 def ai_continue_story():
-    import requests
     api_key = os.getenv('GEMINI_API_KEY')
+    model_name = os.getenv('GEMINI_MODEL', 'gemini-flash-latest')
     data = request.json
     story = data.get('story', '')
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
+    if not api_key:
+        return jsonify({'error': 'GEMINI_API_KEY is not set'}), 500
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
     payload = {
         "contents": [{
             "parts": [{"text": f"Continue this story with one sentence:\n{story}\nNext line:"}]
         }]
     }
-    response = requests.post(url, json=payload)
-    result = response.json()
-    text = result['candidates'][0]['content']['parts'][0]['text']
+
+    request_body = json.dumps(payload).encode('utf-8')
+    http_request = Request(
+        url,
+        data=request_body,
+        headers={'Content-Type': 'application/json'},
+        method='POST',
+    )
+
+    try:
+        with urlopen(http_request, timeout=30) as response:
+            result = json.loads(response.read().decode('utf-8'))
+    except HTTPError as error:
+        try:
+            error_body = error.read().decode('utf-8')
+        except Exception:
+            error_body = ''
+        message = f'Gemini request failed: {error.reason}'
+        if error_body:
+            message = f'{message} | {error_body}'
+        return jsonify({'error': message}), error.code
+    except URLError as error:
+        return jsonify({'error': f'Gemini request failed: {error.reason}'}), 502
+
+    try:
+        text = result['candidates'][0]['content']['parts'][0]['text']
+    except (KeyError, IndexError, TypeError):
+        return jsonify({'error': 'Unexpected Gemini response format'}), 502
+
     return jsonify({'line': text})
 
 if __name__ == '__main__':
