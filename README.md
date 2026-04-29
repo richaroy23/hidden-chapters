@@ -21,17 +21,16 @@ This project was built in two stages to demonstrate progressive enhancement:
 
 ---
 
-### 🟢 Version 2 — Full Stack Mood-Based System (Current)
+### 🟢 Version 2 — Full Stack Recommendation System (Current)
 
 - Backend powered by **Flask + MySQL**
-- Uses a **carefully curated dataset of high-quality books**
-- Introduces **multi-mood tagging system**:
-  - Each book is tagged with multiple emotional states
-  - Enables more accurate and meaningful recommendations
+- Loads database credentials from a local **`.env`** file
+- Uses **TF-IDF + cosine similarity** to recommend books
+- Supports **AI story continuation** through the Google Gemini API
 - Dynamic data flow:
 
 ```text
-Frontend → Flask API → MySQL → Mood Matching → Frontend
+Frontend → Flask API → MySQL → TF-IDF Recommendation Engine → Frontend
 ```
 
 ---
@@ -52,18 +51,18 @@ Choose from multiple emotional states and receive a book that matches your mood.
 - Ensures relevant and intentional suggestions
 
 ### 🧠 Intelligent Data Design
-Each book contains:
+Each book record contains:
 - Title
 - Author
 - Genre
 - Teaser
-- Multiple moods
+- Moods
 
-Eliminates noisy or low-quality data.
+The backend combines teaser, genre, author, and mood data to build similarity scores.
 
 ### 📝 Community Story Chain
 - Users contribute to a shared story
-- AI (Google Gemini) generates the next line
+- AI (Google Gemini) generates the next line from `/api/story/continue`
 
 ### 📤 Share Discoveries
 - One-click copy-to-clipboard sharing
@@ -80,10 +79,9 @@ Eliminates noisy or low-quality data.
 
 Instead of heavy ML models, the system uses:
 
-- Frontend mood-based filtering from the `moods` field
 - Backend text similarity using **TF-IDF + cosine similarity**
-- Mood tags included in the recommendation content so similar books feel more aligned
-- Randomized selection within relevant results
+- Recommendation content built from the book's teaser, genre, author, and moods
+- A simple lookup path that returns the most similar books for a selected book ID
 
 This approach ensures:
 
@@ -94,9 +92,9 @@ This approach ensures:
 ### How recommendations work
 
 1. The frontend loads all books from the Flask API.
-2. When a user selects a mood, the app filters books whose `moods` field contains that mood.
-3. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
-4. The interface displays those suggestions in the **More Like This** panel.
+2. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
+3. The interface displays those suggestions in the **More Like This** panel.
+4. When the story chain needs a next line, the frontend sends the current story to `/api/story/continue`.
 
 ---
 
@@ -107,8 +105,9 @@ This approach ensures:
 | **Frontend** | HTML, CSS, JavaScript |
 | **Backend** | Flask (Python) |
 | **Database** | MySQL |
-| **Data Handling** | Pandas (for preprocessing) |
+| **Data Handling** | Pandas, scikit-learn |
 | **APIs** | Google Gemini API, Web Clipboard API |
+| **Environment** | python-dotenv |
 
 ---
 
@@ -123,14 +122,31 @@ This approach ensures:
 CREATE DATABASE hidden_chapters;
 ```
 
-3. Import your dataset (`books.csv`) into the `books` table
+3. Create a `.env` file in the project root with these values:
+
+```env
+DB_HOST=localhost
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=hidden_chapters
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+4. Import your dataset into the `books` table
+
+If you need to clean and load the CSV data first, run the helper scripts in this order:
+
+```bash
+python prepare.py
+python import_to_mysql.py
+```
 
 ### 2️⃣ Backend Setup
 
 Install dependencies:
 
 ```bash
-pip install flask flask-cors mysql-connector-python pandas
+pip install flask flask-cors mysql-connector-python pandas scikit-learn python-dotenv requests
 ```
 
 Run the server:
@@ -152,12 +168,8 @@ http://127.0.0.1:5500/
 For AI Story Chain:
 
 1. Get your key from [Google AI Studio](https://aistudio.google.com/)
-2. Open `script.js`
-3. Add the following:
-
-```javascript
-const API_KEY = "YOUR_API_KEY";
-```
+2. Add it to the `.env` file as `GEMINI_API_KEY`
+3. The backend will use it automatically when `/api/story/continue` is called
 
 ---
 
