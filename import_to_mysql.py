@@ -79,7 +79,9 @@ try:
         author VARCHAR(255),
         genre VARCHAR(255),
         teaser LONGTEXT,
-        moods VARCHAR(500)
+        moods VARCHAR(500),
+        buyLink VARCHAR(500),
+        downloadLink VARCHAR(500)
     )
     """
     cursor.execute(create_table_query)
@@ -92,15 +94,17 @@ try:
     # Prepare data for insertion
     for idx, row in df.iterrows():
         query = """
-        INSERT INTO books (title, author, genre, teaser, moods)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO books (title, author, genre, teaser, moods, buyLink, downloadLink)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         values = (
             row.get('title', ''),
             row.get('author', ''),
             row.get('genre', ''),
             row.get('teaser', ''),
-            row.get('moods', '')
+            row.get('moods', ''),
+            row.get('buyLink', ''),
+            row.get('downloadLink', '')
         )
         cursor.execute(query, values)
     
@@ -127,4 +131,3 @@ except mysql.connector.Error as err:
     exit(1)
 except Exception as e:
     print(f"❌ Error during import: {e}")
-    exit(1)

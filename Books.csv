@@ -1,106 +1,88 @@
 title,author,genre,teaser,moods,buyLink,downloadLink
-The Hobbit,J.R.R. Tolkien,fantasy,A quiet life is interrupted by an unexpected journey. Something ancient waits beyond the mountains.,"adventurous,fantasy,hopeful",,https://www.amazon.in/s?k=The+Hobbit,
-Life of Pi,Yann Martel,adventure,Stranded in the ocean with a dangerous companion. Survival becomes a test of belief.,"adventurous,inspiring",,https://www.amazon.in/s?k=Life+of+Pi,
-Treasure Island,Robert Louis Stevenson,adventure,A mysterious map leads to buried treasure. Not everyone can be trusted.,"adventurous,suspenseful",,https://www.amazon.in/s?k=Treasure+Island,
-Into the Wild,Jon Krakauer,biography,A man leaves everything behind for freedom. The journey reveals harsh truths.,"adventurous,thought-provoking,heartbreaking",,https://www.amazon.in/s?k=Into+the+Wild,
-The Three Musketeers,Alexandre Dumas,adventure,Honor and loyalty are tested in dangerous times. Friendship becomes a weapon.,"adventurous,drama",,https://www.amazon.in/s?k=The+Three+Musketeers,
-,,,,,,,
-Pride and Prejudice,Jane Austen,romance,Misjudgments hide deeper truths. Love grows where it was least expected.,"romantic,hopeful,drama",,https://www.amazon.in/s?k=Pride+and+Prejudice,
-Me Before You,Jojo Moyes,romance,Two lives collide under difficult circumstances. Love forces impossible choices.,"romantic,heartbreaking",,https://www.amazon.in/s?k=Me+Before+You,
-The Notebook,Nicholas Sparks,romance,A love story that refuses to fade. Time cannot erase what was real.,romantic,,https://www.amazon.in/s?k=The+Notebook,
-Love & Other Words,Christina Lauren,romance,Childhood memories reconnect two lost souls. Some love stories never truly end.,"romantic,heartbreaking",,https://www.amazon.in/s?k=Love+&+Other+Words,
-It Ends With Us,Colleen Hoover,romance,Love begins beautifully but reveals darker truths. Choosing yourself becomes necessary.,"romantic,heartbreaking,drama",,https://www.amazon.in/s?k=It+Ends+With+Us,
-,,,,,,,
-The Silent Patient,Alex Michaelides,thriller,A woman stops speaking after a shocking act. Silence hides the truth.,"mysterious,suspenseful",,https://www.amazon.in/s?k=The+Silent+Patient,
-Gone Girl,Gillian Flynn,thriller,A perfect marriage hides disturbing secrets. Truth twists with every reveal.,"mysterious,suspenseful",,https://www.amazon.in/s?k=Gone+Girl,
-The Girl with the Dragon Tattoo,Stieg Larsson,thriller,A missing girl case uncovers dark family secrets. Nothing is what it seems.,"mysterious,suspenseful",,https://www.amazon.in/s?k=The+Girl+with+the+Dragon+Tattoo,
-Big Little Lies,Liane Moriarty,fiction,Perfect lives hide dangerous truths. A secret slowly unravels everything.,"mysterious,drama",,https://www.amazon.in/s?k=Big+Little+Lies,
-In the Woods,Tana French,thriller,A detective faces a case tied to his past. Some memories should stay buried.,"mysterious,suspenseful",,https://www.amazon.in/s?k=In+the+Woods,
-,,,,,,,
-The Da Vinci Code,Dan Brown,thriller,A symbol sparks a global chase. History hides dangerous secrets.,"suspenseful,adventurous",,https://www.amazon.in/s?k=The+Da+Vinci+Code,
-Shutter Island,Dennis Lehane,thriller,A missing patient on an isolated island. Reality begins to blur.,"suspenseful,mysterious",,https://www.amazon.in/s?k=Shutter+Island,
-The Woman in the Window,A.J. Finn,thriller,A woman sees something she shouldn't. Truth becomes uncertain.,"suspenseful,mysterious",,https://www.amazon.in/s?k=The+Woman+in+the+Window,
-Before I Go to Sleep,S.J. Watson,thriller,Every day begins with no memory. Trust becomes dangerous.,"suspenseful,mysterious",,https://www.amazon.in/s?k=Before+I+Go+to+Sleep,
-The Girl on the Train,Paula Hawkins,thriller,A routine observation becomes something sinister. Watching has consequences.,"suspenseful,mysterious",,https://www.amazon.in/s?k=The+Girl+on+the+Train,
-,,,,,,,
-Good Omens,Neil Gaiman & Terry Pratchett,fantasy,An angel and demon try to stop the apocalypse. Chaos has never been this fun.,"humorous,fantasy",,https://www.amazon.in/s?k=Good+Omens,
-The Hitchhiker’s Guide to the Galaxy,Douglas Adams,sci-fi,Earth disappears unexpectedly. The universe makes even less sense.,"humorous,sci-fi",,https://www.amazon.in/s?k=The+Hitchhiker’s+Guide+to+the+Galaxy,
-Bossypants,Tina Fey,biography,A hilarious take on life and career. Success comes with chaos.,humorous,,https://www.amazon.in/s?k=Bossypants,
-Yes Please,Amy Poehler,biography,"Stories of ambition, humor, and mistakes. Life doesn’t have a script.",humorous,,https://www.amazon.in/s?k=Yes+Please,
-Diary of a Wimpy Kid,Jeff Kinney,fiction,Middle school life is full of awkward moments. Survival is a daily struggle.,humorous,,https://www.amazon.in/s?k=Diary+of+a+Wimpy+Kid,
-,,,,,,,
-The Alchemist,Paulo Coelho,fiction,A journey reveals deeper purpose. Destiny waits to be understood.,"hopeful,inspiring",,https://www.amazon.in/s?k=The+Alchemist,
-Atomic Habits,James Clear,self-help,Small changes build powerful results. Growth comes quietly.,"inspiring,hopeful",,https://www.amazon.in/s?k=Atomic+Habits,
-Man’s Search for Meaning,Viktor Frankl,philosophy,"Even in suffering, purpose can be found. Meaning gives strength.","hopeful,thought-provoking",,https://www.amazon.in/s?k=Man’s+Search+for+Meaning,
-Tuesdays with Morrie,Mitch Albom,biography,Life lessons unfold in weekly conversations. Time becomes precious.,"hopeful,heartbreaking",,https://www.amazon.in/s?k=Tuesdays+with+Morrie,
-The Happiness Project,Gretchen Rubin,self-help,A year dedicated to happiness. Change starts from within.,hopeful,,https://www.amazon.in/s?k=The+Happiness+Project,
-,,,,,,,
-A Little Life,Hanya Yanagihara,drama,Friendship and pain intertwine deeply. Some scars never heal.,"heartbreaking,drama",,https://www.amazon.in/s?k=A+Little+Life,
-The Fault in Our Stars,John Green,romance,Love blossoms under fragile circumstances. Time becomes the greatest challenge.,"romantic,heartbreaking",,https://www.amazon.in/s?k=The+Fault+in+Our+Stars,
-The Kite Runner,Khaled Hosseini,drama,A mistake from childhood echoes forever. Redemption demands sacrifice.,"heartbreaking,drama,tragedy",,https://www.amazon.in/s?k=The+Kite+Runner,
-They Both Die at the End,Adam Silvera,fiction,Two strangers meet on their last day. Life feels more real when it's ending.,"heartbreaking,romantic",,https://www.amazon.in/s?k=They+Both+Die+at+the+End,
-,,,,,,,
-Becoming,Michelle Obama,biography,A story shaped by challenges and ambition. Growth comes step by step.,inspiring,,https://www.amazon.in/s?k=Becoming,
-Steve Jobs,Walter Isaacson,biography,A visionary life filled with intensity and innovation. Genius comes at a cost.,inspiring,,https://www.amazon.in/s?k=Steve+Jobs,
-Wings of Fire,A.P.J. Abdul Kalam,biography,From humble beginnings to greatness. Dreams take flight with persistence.,"inspiring,hopeful",,https://www.amazon.in/s?k=Wings+of+Fire,
-The 7 Habits of Highly Effective People,Stephen Covey,self-help,Success is built on strong principles. Change starts with mindset.,inspiring,,https://www.amazon.in/s?k=The+7+Habits+of+Highly+Effective+People,
-Think Like a Monk,Jay Shetty,self-help,Ancient wisdom meets modern life. Peace comes from within.,"inspiring,thought-provoking",,https://www.amazon.in/s?k=Think+Like+a+Monk,
-,,,,,,,
-1984,George Orwell,dystopian,A world where truth is controlled. Freedom becomes a dangerous idea.,thought-provoking,,https://www.amazon.in/s?k=1984,
-Brave New World,Aldous Huxley,dystopian,A perfect society hides a deeper cost. Happiness comes with sacrifice.,"thought-provoking,sci-fi",,https://www.amazon.in/s?k=Brave+New+World,
-Sapiens,Yuval Noah Harari,history,The story of humanity unfolds. Understanding the past shapes the future.,thought-provoking,,https://www.amazon.in/s?k=Sapiens,
-The Stranger,Albert Camus,fiction,A man detached from emotion faces consequences. Meaning becomes uncertain.,thought-provoking,,https://www.amazon.in/s?k=The+Stranger,
-Fahrenheit 451,Ray Bradbury,dystopian,Books are forbidden in a controlled world. Knowledge becomes rebellion.,thought-provoking,,https://www.amazon.in/s?k=Fahrenheit+451,
-,,,,,,,
-Dune,Frank Herbert,sci-fi,A desert world holds immense power. Survival demands strategy.,"sci-fi,adventurous",,https://www.amazon.in/s?k=Dune,
-Ender’s Game,Orson Scott Card,sci-fi,A child is trained for war. Strategy becomes survival.,"sci-fi,thought-provoking",,https://www.amazon.in/s?k=Ender’s+Game,
-The Martian,Andy Weir,sci-fi,Stranded on Mars with limited resources. Survival depends on ingenuity.,"sci-fi,adventurous,inspiring",,https://www.amazon.in/s?k=The+Martian,
-Foundation,Isaac Asimov,sci-fi,A plan to save civilization unfolds. Time becomes the biggest challenge.,sci-fi,,https://www.amazon.in/s?k=Foundation,
-Neuromancer,William Gibson,sci-fi,A hacker enters a digital world. Reality and illusion blur.,sci-fi,,https://www.amazon.in/s?k=Neuromancer,
-,,,,,,,
-It,Stephen King,horror,Childhood fears return in terrifying form. Some nightmares never leave.,scary,,https://www.amazon.in/s?k=It,
-The Haunting of Hill House,Shirley Jackson,horror,A house filled with unseen horrors. Fear grows quietly.,scary,,https://www.amazon.in/s?k=The+Haunting+of+Hill+House,
-Pet Sematary,Stephen King,horror,Bringing back the dead has consequences. Some doors should stay closed.,scary,,https://www.amazon.in/s?k=Pet+Sematary,
-Bird Box,Josh Malerman,horror,Something unseen drives people mad. Survival means not looking.,scary,,https://www.amazon.in/s?k=Bird+Box,
-Dracula,Bram Stoker,horror,A mysterious figure arrives with dark intentions. Evil hides in plain sight.,scary,,https://www.amazon.in/s?k=Dracula,
-,,,,,,,
-Twisted Love,Ana Huang,romance,Love grows in the shadow of secrets. Not everything is safe.,"dark romance,romantic",,https://www.amazon.in/s?k=Twisted+Love,
-Haunting Adeline,H.D. Carlton,romance,A dangerous obsession blurs love and fear. Control becomes everything.,dark romance,,https://www.amazon.in/s?k=Haunting+Adeline,
-Verity,Colleen Hoover,thriller,A hidden manuscript reveals disturbing truths. Nothing is what it seems.,"dark romance,suspenseful",,https://www.amazon.in/s?k=Verity,
-Punk 57,Penelope Douglas,romance,A friendship built on letters turns into something darker. Truth changes everything.,dark romance,,https://www.amazon.in/s?k=Punk+57,
-Corrupt,Penelope Douglas,romance,Power and control define dangerous relationships. Lines are blurred.,dark romance,,https://www.amazon.in/s?k=Corrupt,
-,,,,,,,
-Fifty Shades of Grey,E.L. James,romance,Curiosity leads into a world of control. Desire comes with consequences.,"sexy,romantic",,https://www.amazon.in/s?k=Fifty+Shades+of+Grey,
-The Kiss Quotient,Helen Hoang,romance,A relationship begins as an arrangement. Feelings complicate everything.,"sexy,romantic",,https://www.amazon.in/s?k=The+Kiss+Quotient,
-Beautiful Disaster,Jamie McGuire,romance,A reckless love story full of chaos. Passion comes with consequences.,"sexy,romantic",,https://www.amazon.in/s?k=Beautiful+Disaster,
-Birthday Girl,Penelope Douglas,romance,Forbidden attraction builds slowly. Some lines shouldn’t be crossed.,sexy,,https://www.amazon.in/s?k=Birthday+Girl,
-Bared to You,Sylvia Day,romance,Two broken people find each other. Healing comes with pain.,"sexy,romantic",,https://www.amazon.in/s?k=Bared+to+You,
-,,,,,,,
-Red White and Royal Blue,Casey McQuiston,romance,Rivalry turns into unexpected affection. Love ignores boundaries.,"bl romance,romantic,humorous",,https://www.amazon.in/s?k=Red+White+and+Royal+Blue,
-Call Me By Your Name,Andre Aciman,romance,A fleeting connection leaves a lasting mark. Some moments stay forever.,"bl romance,romantic",,https://www.amazon.in/s?k=Call+Me+By+Your+Name,
-Aristotle and Dante Discover the Secrets of the Universe,Benjamin Alire Sáenz,fiction,Two boys form a deep connection. Identity unfolds slowly.,"bl romance,romantic",,https://www.amazon.in/s?k=Aristotle+and+Dante+Discover+the+Secrets+of+the+Universe,
-They Both Die at the End,Adam Silvera,fiction,Two strangers meet on their last day. Life feels more real when it's ending.,"bl romance,heartbreaking",,https://www.amazon.in/s?k=They+Both+Die+at+the+End,
-Boyfriend Material,Alexis Hall,romance,A fake relationship turns real. Love surprises unexpectedly.,"bl romance,humorous",,https://www.amazon.in/s?k=Boyfriend+Material,
-,,,,,,,
-The Price of Salt,Patricia Highsmith,romance,A chance meeting leads to a forbidden love. Choices become difficult.,"gl romance,romantic",,https://www.amazon.in/s?k=The+Price+of+Salt,
-One Last Stop,Casey McQuiston,romance,A stranger appears out of time. Some connections defy logic.,"gl romance,romantic,sci-fi",,https://www.amazon.in/s?k=One+Last+Stop,
-Written in the Stars,Alexandria Bellefleur,romance,Opposites attract unexpectedly. Love grows through chaos.,"gl romance,romantic",,https://www.amazon.in/s?k=Written+in+the+Stars,
-Delilah Green Doesn’t Care,Ashley Herring Blake,romance,Returning home brings unexpected feelings. Some people change everything.,"gl romance,romantic",,https://www.amazon.in/s?k=Delilah+Green+Doesn’t+Care,
-She Drives Me Crazy,Kelly Quindlen,romance,A fake dating scheme turns real. Feelings complicate everything.,"gl romance,romantic",,https://www.amazon.in/s?k=She+Drives+Me+Crazy,
-,,,,,,,
-The Great Gatsby,F. Scott Fitzgerald,drama,A dream built on illusion begins to crack. Not everything shines forever.,"drama,thought-provoking",,https://www.amazon.in/s?k=The+Great+Gatsby,
-Little Women,Louisa May Alcott,drama,Four sisters navigate life and ambition. Love and loss shape their journey.,"drama,hopeful",,https://www.amazon.in/s?k=Little+Women,
-A Man Called Ove,Fredrik Backman,fiction,A grumpy man hides a soft heart. Life brings unexpected connections.,"drama,heartwarming",,https://www.amazon.in/s?k=A+Man+Called+Ove,
-Normal People,Sally Rooney,fiction,Two lives intertwine over time. Love evolves in quiet ways.,"drama,romantic",,https://www.amazon.in/s?k=Normal+People,
-The Book Thief,Markus Zusak,fiction,A girl finds comfort in stolen books. Words become survival.,"drama,heartbreaking",,https://www.amazon.in/s?k=The+Book+Thief,
-,,,,,,,
-Romeo and Juliet,William Shakespeare,drama,A forbidden love leads to tragedy. Fate cannot be escaped.,"tragedy,romantic",,https://www.amazon.in/s?k=Romeo+and+Juliet,
-Of Mice and Men,John Steinbeck,drama,Dreams feel close but slip away. Hope is fragile.,"tragedy,drama",,https://www.amazon.in/s?k=Of+Mice+and+Men,
-A Thousand Splendid Suns,Khaled Hosseini,drama,Two women endure hardship together. Strength is found in suffering.,"tragedy,heartbreaking",,https://www.amazon.in/s?k=A+Thousand+Splendid+Suns,
-Anna Karenina,Leo Tolstoy,drama,A passionate affair leads to consequences. Love can destroy.,"tragedy,romantic",,https://www.amazon.in/s?k=Anna+Karenina,
-,,,,,,,
-Harry Potter,J.K. Rowling,fantasy,A hidden world opens to an ordinary boy. Magic comes with danger.,"fantasy,adventurous",,https://www.amazon.in/s?k=Harry+Potter,
-The Name of the Wind,Patrick Rothfuss,fantasy,A legend tells his own story. Truth hides behind myths.,fantasy,,https://www.amazon.in/s?k=The+Name+of+the+Wind,
-Mistborn,Brandon Sanderson,fantasy,Power rises in unlikely hands. Revolution begins quietly.,"fantasy,adventurous",,https://www.amazon.in/s?k=Mistborn,
-The Priory of the Orange Tree,Samantha Shannon,fantasy,A divided world faces an ancient threat. Destiny binds unlikely allies.,fantasy,,https://www.amazon.in/s?k=The+Priory+of+the+Orange+Tree,
-Percy Jackson,Rick Riordan,fantasy,A boy discovers his mythological roots. Adventure begins unexpectedly.,"fantasy,adventurous",,https://www.amazon.in/s?k=Percy+Jackson,
+The Hobbit,J.R.R. Tolkien,fantasy,A quiet life is interrupted by an unexpected journey. Something ancient waits beyond the mountains.,"adventurous,fantasy,hopeful",https://www.amazon.in/s?k=The+Hobbit,https://www.amazon.in/s?k=The+Hobbit+kindle+edition
+Life of Pi,Yann Martel,adventure,Stranded in the ocean with a dangerous companion. Survival becomes a test of belief.,"adventurous,inspiring",https://www.amazon.in/s?k=Life+of+Pi,https://www.amazon.in/s?k=Life+of+Pi+kindle+edition
+Treasure Island,Robert Louis Stevenson,adventure,A mysterious map leads to buried treasure. Not everyone can be trusted.,"adventurous,suspenseful",https://www.amazon.in/s?k=Treasure+Island,https://www.amazon.in/s?k=Treasure+Island+kindle+edition
+Into the Wild,Jon Krakauer,biography,A man leaves everything behind for freedom. The journey reveals harsh truths.,"adventurous,thought-provoking,heartbreaking",https://www.amazon.in/s?k=Into+the+Wild,https://www.amazon.in/s?k=Into+the+Wild+kindle+edition
+The Three Musketeers,Alexandre Dumas,adventure,Honor and loyalty are tested in dangerous times. Friendship becomes a weapon.,"adventurous,drama",https://www.amazon.in/s?k=The+Three+Musketeers,https://www.amazon.in/s?k=The+Three+Musketeers+kindle+edition
+Pride and Prejudice,Jane Austen,romance,Misjudgments hide deeper truths. Love grows where it was least expected.,"romantic,hopeful,drama",https://www.amazon.in/s?k=Pride+and+Prejudice,https://www.amazon.in/s?k=Pride+and+Prejudice+kindle+edition
+Me Before You,Jojo Moyes,romance,Two lives collide under difficult circumstances. Love forces impossible choices.,"romantic,heartbreaking",https://www.amazon.in/s?k=Me+Before+You,https://www.amazon.in/s?k=Me+Before+You+kindle+edition
+The Notebook,Nicholas Sparks,romance,A love story that refuses to fade. Time cannot erase what was real.,romantic,https://www.amazon.in/s?k=The+Notebook,https://www.amazon.in/s?k=The+Notebook+kindle+edition
+Love & Other Words,Christina Lauren,romance,Childhood memories reconnect two lost souls. Some love stories never truly end.,"romantic,heartbreaking",https://www.amazon.in/s?k=Love+&+Other+Words,https://www.amazon.in/s?k=Love+&+Other+Words+kindle+edition
+It Ends With Us,Colleen Hoover,romance,Love begins beautifully but reveals darker truths. Choosing yourself becomes necessary.,"romantic,heartbreaking,drama",https://www.amazon.in/s?k=It+Ends+With+Us,https://www.amazon.in/s?k=It+Ends+With+Us+kindle+edition
+The Silent Patient,Alex Michaelides,thriller,A woman stops speaking after a shocking act. Silence hides the truth.,"mysterious,suspenseful",https://www.amazon.in/s?k=The+Silent+Patient,https://www.amazon.in/s?k=The+Silent+Patient+kindle+edition
+Gone Girl,Gillian Flynn,thriller,A perfect marriage hides disturbing secrets. Truth twists with every reveal.,"mysterious,suspenseful",https://www.amazon.in/s?k=Gone+Girl,https://www.amazon.in/s?k=Gone+Girl+kindle+edition
+The Girl with the Dragon Tattoo,Stieg Larsson,thriller,A missing girl case uncovers dark family secrets. Nothing is what it seems.,"mysterious,suspenseful",https://www.amazon.in/s?k=The+Girl+with+the+Dragon+Tattoo,https://www.amazon.in/s?k=The+Girl+with+the+Dragon+Tattoo+kindle+edition
+Big Little Lies,Liane Moriarty,fiction,Perfect lives hide dangerous truths. A secret slowly unravels everything.,"mysterious,drama",https://www.amazon.in/s?k=Big+Little+Lies,https://www.amazon.in/s?k=Big+Little+Lies+kindle+edition
+In the Woods,Tana French,thriller,A detective faces a case tied to his past. Some memories should stay buried.,"mysterious,suspenseful",https://www.amazon.in/s?k=In+the+Woods,https://www.amazon.in/s?k=In+the+Woods+kindle+edition
+The Da Vinci Code,Dan Brown,thriller,A symbol sparks a global chase. History hides dangerous secrets.,"suspenseful,adventurous",https://www.amazon.in/s?k=The+Da+Vinci+Code,https://www.amazon.in/s?k=The+Da+Vinci+Code+kindle+edition
+Shutter Island,Dennis Lehane,thriller,A missing patient on an isolated island. Reality begins to blur.,"suspenseful,mysterious",https://www.amazon.in/s?k=Shutter+Island,https://www.amazon.in/s?k=Shutter+Island+kindle+edition
+The Woman in the Window,A.J. Finn,thriller,A woman sees something she shouldn't. Truth becomes uncertain.,"suspenseful,mysterious",https://www.amazon.in/s?k=The+Woman+in+the+Window,https://www.amazon.in/s?k=The+Woman+in+the+Window+kindle+edition
+Before I Go to Sleep,S.J. Watson,thriller,Every day begins with no memory. Trust becomes dangerous.,"suspenseful,mysterious",https://www.amazon.in/s?k=Before+I+Go+to+Sleep,https://www.amazon.in/s?k=Before+I+Go+to+Sleep+kindle+edition
+The Girl on the Train,Paula Hawkins,thriller,A routine observation becomes something sinister. Watching has consequences.,"suspenseful,mysterious",https://www.amazon.in/s?k=The+Girl+on+the+Train,https://www.amazon.in/s?k=The+Girl+on+the+Train+kindle+edition
+Good Omens,Neil Gaiman & Terry Pratchett,fantasy,An angel and demon try to stop the apocalypse. Chaos has never been this fun.,"humorous,fantasy",https://www.amazon.in/s?k=Good+Omens,https://www.amazon.in/s?k=Good+Omens+kindle+edition
+The Hitchhiker’s Guide to the Galaxy,Douglas Adams,sci-fi,Earth disappears unexpectedly. The universe makes even less sense.,"humorous,sci-fi",https://www.amazon.in/s?k=The+Hitchhiker’s+Guide+to+the+Galaxy,https://www.amazon.in/s?k=The+Hitchhiker’s+Guide+to+the+Galaxy+kindle+edition
+Bossypants,Tina Fey,biography,A hilarious take on life and career. Success comes with chaos.,humorous,https://www.amazon.in/s?k=Bossypants,https://www.amazon.in/s?k=Bossypants+kindle+edition
+Yes Please,Amy Poehler,biography,"Stories of ambition, humor, and mistakes. Life doesn’t have a script.",humorous,https://www.amazon.in/s?k=Yes+Please,https://www.amazon.in/s?k=Yes+Please+kindle+edition
+Diary of a Wimpy Kid,Jeff Kinney,fiction,Middle school life is full of awkward moments. Survival is a daily struggle.,humorous,https://www.amazon.in/s?k=Diary+of+a+Wimpy+Kid,https://www.amazon.in/s?k=Diary+of+a+Wimpy+Kid+kindle+edition
+The Alchemist,Paulo Coelho,fiction,A journey reveals deeper purpose. Destiny waits to be understood.,"hopeful,inspiring",https://www.amazon.in/s?k=The+Alchemist,https://www.amazon.in/s?k=The+Alchemist+kindle+edition
+Atomic Habits,James Clear,self-help,Small changes build powerful results. Growth comes quietly.,"inspiring,hopeful",https://www.amazon.in/s?k=Atomic+Habits,https://www.amazon.in/s?k=Atomic+Habits+kindle+edition
+Man’s Search for Meaning,Viktor Frankl,philosophy,"Even in suffering, purpose can be found. Meaning gives strength.","hopeful,thought-provoking",https://www.amazon.in/s?k=Man’s+Search+for+Meaning,https://www.amazon.in/s?k=Man’s+Search+for+Meaning+kindle+edition
+Tuesdays with Morrie,Mitch Albom,biography,Life lessons unfold in weekly conversations. Time becomes precious.,"hopeful,heartbreaking",https://www.amazon.in/s?k=Tuesdays+with+Morrie,https://www.amazon.in/s?k=Tuesdays+with+Morrie+kindle+edition
+The Happiness Project,Gretchen Rubin,self-help,A year dedicated to happiness. Change starts from within.,hopeful,https://www.amazon.in/s?k=The+Happiness+Project,https://www.amazon.in/s?k=The+Happiness+Project+kindle+edition
+A Little Life,Hanya Yanagihara,drama,Friendship and pain intertwine deeply. Some scars never heal.,"heartbreaking,drama",https://www.amazon.in/s?k=A+Little+Life,https://www.amazon.in/s?k=A+Little+Life+kindle+edition
+The Fault in Our Stars,John Green,romance,Love blossoms under fragile circumstances. Time becomes the greatest challenge.,"romantic,heartbreaking",https://www.amazon.in/s?k=The+Fault+in+Our+Stars,https://www.amazon.in/s?k=The+Fault+in+Our+Stars+kindle+edition
+The Kite Runner,Khaled Hosseini,drama,A mistake from childhood echoes forever. Redemption demands sacrifice.,"heartbreaking,drama,tragedy",https://www.amazon.in/s?k=The+Kite+Runner,https://www.amazon.in/s?k=The+Kite+Runner+kindle+edition
+They Both Die at the End,Adam Silvera,fiction,Two strangers meet on their last day. Life feels more real when it's ending.,"heartbreaking,romantic",https://www.amazon.in/s?k=They+Both+Die+at+the+End,https://www.amazon.in/s?k=They+Both+Die+at+the+End+kindle+edition
+Becoming,Michelle Obama,biography,A story shaped by challenges and ambition. Growth comes step by step.,inspiring,https://www.amazon.in/s?k=Becoming,https://www.amazon.in/s?k=Becoming+kindle+edition
+Steve Jobs,Walter Isaacson,biography,A visionary life filled with intensity and innovation. Genius comes at a cost.,inspiring,https://www.amazon.in/s?k=Steve+Jobs,https://www.amazon.in/s?k=Steve+Jobs+kindle+edition
+Wings of Fire,A.P.J. Abdul Kalam,biography,From humble beginnings to greatness. Dreams take flight with persistence.,"inspiring,hopeful",https://www.amazon.in/s?k=Wings+of+Fire,https://www.amazon.in/s?k=Wings+of+Fire+kindle+edition
+The 7 Habits of Highly Effective People,Stephen Covey,self-help,Success is built on strong principles. Change starts with mindset.,inspiring,https://www.amazon.in/s?k=The+7+Habits+of+Highly+Effective+People,https://www.amazon.in/s?k=The+7+Habits+of+Highly+Effective+People+kindle+edition
+Think Like a Monk,Jay Shetty,self-help,Ancient wisdom meets modern life. Peace comes from within.,"inspiring,thought-provoking",https://www.amazon.in/s?k=Think+Like+a+Monk,https://www.amazon.in/s?k=Think+Like+a+Monk+kindle+edition
+1984,George Orwell,dystopian,A world where truth is controlled. Freedom becomes a dangerous idea.,thought-provoking,https://www.amazon.in/s?k=1984,https://www.amazon.in/s?k=1984+kindle+edition
+Brave New World,Aldous Huxley,dystopian,A perfect society hides a deeper cost. Happiness comes with sacrifice.,"thought-provoking,sci-fi",https://www.amazon.in/s?k=Brave+New+World,https://www.amazon.in/s?k=Brave+New+World+kindle+edition
+Sapiens,Yuval Noah Harari,history,The story of humanity unfolds. Understanding the past shapes the future.,thought-provoking,https://www.amazon.in/s?k=Sapiens,https://www.amazon.in/s?k=Sapiens+kindle+edition
+The Stranger,Albert Camus,fiction,A man detached from emotion faces consequences. Meaning becomes uncertain.,thought-provoking,https://www.amazon.in/s?k=The+Stranger,https://www.amazon.in/s?k=The+Stranger+kindle+edition
+Fahrenheit 451,Ray Bradbury,dystopian,Books are forbidden in a controlled world. Knowledge becomes rebellion.,thought-provoking,https://www.amazon.in/s?k=Fahrenheit+451,https://www.amazon.in/s?k=Fahrenheit+451+kindle+edition
+Dune,Frank Herbert,sci-fi,A desert world holds immense power. Survival demands strategy.,"sci-fi,adventurous",https://www.amazon.in/s?k=Dune,https://www.amazon.in/s?k=Dune+kindle+edition
+Ender’s Game,Orson Scott Card,sci-fi,A child is trained for war. Strategy becomes survival.,"sci-fi,thought-provoking",https://www.amazon.in/s?k=Ender’s+Game,https://www.amazon.in/s?k=Ender’s+Game+kindle+edition
+The Martian,Andy Weir,sci-fi,Stranded on Mars with limited resources. Survival depends on ingenuity.,"sci-fi,adventurous,inspiring",https://www.amazon.in/s?k=The+Martian,https://www.amazon.in/s?k=The+Martian+kindle+edition
+Foundation,Isaac Asimov,sci-fi,A plan to save civilization unfolds. Time becomes the biggest challenge.,sci-fi,https://www.amazon.in/s?k=Foundation,https://www.amazon.in/s?k=Foundation+kindle+edition
+Neuromancer,William Gibson,sci-fi,A hacker enters a digital world. Reality and illusion blur.,sci-fi,https://www.amazon.in/s?k=Neuromancer,https://www.amazon.in/s?k=Neuromancer+kindle+edition
+It,Stephen King,horror,Childhood fears return in terrifying form. Some nightmares never leave.,scary,https://www.amazon.in/s?k=It,https://www.amazon.in/s?k=It+kindle+edition
+The Haunting of Hill House,Shirley Jackson,horror,A house filled with unseen horrors. Fear grows quietly.,scary,https://www.amazon.in/s?k=The+Haunting+of+Hill+House,https://www.amazon.in/s?k=The+Haunting+of+Hill+House+kindle+edition
+Pet Sematary,Stephen King,horror,Bringing back the dead has consequences. Some doors should stay closed.,scary,https://www.amazon.in/s?k=Pet+Sematary,https://www.amazon.in/s?k=Pet+Sematary+kindle+edition
+Bird Box,Josh Malerman,horror,Something unseen drives people mad. Survival means not looking.,scary,https://www.amazon.in/s?k=Bird+Box,https://www.amazon.in/s?k=Bird+Box+kindle+edition
+Dracula,Bram Stoker,horror,A mysterious figure arrives with dark intentions. Evil hides in plain sight.,scary,https://www.amazon.in/s?k=Dracula,https://www.amazon.in/s?k=Dracula+kindle+edition
+Twisted Love,Ana Huang,romance,Love grows in the shadow of secrets. Not everything is safe.,"dark romance,romantic",https://www.amazon.in/s?k=Twisted+Love,https://www.amazon.in/s?k=Twisted+Love+kindle+edition
+Haunting Adeline,H.D. Carlton,romance,A dangerous obsession blurs love and fear. Control becomes everything.,dark romance,https://www.amazon.in/s?k=Haunting+Adeline,https://www.amazon.in/s?k=Haunting+Adeline+kindle+edition
+Verity,Colleen Hoover,thriller,A hidden manuscript reveals disturbing truths. Nothing is what it seems.,"dark romance,suspenseful",https://www.amazon.in/s?k=Verity,https://www.amazon.in/s?k=Verity+kindle+edition
+Punk 57,Penelope Douglas,romance,A friendship built on letters turns into something darker. Truth changes everything.,dark romance,https://www.amazon.in/s?k=Punk+57,https://www.amazon.in/s?k=Punk+57+kindle+edition
+Corrupt,Penelope Douglas,romance,Power and control define dangerous relationships. Lines are blurred.,dark romance,https://www.amazon.in/s?k=Corrupt,https://www.amazon.in/s?k=Corrupt+kindle+edition
+Fifty Shades of Grey,E.L. James,romance,Curiosity leads into a world of control. Desire comes with consequences.,"sexy,romantic",https://www.amazon.in/s?k=Fifty+Shades+of+Grey,https://www.amazon.in/s?k=Fifty+Shades+of+Grey+kindle+edition
+The Kiss Quotient,Helen Hoang,romance,A relationship begins as an arrangement. Feelings complicate everything.,"sexy,romantic",https://www.amazon.in/s?k=The+Kiss+Quotient,https://www.amazon.in/s?k=The+Kiss+Quotient+kindle+edition
+Beautiful Disaster,Jamie McGuire,romance,A reckless love story full of chaos. Passion comes with consequences.,"sexy,romantic",https://www.amazon.in/s?k=Beautiful+Disaster,https://www.amazon.in/s?k=Beautiful+Disaster+kindle+edition
+Birthday Girl,Penelope Douglas,romance,Forbidden attraction builds slowly. Some lines shouldn’t be crossed.,sexy,https://www.amazon.in/s?k=Birthday+Girl,https://www.amazon.in/s?k=Birthday+Girl+kindle+edition
+Bared to You,Sylvia Day,romance,Two broken people find each other. Healing comes with pain.,"sexy,romantic",https://www.amazon.in/s?k=Bared+to+You,https://www.amazon.in/s?k=Bared+to+You+kindle+edition
+Red White and Royal Blue,Casey McQuiston,romance,Rivalry turns into unexpected affection. Love ignores boundaries.,"bl romance,romantic,humorous",https://www.amazon.in/s?k=Red+White+and+Royal+Blue,https://www.amazon.in/s?k=Red+White+and+Royal+Blue+kindle+edition
+Call Me By Your Name,Andre Aciman,romance,A fleeting connection leaves a lasting mark. Some moments stay forever.,"bl romance,romantic",https://www.amazon.in/s?k=Call+Me+By+Your+Name,https://www.amazon.in/s?k=Call+Me+By+Your+Name+kindle+edition
+Aristotle and Dante Discover the Secrets of the Universe,Benjamin Alire Sáenz,fiction,Two boys form a deep connection. Identity unfolds slowly.,"bl romance,romantic",https://www.amazon.in/s?k=Aristotle+and+Dante+Discover+the+Secrets+of+the+Universe,https://www.amazon.in/s?k=Aristotle+and+Dante+Discover+the+Secrets+of+the+Universe+kindle+edition
+Boyfriend Material,Alexis Hall,romance,A fake relationship turns real. Love surprises unexpectedly.,"bl romance,humorous",https://www.amazon.in/s?k=Boyfriend+Material,https://www.amazon.in/s?k=Boyfriend+Material+kindle+edition
+The Price of Salt,Patricia Highsmith,romance,A chance meeting leads to a forbidden love. Choices become difficult.,"gl romance,romantic",https://www.amazon.in/s?k=The+Price+of+Salt,https://www.amazon.in/s?k=The+Price+of+Salt+kindle+edition
+One Last Stop,Casey McQuiston,romance,A stranger appears out of time. Some connections defy logic.,"gl romance,romantic,sci-fi",https://www.amazon.in/s?k=One+Last+Stop,https://www.amazon.in/s?k=One+Last+Stop+kindle+edition
+Written in the Stars,Alexandria Bellefleur,romance,Opposites attract unexpectedly. Love grows through chaos.,"gl romance,romantic",https://www.amazon.in/s?k=Written+in+the+Stars,https://www.amazon.in/s?k=Written+in+the+Stars+kindle+edition
+Delilah Green Doesn’t Care,Ashley Herring Blake,romance,Returning home brings unexpected feelings. Some people change everything.,"gl romance,romantic",https://www.amazon.in/s?k=Delilah+Green+Doesn’t+Care,https://www.amazon.in/s?k=Delilah+Green+Doesn’t+Care+kindle+edition
+She Drives Me Crazy,Kelly Quindlen,romance,A fake dating scheme turns real. Feelings complicate everything.,"gl romance,romantic",https://www.amazon.in/s?k=She+Drives+Me+Crazy,https://www.amazon.in/s?k=She+Drives+Me+Crazy+kindle+edition
+The Great Gatsby,F. Scott Fitzgerald,drama,A dream built on illusion begins to crack. Not everything shines forever.,"drama,thought-provoking",https://www.amazon.in/s?k=The+Great+Gatsby,https://www.amazon.in/s?k=The+Great+Gatsby+kindle+edition
+Little Women,Louisa May Alcott,drama,Four sisters navigate life and ambition. Love and loss shape their journey.,"drama,hopeful",https://www.amazon.in/s?k=Little+Women,https://www.amazon.in/s?k=Little+Women+kindle+edition
+A Man Called Ove,Fredrik Backman,fiction,A grumpy man hides a soft heart. Life brings unexpected connections.,"drama,hopeful",https://www.amazon.in/s?k=A+Man+Called+Ove,https://www.amazon.in/s?k=A+Man+Called+Ove+kindle+edition
+Normal People,Sally Rooney,fiction,Two lives intertwine over time. Love evolves in quiet ways.,"drama,romantic",https://www.amazon.in/s?k=Normal+People,https://www.amazon.in/s?k=Normal+People+kindle+edition
+The Book Thief,Markus Zusak,fiction,A girl finds comfort in stolen books. Words become survival.,"drama,heartbreaking",https://www.amazon.in/s?k=The+Book+Thief,https://www.amazon.in/s?k=The+Book+Thief+kindle+edition
+Romeo and Juliet,William Shakespeare,drama,A forbidden love leads to tragedy. Fate cannot be escaped.,"tragedy,romantic",https://www.amazon.in/s?k=Romeo+and+Juliet,https://www.amazon.in/s?k=Romeo+and+Juliet+kindle+edition
+Of Mice and Men,John Steinbeck,drama,Dreams feel close but slip away. Hope is fragile.,"tragedy,drama",https://www.amazon.in/s?k=Of+Mice+and+Men,https://www.amazon.in/s?k=Of+Mice+and+Men+kindle+edition
+A Thousand Splendid Suns,Khaled Hosseini,drama,Two women endure hardship together. Strength is found in suffering.,"tragedy,heartbreaking",https://www.amazon.in/s?k=A+Thousand+Splendid+Suns,https://www.amazon.in/s?k=A+Thousand+Splendid+Suns+kindle+edition
+Anna Karenina,Leo Tolstoy,drama,A passionate affair leads to consequences. Love can destroy.,"tragedy,romantic",https://www.amazon.in/s?k=Anna+Karenina,https://www.amazon.in/s?k=Anna+Karenina+kindle+edition
+Harry Potter,J.K. Rowling,fantasy,A hidden world opens to an ordinary boy. Magic comes with danger.,"fantasy,adventurous",https://www.amazon.in/s?k=Harry+Potter,https://www.amazon.in/s?k=Harry+Potter+kindle+edition
+The Name of the Wind,Patrick Rothfuss,fantasy,A legend tells his own story. Truth hides behind myths.,fantasy,https://www.amazon.in/s?k=The+Name+of+the+Wind,https://www.amazon.in/s?k=The+Name+of+the+Wind+kindle+edition
+Mistborn,Brandon Sanderson,fantasy,Power rises in unlikely hands. Revolution begins quietly.,"fantasy,adventurous",https://www.amazon.in/s?k=Mistborn,https://www.amazon.in/s?k=Mistborn+kindle+edition
+The Priory of the Orange Tree,Samantha Shannon,fantasy,A divided world faces an ancient threat. Destiny binds unlikely allies.,fantasy,https://www.amazon.in/s?k=The+Priory+of+the+Orange+Tree,https://www.amazon.in/s?k=The+Priory+of+the+Orange+Tree+kindle+edition
+Percy Jackson,Rick Riordan,fantasy,A boy discovers his mythological roots. Adventure begins unexpectedly.,"fantasy,adventurous",https://www.amazon.in/s?k=Percy+Jackson,https://www.amazon.in/s?k=Percy+Jackson+kindle+edition
