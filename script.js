@@ -133,25 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
         aiContinueBtn.innerHTML = '<div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin"></div>';
 
         try {
-            const currentStory = storyChain.join(' ');
-            const response = await fetch('http://127.0.0.1:5000/api/story/continue', {
+            const response = await fetch('http://127.0.0.1:5000/api/mood/detect', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ story: currentStory })
+                body: JSON.stringify({ text: input })
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                storyChain.push(data.line);
-                updateStoryDisplay();
-            } else {
-                console.error('AI failed to continue the story.');
+            const data = await response.json();
+
+            // ✅ Direct recommendation
+            if (data.books && data.books.length > 0) {
+                currentMoodBook = data.books[0];
+                displayMoodBookTeaser();
+
+                setTimeout(() => {
+                    document.getElementById('reveal-mood-book-btn')?.click();
+                }, 400);
             }
+
         } catch (error) {
-            console.error('Error calling AI:', error);
-        } finally {
-            aiContinueBtn.disabled = false;
-            aiContinueBtn.innerHTML = '✨ AI Continue';
+            console.error('Mood detection failed:', error);
         }
     });
 
@@ -276,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 }
+
 
     document.getElementById('reveal-mood-book-btn').addEventListener('click', () => {
     moodBookCard.classList.add('revealed');
@@ -543,6 +545,90 @@ async function showBookModal(book) {
         });
     }
 
+    // --- SMART MOOD DETECTION ---
+    function initSmartMoodDetection() {
+        const input = document.getElementById('smart-mood-input');
+        const btn = document.getElementById('smart-mood-btn');
+        const resultBox = document.getElementById('smart-mood-result');
+        const loadingEl = document.getElementById('smart-mood-loading');
+        const outputEl = document.getElementById('smart-mood-output');
+        const errorEl = document.getElementById('smart-mood-error');
+        const explanationEl = document.getElementById('smart-mood-explanation');
+        const tagsEl = document.getElementById('smart-mood-tags');
+        const useBtn = document.getElementById('smart-mood-use-btn');
+
+        let detectedMoods = [];
+
+        async function detect() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Reset & show loading
+            resultBox.classList.remove('hidden');
+            loadingEl.classList.remove('hidden');
+
+            document.getElementById('smart-mood-loading').classList.remove('hidden');
+            document.getElementById('smart-mood-error').classList.add('hidden');
+            document.getElementById('smart-mood-output').classList.add('hidden');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-60');
+
+            try {
+                const res = await fetch('http://127.0.0.1:5000/api/mood/detect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+                const data = await res.json();
+
+                loadingEl.classList.add('hidden');
+
+                if (!res.ok || data.error) {
+                    errorEl.textContent = data.error || 'Something went wrong. Try again.';
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+
+
+                // ✅ DIRECT BOOK RECOMMENDATION
+                if (data.books && data.books.length > 0) {
+                    currentMoodBook = data.books[0];
+                    displayMoodBookTeaser();
+
+                    setTimeout(() => {
+                        document.getElementById('reveal-mood-book-btn')?.click();
+                    }, 400);
+                }
+
+                // OPTIONAL: show detected moods (UI)
+                explanationEl.textContent = data.explanation;
+
+                tagsEl.innerHTML = '';
+                data.moods.forEach(mood => {
+                    const tag = document.createElement('span');
+                    tag.className = "bg-gray-600 text-white text-xs px-3 py-1 rounded-full";
+                    tag.textContent = mood;
+                    tagsEl.appendChild(tag);
+                });
+
+                outputEl.classList.remove('hidden');
+
+            } catch (err) {
+                loadingEl.classList.add('hidden');
+                errorEl.textContent = 'Server error. Is Flask running?';
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-60');
+            }
+        }
+
+        btn.addEventListener('click', detect);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') detect(); });
+
+        }
+
     // --- INITIALIZATION ---
     async function init() {
         try {
@@ -559,6 +645,7 @@ async function showBookModal(book) {
                 initGenreFilters();
                 displayBookOfTheDay();
                 initMoods();
+                initSmartMoodDetection();
                 updateStoryDisplay();
             } else {
                 throw new Error("No books found in the database.");

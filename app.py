@@ -10,6 +10,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from mood_detector import detect_mood
 
 load_dotenv()  # This loads the .env file
 app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -66,6 +67,43 @@ def load_recommendation_data():
     except Exception as e:
         print('REC LOAD ERROR:', e)
         cosine_sim = None
+
+def recommend_by_mood(user_moods):
+    global rec_df, tfidf_vectorizer, tfidf_matrix
+
+    if rec_df.empty or tfidf_matrix is None:
+        return []
+
+    # Filter books that match moods
+    filtered = rec_df[
+        rec_df['moods'].str.lower().apply(
+            lambda x: any(m in x.split(',') for m in user_moods)
+        )
+    ]
+
+    if filtered.empty:
+        return []
+
+    # Build query from moods
+    query = " ".join(user_moods)
+
+    query_vec = tfidf_vectorizer.transform([query])
+    sim_scores = cosine_similarity(query_vec, tfidf_matrix).flatten()
+
+    # Rank only filtered books
+    filtered_indices = filtered.index.tolist()
+
+    ranked = sorted(
+        filtered_indices,
+        key=lambda i: sim_scores[i],
+        reverse=True
+    )
+
+    top_books = rec_df.iloc[ranked[:3]][
+        ['id', 'title', 'author', 'teaser', 'genre', 'moods']
+    ].to_dict('records')
+
+    return top_books
 
 # ✅ STEP 3: Routes come after
 @app.route('/')
@@ -152,6 +190,40 @@ def ai_continue_story():
         return jsonify({'error': 'Unexpected Gemini response format'}), 502
 
     return jsonify({'line': text})
+
+@app.route('/api/mood/detect', methods=['POST'])
+def detect_mood_api():
+    """
+    Takes free-text user input and uses NLP-based mood detection
+    to map it to one or more moods from the app's fixed mood list.
+    No API keys required - uses local transformers model.
+    
+    Returns: { "moods": ["adventurous", "hopeful"], "explanation": "..." }
+    """
+    data = request.json
+    user_text = data.get('text', '').strip()
+
+    if not user_text:
+        return jsonify({'error': 'No text provided'}), 400
+
+    # Use the NLP-based mood detector
+    result = detect_mood(user_text, top_k=3)
+    
+    # Check if there was an error
+    if 'error' in result and not result.get('moods'):
+        return jsonify({'error': result['error']}), 422
+        
+    # Get detected moods
+    moods = result.get('moods', [])
+
+    # 🔥 NEW: Get recommendations
+    recommended_books = recommend_by_mood(moods)
+
+    return jsonify({
+        'moods': moods,
+        'explanation': result.get('explanation', ''),
+        'books': recommended_books   # 👈 NEW
+    })
 
 if __name__ == '__main__':
     load_recommendation_data()

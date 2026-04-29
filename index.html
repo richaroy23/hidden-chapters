@@ -45,6 +45,51 @@
                 <h2 class="text-4xl font-bold mb-2">How are you feeling today?</h2>
                 <p class="text-lg text-gray-400">Pick a mood and we'll find a mystery book for you.</p>
             </div>
+
+            <!-- ✨ Smart Mood Detection -->
+            <div id="smart-mood-box" class="max-w-2xl mx-auto mb-10 bg-[#1f294a] rounded-2xl p-6 shadow-xl border border-[#f7b267]/20">
+                <div class="flex items-center gap-2 mb-3">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-[#f7b267]"></i>
+                    <span class="text-[#f7b267] font-semibold text-sm tracking-wide uppercase">Smart Mood Detection</span>
+                </div>
+                <p class="text-gray-400 text-sm mb-4">Can't find your mood in the cards below? Describe how you're feeling in your own words and AI will pick the best match for you.</p>
+                <div class="flex gap-3">
+                    <input
+                        id="smart-mood-input"
+                        type="text"
+                        placeholder="e.g. I feel restless and want something gripping…"
+                        maxlength="200"
+                        class="flex-1 bg-[#162447] text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm border border-gray-700 focus:outline-none focus:border-[#f7b267] transition-colors"
+                    />
+                    <button
+                        id="smart-mood-btn"
+                        class="bg-[#f7b267] text-gray-900 font-bold px-5 py-3 rounded-xl hover:bg-[#f4a24f] transition-colors flex items-center gap-2 text-sm whitespace-nowrap"
+                    >
+                        <i data-lucide="wand-2" class="w-4 h-4"></i>
+                        Detect
+                    </button>
+                </div>
+
+                <!-- Result area -->
+                <div id="smart-mood-result" class="hidden mt-4">
+                    <div id="smart-mood-loading" class="hidden text-gray-400 text-sm flex items-center gap-2">
+                        <svg class="animate-spin w-4 h-4 text-[#f7b267]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                        </svg>
+                        Analysing your mood…
+                    </div>
+                    <div id="smart-mood-output" class="hidden">
+                        <p id="smart-mood-explanation" class="text-gray-300 text-sm italic mb-3"></p>
+                        <div class="flex flex-wrap gap-2 mb-3" id="smart-mood-tags"></div>
+                        <button id="smart-mood-use-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-5 rounded-full text-sm transition-colors">
+                            ✓ Use These Moods
+                        </button>
+                    </div>
+                    <div id="smart-mood-error" class="hidden text-red-400 text-sm"></div>
+                </div>
+            </div>
+
             <div id="mood-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-12">
             </div>
 

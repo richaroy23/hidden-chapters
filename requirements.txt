@@ -1,0 +1,6 @@
+flask>=2.0
+flask-cors
+pandas
+scikit-learn
+python-dotenv
+mysql-connector-python
