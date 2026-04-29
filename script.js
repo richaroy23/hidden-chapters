@@ -56,62 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const genre = (book.genre || "default").toLowerCase();
         const [bg1, bg2] = colors[genre] || colors["default"];
 
+        const title = encodeURIComponent(book.title.slice(0, 40));
+
+        return `https://placehold.co/400x600/${bg1}/${bg2}?text=${title}`;
+    }
+
+    function generateCoverHTML(book) {
+        const coverUrl = generateCover(book);
         return `
-        <div style="
-            width:100%;
-            height:100%;
-            border-radius:12px;
-            background: linear-gradient(135deg, ${bg1}, ${bg2});
-            display:flex;
-            flex-direction:column;
-            justify-content:space-between;
-            padding:16px;
-            color:white;
-            position:relative;
-            font-family:'Lora', serif;
-        ">
-
-            <!-- subtle texture -->
-            <div style="
-                position:absolute;
-                inset:0;
-                background:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-                background-size:3px 3px;
-                opacity:0.15;
-            "></div>
-
-            <div style="font-size:12px; opacity:0.7; z-index:1;">
-                ${book.genre}
+            <div class="bg-gray-700 rounded-lg overflow-hidden shadow-lg">
+                <img src="${coverUrl}" alt="Cover for ${book.title}" class="w-full h-full object-cover">
             </div>
-
-            <div style="
-                flex:1;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                text-align:center;
-                z-index:1;
-            ">
-                <h2 style="
-                    font-size:16px;
-                    font-weight:bold;
-                    line-height:1.3;
-                ">
-                    ${book.title}
-                </h2>
-            </div>
-
-            <div style="
-                font-size:12px;
-                text-align:right;
-                opacity:0.8;
-                z-index:1;
-            ">
-                — ${book.author}
-            </div>
-
-        </div>
-    `;
+        `;
     }
 
     // Load story from localStorage or use default
@@ -563,42 +519,32 @@ async function showBookModal(book) {
     }
 
     // --- INITIALIZATION ---
-async function init() {
-    try {
-        const response = await fetch('http://127.0.0.1:5000/api/books');
-        if (!response.ok) throw new Error(`Server responded with ${response.status}`);
+    async function init() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/books');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log("Books data received from API:", data); // <-- DEBUGGING LINE
+            books = data;
 
-        const rawBooks = await response.json();
-
-
-        books = rawBooks.map(book => ({
-            id: book.id,
-            title: book.title || "Untitled",
-            author: book.author || "Unknown",
-            moods: book.moods || "",   // ✅ USE DATABASE VALUE
-            genre: (book.genre || "Uncategorized").toLowerCase(),
-            teaser: book.teaser || "No teaser available.",
-            cover: generateCover(book),
-            buyLink: book.buyLink || "#",
-            downloadLink: book.downloadLink || null
-        }));
-
-        // Initialize the UI components
-        initMoods();
-        initBlindDate();
-        initGenreFilters();
-        renderStory();
-        displayBookOfTheDay(); 
-        setActiveSection('mood-discovery');
-        if (window.lucide) lucide.createIcons();
-
-    } catch (error) {
-        console.error("Frontend Error:", error);
-        const moodSelector = document.getElementById('mood-selector');
-        if (moodSelector) {
-            moodSelector.innerHTML = `<p class="col-span-full text-red-400">Failed to load books. Is the Flask server running?</p>`;
+            if (books.length > 0) {
+                initBlindDate();
+                initGenreFilters();
+                // initBookOfTheDay(); // This function does not exist, causing an error.
+                initMoods();
+                updateStoryDisplay();
+            } else {
+                throw new Error("No books found in the database.");
+            }
+        } catch (error) {
+            console.error("Frontend Error:", error);
+            const moodSelector = document.getElementById('mood-selector');
+            if (moodSelector) {
+                moodSelector.innerHTML = `<p class="col-span-full text-red-400">Failed to load books. Is the Flask server running?</p>`;
+            }
         }
     }
-}
-init();
+    init();
 });
