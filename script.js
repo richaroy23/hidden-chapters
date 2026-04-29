@@ -44,21 +44,74 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     function generateCover(book) {
         const colors = {
-            "fiction": ["1f2937", "f59e0b"],
-            "romance": ["7f1d1d", "fda4af"],
-            "fantasy": ["0f172a", "38bdf8"],
-            "science": ["111827", "22c55e"],
-            "history": ["3f3f46", "fbbf24"],
-            "thriller": ["000000", "ef4444"],
-            "default": ["111827", "f7b267"]
+            "fiction": ["#1f2937", "#f59e0b"],
+            "romance": ["#7f1d1d", "#fda4af"],
+            "fantasy": ["#0f172a", "#38bdf8"],
+            "thriller": ["#000000", "#ef4444"],
+            "history": ["#3f3f46", "#fbbf24"],
+            "science": ["#064e3b", "#22c55e"],
+            "default": ["#111827", "#f7b267"]
         };
 
         const genre = (book.genre || "default").toLowerCase();
-        const [bg, text] = colors[genre] || colors["default"];
+        const [bg1, bg2] = colors[genre] || colors["default"];
 
-        const title = encodeURIComponent(book.title.slice(0, 40));
+        return `
+        <div style="
+            width:100%;
+            height:100%;
+            border-radius:12px;
+            background: linear-gradient(135deg, ${bg1}, ${bg2});
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            padding:16px;
+            color:white;
+            position:relative;
+            font-family:'Lora', serif;
+        ">
 
-        return `https://placehold.co/400x600/${bg}/${text}?text=${title}`;
+            <!-- subtle texture -->
+            <div style="
+                position:absolute;
+                inset:0;
+                background:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+                background-size:3px 3px;
+                opacity:0.15;
+            "></div>
+
+            <div style="font-size:12px; opacity:0.7; z-index:1;">
+                ${book.genre}
+            </div>
+
+            <div style="
+                flex:1;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+                z-index:1;
+            ">
+                <h2 style="
+                    font-size:16px;
+                    font-weight:bold;
+                    line-height:1.3;
+                ">
+                    ${book.title}
+                </h2>
+            </div>
+
+            <div style="
+                font-size:12px;
+                text-align:right;
+                opacity:0.8;
+                z-index:1;
+            ">
+                — ${book.author}
+            </div>
+
+        </div>
+    `;
     }
 
     // Load story from localStorage or use default
@@ -72,17 +125,54 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSelectedMood = '';
 
 
-async function callGeminiAPI(payload) {
-    const storyText = payload.contents[0].parts[0].text;
-    const response = await fetch('http://127.0.0.1:5000/api/story/continue', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ story: storyText })
+    // --- STORY CHAIN ---
+    const storyDisplay = document.getElementById('story-display');
+    const storyForm = document.getElementById('story-form');
+    const storyInput = document.getElementById('story-input');
+    const aiContinueBtn = document.getElementById('ai-continue-btn');
+
+    function updateStoryDisplay() {
+        storyDisplay.innerHTML = storyChain.map(line => `<p>${line}</p>`).join('');
+        storyDisplay.scrollTop = storyDisplay.scrollHeight;
+        localStorage.setItem('storyChain', JSON.stringify(storyChain));
+    }
+
+    storyForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newLine = storyInput.value.trim();
+        if (newLine) {
+            storyChain.push(newLine);
+            updateStoryDisplay();
+            storyInput.value = '';
+        }
     });
-    if (!response.ok) return null;
-    const data = await response.json();
-    return data.line;
-}
+
+    aiContinueBtn.addEventListener('click', async () => {
+        aiContinueBtn.disabled = true;
+        aiContinueBtn.innerHTML = '<div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin"></div>';
+
+        try {
+            const currentStory = storyChain.join(' ');
+            const response = await fetch('http://127.0.0.1:5000/api/story/continue', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ story: currentStory })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                storyChain.push(data.line);
+                updateStoryDisplay();
+            } else {
+                console.error('AI failed to continue the story.');
+            }
+        } catch (error) {
+            console.error('Error calling AI:', error);
+        } finally {
+            aiContinueBtn.disabled = false;
+            aiContinueBtn.innerHTML = '✨ AI Continue';
+        }
+    });
 
 
     // --- NAVIGATION ---
@@ -471,155 +561,6 @@ async function showBookModal(book) {
             showBookModal(dailyBook);
         });
     }
-
-    // --- STORY CHAIN ---
-    const storyDisplay = document.getElementById('story-display');
-    const storyForm = document.getElementById('story-form');
-    const storyInput = document.getElementById('story-input');
-    const aiContinueBtn = document.getElementById('ai-continue-btn');
-    const shareStoryBtn = document.getElementById('share-story-btn');
-    const notification = document.getElementById('clipboard-notification');
-
-    function renderStory() {
-        storyDisplay.innerHTML = '';
-        storyChain.forEach(line => {
-            const p = document.createElement('p');
-            p.textContent = line;
-            storyDisplay.appendChild(p);
-        });
-        storyDisplay.scrollTop = storyDisplay.scrollHeight;
-    }
-
-    storyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const newLine = storyInput.value.trim();
-        if (newLine) {
-            storyChain.push(newLine);
-            renderStory();
-            storyInput.value = '';
-            localStorage.setItem('storyChain', JSON.stringify(storyChain));
-        }
-    });
-
-    aiContinueBtn.addEventListener('click', async () => {
-        const button = aiContinueBtn;
-        button.disabled = true;
-        button.innerHTML = '<div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin border-white mx-auto"></div>';
-
-        const fullStory = storyChain.join('\n');
-        const prompt = `This is a collaborative story. Continue it with a single, compelling sentence that fits the tone. Do not repeat the previous line. Story so far:\n\n---\n${fullStory}\n---\n\nNext line:`;
-        const payload = { contents: [{ parts: [{ text: prompt }] }] };
-
-        const nextLine = await callGeminiAPI(payload);
-
-        if (nextLine) {
-            storyChain.push(nextLine.trim().replace(/^"|"$/g, '')); // Also remove quotes if AI adds them
-            renderStory();
-            localStorage.setItem('storyChain', JSON.stringify(storyChain));
-        } else {
-            alert("The AI couldn't think of a line right now. Please check your API key or try again!");
-        }
-        
-        button.disabled = false;
-        button.innerHTML = '✨ AI Continue';
-    });
-
-    shareStoryBtn.addEventListener('click', async () => {
-        const fullStory = storyChain.join('\n\n');
-        if (!navigator.clipboard) {
-            alert("Clipboard access is not available on your browser.");
-            return;
-    }
-
-    try {
-        await navigator.clipboard.writeText(fullStory);
-
-        const notification = document.getElementById('clipboard-notification');
-        // FIX: Explicitly set the text content every time
-        notification.textContent = 'Story copied to clipboard!';
-        notification.classList.add('show');
-
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-
-    } catch (err) {
-        console.error('Failed to copy story: ', err);
-        alert("Failed to copy the story. Please try again.");
-    }
-});
-
-    function generateCoverHTML(book) {
-    const colors = {
-        "fiction": ["#1f2937", "#f59e0b"],
-        "romance": ["#7f1d1d", "#fda4af"],
-        "fantasy": ["#0f172a", "#38bdf8"],
-        "thriller": ["#000000", "#ef4444"],
-        "history": ["#3f3f46", "#fbbf24"],
-        "science": ["#064e3b", "#22c55e"],
-        "default": ["#111827", "#f7b267"]
-    };
-
-    const genre = (book.genre || "default").toLowerCase();
-    const [bg1, bg2] = colors[genre] || colors["default"];
-
-    return `
-        <div style="
-            width:100%;
-            height:100%;
-            border-radius:12px;
-            background: linear-gradient(135deg, ${bg1}, ${bg2});
-            display:flex;
-            flex-direction:column;
-            justify-content:space-between;
-            padding:16px;
-            color:white;
-            position:relative;
-            font-family:'Lora', serif;
-        ">
-
-            <!-- subtle texture -->
-            <div style="
-                position:absolute;
-                inset:0;
-                background:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-                background-size:3px 3px;
-                opacity:0.15;
-            "></div>
-
-            <div style="font-size:12px; opacity:0.7; z-index:1;">
-                ${book.genre}
-            </div>
-
-            <div style="
-                flex:1;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                text-align:center;
-                z-index:1;
-            ">
-                <h2 style="
-                    font-size:16px;
-                    font-weight:bold;
-                    line-height:1.3;
-                ">
-                    ${book.title}
-                </h2>
-            </div>
-
-            <div style="
-                font-size:12px;
-                text-align:right;
-                opacity:0.8;
-                z-index:1;
-            ">
-                — ${book.author}
-            </div>
-
-        </div>
-    `;
-}
 
     // --- INITIALIZATION ---
 async function init() {
