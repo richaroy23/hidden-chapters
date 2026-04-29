@@ -71,45 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentMoodBook = null;
     let currentSelectedMood = '';
 
-    // --- GEMINI API INTEGRATION ---
-    const API_KEY = ""; // PASTE YOUR GOOGLE GEMINI API KEY HERE
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
-    
-    async function callGeminiAPI(payload, retries = 3, delay = 1000) {
-        if (!API_KEY) {
-            alert("API Key is missing. Please add your Gemini API key to script.js to use the AI feature.");
-            return null;
-        }
-
-        for (let i = 0; i < retries; i++) {
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    return candidate.content.parts[0].text;
-                } else {
-                    throw new Error("Invalid response structure from API.");
-                }
-            } catch (error) {
-                console.error(`API call attempt ${i + 1} failed:`, error);
-                if (i === retries - 1) {
-                    return null; // Failed after all retries
-                }
-                await new Promise(res => setTimeout(res, delay * Math.pow(2, i))); // Exponential backoff
-            }
-        }
-    }
+async function callGeminiAPI(payload) {
+    const storyText = payload.contents[0].parts[0].text;
+    const response = await fetch('http://127.0.0.1:5000/api/story/continue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ story: storyText })
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.line;
+}
 
 
     // --- NAVIGATION ---
@@ -463,16 +436,33 @@ async function showBookModal(book) {
         const dailyBook = books[bookIndex];
 
         bookOfTheDayContainer.innerHTML = `
-            <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">Today's Hidden Gem</h3>
-            <p class="text-lg text-gray-400 mb-6">A special recommendation, just for today.</p>
-            <div class="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
-                <div class="cover-card w-48">
+            <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">
+                Today's Hidden Gem
+            </h3>
+            <p class="text-lg text-gray-400 mb-6">
+                A special recommendation, just for today.
+            </p>
+            <div class="flex flex-col md:flex-row 
+                        items-center gap-8 max-w-4xl mx-auto">
+                <div class="cover-card w-48 h-72 flex-shrink-0">
                     ${generateCoverHTML(dailyBook)}
                 </div>
-                    <h4 class="text-3xl font-bold text-white">${dailyBook.title}</h4>
-                    <p class="text-xl text-gray-400 mb-4">by ${dailyBook.author}</p>
-                    <p class="text-gray-300 italic mb-6">"${dailyBook.teaser}"</p>
-                    <button id="reveal-daily-book-btn" class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-400 transition duration-300">Learn More</button>
+                <div class="text-center md:text-left">
+                    <h4 class="text-3xl font-bold text-white">
+                        ${dailyBook.title}
+                    </h4>
+                    <p class="text-xl text-gray-400 mb-4">
+                        by ${dailyBook.author}
+                    </p>
+                    <p class="text-gray-300 italic mb-6">
+                        "${dailyBook.teaser}"
+                    </p>
+                    <button id="reveal-daily-book-btn"
+                        class="bg-green-500 text-white font-bold 
+                            py-3 px-6 rounded-full 
+                            hover:bg-green-400 transition duration-300">
+                        Learn More
+                    </button>
                 </div>
             </div>
         `;
