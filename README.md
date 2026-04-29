@@ -2,7 +2,7 @@
 
 **Hidden Chapters** is a mood-based **"blind date with a book"** platform designed to transform book discovery into an emotional and immersive experience.
 
-Instead of browsing endless lists, users **choose a mood → receive a mysterious teaser → reveal a hidden book**.
+Instead of browsing endless lists, users can **choose a mood, type a feeling in their own words, browse blind-date books by genre, and reveal a hidden book**.
 
 ---
 
@@ -40,15 +40,27 @@ Frontend → Flask API → MySQL → TF-IDF Recommendation Engine → Frontend
 ### 🎭 Mood-Based Discovery
 Choose from multiple emotional states and receive a book that matches your mood.
 
+### ✨ Smart Mood Detection
+Type a natural-language description of how you feel and the app uses the backend mood detector to suggest a matching book.
+
 ### 🎁 Blind Reveal Experience
 - Books appear as "wrapped gifts"
 - Only a teaser is shown initially
 - Users reveal the book through an interactive animation
 
+### 🏷️ Genre Filters
+- Filter blind-date books by genre
+- Shuffle through a fresh set of hidden books for each filter
+
 ### 🎯 Curated Recommendation System
 - Uses multi-mood tagging
 - Matches books directly based on emotional context
 - Ensures relevant and intentional suggestions
+
+### 📚 Rich Book Details
+- Title, author, genre, teaser, moods
+- Buy link and optional download link in the modal
+- AI-generated "More Like This" suggestions for opened books
 
 ### 🧠 Intelligent Data Design
 Each book record contains:
@@ -92,9 +104,10 @@ This approach ensures:
 ### How recommendations work
 
 1. The frontend loads all books from the Flask API.
-2. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
-3. The interface displays those suggestions in the **More Like This** panel.
-4. When the story chain needs a next line, the frontend sends the current story to `/api/story/continue`.
+2. Mood cards are generated dynamically from the book dataset, so the Flask API must be running for the discovery grid to render.
+3. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
+4. The interface displays those suggestions in the **More Like This** panel.
+5. When the story chain needs a next line, the frontend sends the current story to `/api/story/continue`.
 
 ---
 
@@ -162,6 +175,8 @@ Open `index.html` directly, or run with Live Server:
 ```
 http://127.0.0.1:5500/
 ```
+
+Make sure the Flask backend is already running before opening the page, otherwise the mood cards and book data will not load.
 
 ### 4️⃣ API Key Setup *(Optional)*
 
