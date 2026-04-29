@@ -557,7 +557,7 @@ async function showBookModal(book) {
             if (books.length > 0) {
                 initBlindDate();
                 initGenreFilters();
-                // initBookOfTheDay(); // This function does not exist, causing an error.
+                displayBookOfTheDay();
                 initMoods();
                 updateStoryDisplay();
             } else {

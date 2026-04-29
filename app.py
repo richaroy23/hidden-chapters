@@ -1,575 +1,158 @@
-document.addEventListener('DOMContentLoaded', () => {
+from flask import Flask, jsonify, send_from_directory, request
+from flask_cors import CORS
+import json
+import os
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
-    let books = []; // We use 'let' because we will fill this array later
-    
-    const moods = [
-        { name: 'Adventurous', icon: 'compass', color: 'bg-orange-500' },
-        { name: 'Romantic', icon: 'heart', color: 'bg-rose-500' },
-        { name: 'Mysterious', icon: 'puzzle', color: 'bg-indigo-500' },
-        { name: 'Suspenseful', icon: 'hourglass', color: 'bg-red-600' },
-        { name: 'Humorous', icon: 'laugh', color: 'bg-yellow-500' },
-        { name: 'Hopeful', icon: 'sunrise', color: 'bg-sky-500' },
-        { name: 'Heartbreaking', icon: 'cloud-rain', color: 'bg-slate-500' },
-        { name: 'Inspiring', icon: 'award', color: 'bg-emerald-500' },
-        { name: 'Thought-provoking', icon: 'brain-circuit', color: 'bg-purple-500' },
-        { name: 'Sci-Fi', icon: 'rocket', color: 'bg-cyan-500' },
-        { name: 'Scary', icon: 'ghost', color: 'bg-zinc-800' },
-        { name: 'Dark Romance', icon: 'heart-crack', color: 'bg-rose-900' },
-        { name: 'Sexy', icon: 'flame', color: 'bg-red-700' },
-        { name: 'BL Romance', icon: 'link', color: 'bg-sky-400' },
-        { name: 'GL Romance', icon: 'link', color: 'bg-rose-400' },
-        { name: 'Drama', icon: 'theater', color: 'bg-purple-600' },
-        { name: 'Tragedy', icon: 'skull', color: 'bg-slate-600' },
-        { name: 'Fantasy', icon: 'sparkles', color: 'bg-teal-500' }
-    ];
-    const moodToGenreMap = {
-        "adventurous": ["adventure", "fantasy", "fiction"],
-        "romantic": ["romance", "fiction"],
-        "mysterious": ["mystery", "thriller", "fiction"],
-        "suspenseful": ["thriller", "crime", "fiction"],
-        "humorous": ["comedy", "fiction"],
-        "hopeful": ["fiction", "self-help"],
-        "heartbreaking": ["drama", "fiction"],
-        "inspiring": ["biography", "self-help"],
-        "thought-provoking": ["philosophy", "history"],
-        "sci-fi": ["science fiction", "fiction"],
-        "scary": ["horror", "thriller"],
-        "dark romance": ["romance", "drama"],
-        "sexy": ["romance"],
-        "bl romance": ["romance"],
-        "gl romance": ["romance"],
-        "drama": ["drama"],
-        "tragedy": ["drama"],
-        "fantasy": ["fantasy"]
-    };
-    function generateCoverTheme(book) {
-        const colors = {
-            "fiction": ["#1f2937", "#f59e0b"],
-            "romance": ["#7f1d1d", "#fda4af"],
-            "fantasy": ["#0f172a", "#38bdf8"],
-            "thriller": ["#000000", "#ef4444"],
-            "history": ["#3f3f46", "#fbbf24"],
-            "science": ["#064e3b", "#22c55e"],
-            "sci-fi": ["#082f49", "#67e8f9"],
-            "horror": ["#1c1917", "#f97316"],
-            "drama": ["#172554", "#a5b4fc"],
-            "default": ["#111827", "#f7b267"]
-        };
+import mysql.connector
+import pandas as pd
+from dotenv import load_dotenv
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-        const genre = (book.genre || "default").toLowerCase();
-        const [bg, accent] = colors[genre] || colors["default"];
+load_dotenv()  # This loads the .env file
+app_dir = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, static_folder=app_dir)
+app.config['JSON_AS_ASCII'] = False
+CORS(app)
 
-        return { bg, accent };
-    }
-
-    function escapeHTML(value = '') {
-        return String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    function getInitials(title = '') {
-        const parts = title.trim().split(/\s+/).filter(Boolean);
-        return parts.slice(0, 2).map(part => part[0].toUpperCase()).join('') || 'BK';
-    }
-
-    function generateCoverHTML(book) {
-        const { bg, accent } = generateCoverTheme(book);
-        const safeTitle = escapeHTML(book.title || 'Unknown Title');
-        const safeAuthor = escapeHTML(book.author || 'Unknown Author');
-        const safeGenre = escapeHTML(book.genre || 'Fiction');
-        const initials = getInitials(book.title || 'Book');
-
-        return `
-            <div class="book-cover" style="--cover-bg:${bg}; --cover-accent:${accent};" aria-label="Cover for ${safeTitle}">
-                <div class="book-cover__spine"></div>
-                <div class="book-cover__grain"></div>
-                <div class="book-cover__badge">${safeGenre}</div>
-                <div class="book-cover__title">${safeTitle}</div>
-                <div class="book-cover__author">by ${safeAuthor}</div>
-                <div class="book-cover__monogram">${initials}</div>
-            </div>
-        `;
-    }
-
-    // Load story from localStorage or use default
-    let storyChain = JSON.parse(localStorage.getItem('storyChain')) || [
-        "The old lighthouse stood on the cliff's edge, its lamp dark for the first time in a century.",
-        "A small, leather-bound book appeared on its doorstep with the morning fog, holding a single, cryptic sentence inside.",
-        "'The sea remembers what the land forgets,' it read, in a script that seemed to shift before the reader's eyes."
-    ];
-
-    let currentMoodBook = null;
-    let currentSelectedMood = '';
-
-
-    // --- STORY CHAIN ---
-    const storyDisplay = document.getElementById('story-display');
-    const storyForm = document.getElementById('story-form');
-    const storyInput = document.getElementById('story-input');
-    const aiContinueBtn = document.getElementById('ai-continue-btn');
-
-    function updateStoryDisplay() {
-        storyDisplay.innerHTML = storyChain.map(line => `<p>${line}</p>`).join('');
-        storyDisplay.scrollTop = storyDisplay.scrollHeight;
-        localStorage.setItem('storyChain', JSON.stringify(storyChain));
-    }
-
-    storyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const newLine = storyInput.value.trim();
-        if (newLine) {
-            storyChain.push(newLine);
-            updateStoryDisplay();
-            storyInput.value = '';
-        }
-    });
-
-    aiContinueBtn.addEventListener('click', async () => {
-        aiContinueBtn.disabled = true;
-        aiContinueBtn.innerHTML = '<div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin"></div>';
-
-        try {
-            const currentStory = storyChain.join(' ');
-            const response = await fetch('http://127.0.0.1:5000/api/story/continue', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ story: currentStory })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                storyChain.push(data.line);
-                updateStoryDisplay();
-            } else {
-                console.error('AI failed to continue the story.');
-            }
-        } catch (error) {
-            console.error('Error calling AI:', error);
-        } finally {
-            aiContinueBtn.disabled = false;
-            aiContinueBtn.innerHTML = '✨ AI Continue';
-        }
-    });
-
-
-    // --- NAVIGATION ---
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.section');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-
-    const setActiveSection = (sectionId) => {
-        sections.forEach(section => {
-            section.classList.toggle('active', section.id === sectionId);
-        }); navLinks.forEach(link => { link.classList.toggle('active', link.dataset.section === sectionId); }); window.scrollTo(0,0); if (!mobileMenu.classList.contains('hidden')) { mobileMenu.classList.add('hidden'); } }; navLinks.forEach(link => { link.addEventListener('click', (e) => {
-            e.preventDefault();
-            // A small fix to make sure clicking the icon inside the link also works
-            const sectionId = e.target.closest('.nav-link').dataset.section;
-            setActiveSection(sectionId);
-        });
-    });
-
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-
-    // --- MOOD DISCOVERY ---
-    const moodSelector = document.getElementById('mood-selector');
-    const moodBookSuggestion = document.getElementById('mood-book-suggestion');
-    const moodBookCard = document.getElementById('mood-book-card');
-    
-    function initMoods() {
-        moods.forEach(mood => {
-            const moodCard = document.createElement('button');
-            moodCard.className = `mood-card ${mood.color} text-white p-6 rounded-lg shadow-lg cursor-pointer flex flex-col items-center justify-center text-center`;
-            moodCard.dataset.mood = mood.name.toLowerCase();
-            moodCard.innerHTML = `
-                <i data-lucide="${mood.icon}" class="w-12 h-12 mb-3"></i>
-                <span class="text-xl font-semibold">${mood.name}</span>
-            `;
-            moodSelector.appendChild(moodCard);
-            moodCard.addEventListener('click', (e) => handleMoodSelection(mood.name.toLowerCase(), e.currentTarget));
-        
-        });
-        lucide.createIcons();
-    }
-
-    function handleMoodSelection(mood, clickedCard) {
-
-    const allMoodCards = document.querySelectorAll('.mood-card');
-    allMoodCards.forEach(card => card.classList.remove('active'));
-
-    if (clickedCard) {
-        clickedCard.classList.add('active');
-    }
-
-    currentSelectedMood = mood;
-
-    const selectedMood = mood.toLowerCase();
-
-    const possibleBooks = books.filter(book => {
-        const moodsArray = book.moods.toLowerCase().split(',');
-        return moodsArray.includes(selectedMood);
-    });
-
-    if (possibleBooks.length > 0) {
-        currentMoodBook = possibleBooks[Math.floor(Math.random() * possibleBooks.length)];
-        displayMoodBookTeaser();
-    } else {
-        currentMoodBook = books[Math.floor(Math.random() * books.length)];
-        displayMoodBookTeaser();
-    }
-}
-    
-    function displayMoodBookTeaser(isLoading = false, loadingText = "Finding a book...") {
-    moodBookSuggestion.classList.remove('hidden');
-    moodBookCard.classList.remove('revealed');
-
-    const frontCard = document.querySelector('.flip-card-front');
-
-    if (isLoading) {
-        frontCard.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-full">
-                <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-[#f7b267] mb-4"></div>
-                <p class="text-lg text-[#f7b267]">${loadingText}</p>
-            </div>
-        `;
-    } else {
-        frontCard.innerHTML = `
-            <div class="w-full">
-                <div class="flex justify-center mb-4">
-                    <i data-lucide="gift" class="w-16 h-16 text-[#f7b267]"></i>
-                </div>
-                <h4 class="text-xl font-semibold mb-2">
-                    A ${currentMoodBook.genre} novel...
-                </h4>
-                <p class="text-gray-300 italic">
-                    "${currentMoodBook.teaser}"
-                </p>
-            </div>
-            <p class="text-sm text-gray-500">
-                Click "Reveal Book" to unwrap your surprise!
-            </p>
-        `;
-        lucide.createIcons();
-    }
-
-    document.getElementById('mood-reveal-controls').classList.remove('hidden');
-    document.getElementById('mood-book-revealed-info').classList.add('hidden');
-
-    const backCard = document.getElementById('mood-book-back');
-
-    if (currentMoodBook && !isLoading) {
-        backCard.innerHTML = `
-            <div class="cover-card">
-                ${generateCoverHTML(currentMoodBook)}
-            </div>
-        `;
-
-        setTimeout(() => {
-            moodBookSuggestion.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-    }
+# ✅ STEP 1: db_config comes FIRST now
+db_config = {
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME')
 }
 
-    document.getElementById('reveal-mood-book-btn').addEventListener('click', () => {
-    moodBookCard.classList.add('revealed');
-    document.getElementById('mood-reveal-controls').classList.add('hidden');
-    
-    const info = document.getElementById('mood-book-revealed-info');
-    info.classList.remove('hidden');
-    
-    document.getElementById('mood-book-title').textContent = currentMoodBook.title;
-    document.getElementById('mood-book-author').textContent = `by ${currentMoodBook.author}`;
-    
-    // Update the "Buy" link
-    const buyLink = document.getElementById('mood-book-buy-link');
-    buyLink.href = currentMoodBook.buyLink;
-    
-    
-    const downloadLink = document.getElementById('mood-book-download-link');
-    
-    if (currentMoodBook.downloadLink) {
-        downloadLink.href = currentMoodBook.downloadLink;
-        downloadLink.classList.remove('hidden'); 
-    } else {
-        downloadLink.classList.add('hidden'); 
-    }
-    lucide.createIcons(); // Refresh icons
-});
+# ✅ STEP 2: Now the function can safely use db_config
+rec_df = pd.DataFrame(columns=['id','title','teaser','genre','author','moods'])
+tfidf_vectorizer = None
+tfidf_matrix = None
+cosine_sim = None
 
-    document.getElementById('another-mood-book-btn').addEventListener('click', () => {
-        if(currentSelectedMood) handleMoodSelection(currentSelectedMood);
-        else {
-              moodBookSuggestion.classList.add('hidden');
-        }
-    });
+def load_recommendation_data():
+    global rec_df, tfidf_vectorizer, tfidf_matrix, cosine_sim
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT id, title, author, genre, teaser, moods FROM books")
+        all_books = cursor.fetchall()
+        cursor.close()
+        conn.close()
 
-    // --- BLIND DATE ---
-    const blindDateGrid = document.getElementById('blind-date-grid');
-    const modal = document.getElementById('book-modal');
-    const modalContent = document.getElementById('book-modal-content');
-    const surpriseMeBtn = document.getElementById('surprise-me-btn');
+        rec_df = pd.DataFrame(all_books)
+        if rec_df.empty:
+            cosine_sim = None
+            return
 
-    const blindDateLoaderHTML = `
-    <div class="col-span-full flex flex-col items-center justify-center p-8">
-        <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-[#f7b267]"></div>
-        <p class="mt-4 text-lg text-gray-400">Finding some mysterious dates...</p>
-    </div>
-`;
+        rec_df.fillna('', inplace=True)
+        rec_df['id'] = rec_df['id'].astype(int)
 
-    function initBlindDate(genreFilter = 'all') {
-    const grid = document.getElementById('blind-date-grid');
+        moods_text = rec_df['moods'].astype(str).str.replace(',', ' ', regex=False)
+        rec_df['content'] = (
+            rec_df['teaser'] + ' ' +
+            rec_df['genre'] + ' ' +
+            rec_df['author'] + ' ' +
+            moods_text + ' ' +
+            moods_text
+        )
 
-    grid.innerHTML = blindDateLoaderHTML;
-        
-    setTimeout(() => {
-        // Filter books by genre if a filter is applied
-        const filteredBooks = genreFilter === 'all' 
-            ? [...books] 
-            : books.filter(book => book.genre.toLowerCase() === genreFilter.toLowerCase());
+        tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+        tfidf_matrix = tfidf_vectorizer.fit_transform(rec_df['content'])
+        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+        print(f"Recommendation data loaded: {len(rec_df)} books")
 
-        const shuffledBooks = [...filteredBooks].sort(() => 0.5 - Math.random()); // Show 12 random books
-        const selectedBooks = shuffledBooks.slice(0, 12);
+    except Exception as e:
+        print('REC LOAD ERROR:', e)
+        cosine_sim = None
 
-        grid.innerHTML = '';
+# ✅ STEP 3: Routes come after
+@app.route('/')
+def home():
+    return send_from_directory(app_dir, 'index.html')
 
-        if (selectedBooks.length === 0) {
-            grid.innerHTML = `<p class="col-span-full text-center text-gray-400">No books found for this genre. Try another!</p>`;
-            return;
-        }
+@app.route('/api/books', methods=['GET'])
+def get_books():
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM books")   # ✅ No LIMIT
+        books = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(books)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-        selectedBooks.forEach(book => {
-            const bookWrapper = document.createElement('div');
-            bookWrapper.className = 'wrapped-book bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer flex flex-col justify-between text-center border-2 border-dashed border-gray-600';
-            bookWrapper.innerHTML = `
-                <div>
-                    <div class="flex justify-center mb-4"><i data-lucide="gift" class="w-12 h-12 text-[#f7b267]"></i></div>
-                    <p class="text-gray-300 italic">"${book.teaser}"</p>
-                </div>
-                <span class="mt-4 text-sm font-semibold text-[#f7b267]">Click to unwrap</span>
-            `;
-            bookWrapper.addEventListener('click', () => showBookModal(book));
-            grid.appendChild(bookWrapper);
-        });
-        lucide.createIcons();
-    }, 500);
-}  
-// ADD THE NEW FUNCTION HERE
-function initGenreFilters() {
-    const filterContainer = document.getElementById('genre-filter-container');
-    if (!filterContainer) return;
+@app.route('/api/recommend/<int:book_id>', methods=['GET'])
+def recommend_books(book_id):
+    try:
+        global rec_df, cosine_sim
+        if cosine_sim is None or rec_df.empty:
+            return jsonify({"error": "recommendation data not available"}), 500
 
-    // Get unique genres from the books data
-    const genres = ['all', ...new Set(books.map(book => book.genre.toLowerCase()))];
+        matches = rec_df.index[rec_df['id'] == book_id].tolist()
+        if not matches:
+            return jsonify({"error": "book id not found"}), 404
 
-    filterContainer.innerHTML = ''; // Clear existing buttons
-    genres.forEach(genre => {
-        const button = document.createElement('button');
-        button.className = 'genre-filter-btn bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm';
-        button.textContent = genre.charAt(0).toUpperCase() + genre.slice(1); // Capitalize
-        button.dataset.genre = genre;
+        idx = matches[0]
+        sim_scores = list(enumerate(cosine_sim[idx]))
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        recommend_indices = [i[0] for i in sim_scores[1:4]]
+        recommendations = rec_df.iloc[recommend_indices][['id','title']].to_dict('records')
+        return jsonify(recommendations)
 
-        if (genre === 'all') {
-            button.classList.add('active'); // Set 'All' as active by default
-        }
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            document.querySelectorAll('.genre-filter-btn').forEach(btn => btn.classList.remove('active'));
-            // Add active class to the clicked one
-            button.classList.add('active');
-            // Re-initialize the blind date grid with the selected genre
-            initBlindDate(genre);
-        });
-        filterContainer.appendChild(button);
-    });
-}
+@app.route('/api/story/continue', methods=['POST'])
+def ai_continue_story():
+    api_key = os.getenv('GEMINI_API_KEY')
+    model_name = os.getenv('GEMINI_MODEL', 'gemini-flash-latest')
+    data = request.json
+    story = data.get('story', '')
 
-    surpriseMeBtn.addEventListener('click', () => {
-    if (books.length > 0) {
-        const randomBook = books[Math.floor(Math.random() * books.length)];
-        showBookModal(randomBook);
-    }
-});
+    if not api_key:
+        return jsonify({'error': 'GEMINI_API_KEY is not set'}), 500
 
-async function showBookModal(book) {
-    // 1. Conditionally create the download button
-    const downloadButtonHTML = book.downloadLink
-        ? `<a href="${book.downloadLink}" target="_blank" class="inline-block mt-6 ml-4 bg-gray-600 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-500 transition duration-300"><i data-lucide="download" class="inline mr-2"></i>Download Book</a>`
-        : '';
-
-    // 2. Set the basic modal content
-    modalContent.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-8">
-            <div class="cover-card w-full md:w-1/3">
-                ${generateCoverHTML(book)}
-            </div>
-            <div class="md:w-2/3" id="modal-text-content">
-                <h2 class="text-4xl font-bold mb-2 text-white">${book.title}</h2>
-                <p class="text-xl text-gray-400 mb-4">by ${book.author}</p>
-                <div class="flex flex-wrap gap-2 mb-4">
-                    ${book.moods.split(',').map(mood => `
-                        <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                            ${mood}
-                        </span>
-                    `).join('')}
-                </div>
-                <p class="text-lg leading-relaxed">${book.teaser}</p>
-                
-                <a href="${book.buyLink}" target="_blank" class="inline-block mt-6 bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-400 transition duration-300"><i data-lucide="shopping-cart" class="inline mr-2"></i>Link to Buy</a>
-                
-                <button id="share-book-btn" class="inline-block mt-6 ml-4 bg-blue-500 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-400 transition duration-300"><i data-lucide="share-2" class="inline mr-2"></i>Share Discovery</button>
-                
-                ${downloadButtonHTML}
-
-                <div id="ai-recommendations" class="mt-8 pt-6 border-t border-gray-700 hidden">
-                    <h4 class="text-xl font-bold text-[#f7b267] mb-3 flex items-center">
-                        <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> AI: More Like This
-                    </h4>
-                    <div id="rec-list" class="flex flex-wrap gap-2">
-                        </div>
-                </div>
-            </div>
-        </div>
-        <button id="close-modal-btn-inner" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
-            <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
-    `;
-
-    modal.classList.remove('hidden');
-    setTimeout(() => modalContent.classList.remove('scale-95'), 10);
-    lucide.createIcons();
-
-    // 3. --- NEW: FETCH AI RECOMMENDATIONS ---
-    try {
-        const recResponse = await fetch(`http://127.0.0.1:5000/api/recommend/${book.id}`);
-        if (recResponse.ok) {
-            const recommendations = await recResponse.json();
-            const recSection = document.getElementById('ai-recommendations');
-            const recList = document.getElementById('rec-list');
-
-            if (recommendations.length > 0) {
-                recSection.classList.remove('hidden');
-                recList.innerHTML = recommendations.map(r => `
-                    <span class="bg-[#1f294a] border border-gray-600 text-gray-300 px-3 py-1 rounded-full text-sm">
-                        ${r.title}
-                    </span>
-                `).join('');
-            }
-        }
-    } catch (err) {
-        console.error("AI recommendations failed to load:", err);
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+    payload = {
+        "contents": [{
+            "parts": [{"text": f"Continue this story with one sentence:\n{story}\nNext line:"}]
+        }]
     }
 
-    // 4. Set up event listeners
-    document.getElementById('share-book-btn').addEventListener('click', () => {
-        const shareText = `Check out this book I found on Hidden Chapters!\n\nTitle: ${book.title}\nTeaser: "${book.teaser}"`;
-        navigator.clipboard.writeText(shareText).then(() => {
-            const notification = document.getElementById('clipboard-notification');
-            notification.textContent = 'Book details copied to clipboard!';
-            notification.classList.add('show');
-            setTimeout(() => notification.classList.remove('show'), 3000);
-        });
-    });
+    request_body = json.dumps(payload).encode('utf-8')
+    http_request = Request(
+        url,
+        data=request_body,
+        headers={'Content-Type': 'application/json'},
+        method='POST',
+    )
 
-    document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
-}
+    try:
+        with urlopen(http_request, timeout=30) as response:
+            result = json.loads(response.read().decode('utf-8'))
+    except HTTPError as error:
+        try:
+            error_body = error.read().decode('utf-8')
+        except Exception:
+            error_body = ''
+        message = f'Gemini request failed: {error.reason}'
+        if error_body:
+            message = f'{message} | {error_body}'
+        return jsonify({'error': message}), error.code
+    except URLError as error:
+        return jsonify({'error': f'Gemini request failed: {error.reason}'}), 502
 
-    function closeModal() {
-        modalContent.classList.add('scale-95');
-        setTimeout(() => modal.classList.add('hidden'), 300);
-    }
+    try:
+        text = result['candidates'][0]['content']['parts'][0]['text']
+    except (KeyError, IndexError, TypeError):
+        return jsonify({'error': 'Unexpected Gemini response format'}), 502
 
-    modal.addEventListener('click', (e) => {
-        if(e.target === modal) closeModal();
-    });
-    
-    document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+    return jsonify({'line': text})
 
-    // --- BOOK OF THE DAY ---
-    function displayBookOfTheDay() {
-        const bookOfTheDayContainer = document.getElementById('book-of-the-day');
-        if (!bookOfTheDayContainer) return;
-
-        const now = new Date();
-        const start = new Date(now.getFullYear(), 0, 0);
-        const diff = now - start;
-        const oneDay = 1000 * 60 * 60 * 24;
-        const dayOfYear = Math.floor(diff / oneDay);
-
-        const bookIndex = dayOfYear % books.length;
-        const dailyBook = books[bookIndex];
-
-        bookOfTheDayContainer.innerHTML = `
-            <h3 class="text-3xl font-bold mb-2 text-[#f7b267]">
-                Today's Hidden Gem
-            </h3>
-            <p class="text-lg text-gray-400 mb-6">
-                A special recommendation, just for today.
-            </p>
-            <div class="flex flex-col md:flex-row 
-                        items-center gap-8 max-w-4xl mx-auto">
-                <div class="cover-card w-48 h-72 flex-shrink-0">
-                    ${generateCoverHTML(dailyBook)}
-                </div>
-                <div class="text-center md:text-left">
-                    <h4 class="text-3xl font-bold text-white">
-                        ${dailyBook.title}
-                    </h4>
-                    <p class="text-xl text-gray-400 mb-4">
-                        by ${dailyBook.author}
-                    </p>
-                    <p class="text-gray-300 italic mb-6">
-                        "${dailyBook.teaser}"
-                    </p>
-                    <button id="reveal-daily-book-btn"
-                        class="bg-green-500 text-white font-bold 
-                            py-3 px-6 rounded-full 
-                            hover:bg-green-400 transition duration-300">
-                        Learn More
-                    </button>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('reveal-daily-book-btn').addEventListener('click', () => {
-            showBookModal(dailyBook);
-        });
-    }
-
-    // --- INITIALIZATION ---
-    async function init() {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/books');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log("Books data received from API:", data); // <-- DEBUGGING LINE
-            books = data;
-
-            if (books.length > 0) {
-                initBlindDate();
-                initGenreFilters();
-                displayBookOfTheDay();
-                initMoods();
-                updateStoryDisplay();
-            } else {
-                throw new Error("No books found in the database.");
-            }
-        } catch (error) {
-            console.error("Frontend Error:", error);
-            const moodSelector = document.getElementById('mood-selector');
-            if (moodSelector) {
-                moodSelector.innerHTML = `<p class="col-span-full text-red-400">Failed to load books. Is the Flask server running?</p>`;
-            }
-        }
-    }
-    init();
-});
+if __name__ == '__main__':
+    load_recommendation_data()
+    app.run(debug=True, port=5000)
