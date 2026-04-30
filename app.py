@@ -37,7 +37,7 @@ def load_recommendation_data():
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, title, author, genre, teaser, moods FROM books")
+        cursor.execute("SELECT id, title, author, genre, teaser, moods FROM v_books_with_moods")
         all_books = cursor.fetchall()
         cursor.close()
         conn.close()
@@ -115,7 +115,7 @@ def get_books():
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM books")   # ✅ No LIMIT
+        cursor.execute("SELECT * FROM v_books_with_moods")
         books = cursor.fetchall()
         cursor.close()
         conn.close()
