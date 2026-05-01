@@ -1,113 +1,24 @@
 # 📖 Hidden Chapters
 
-**Hidden Chapters** is a mood-based **"blind date with a book"** platform designed to transform book discovery into an emotional and immersive experience.
+**Hidden Chapters** is a mood-driven book discovery app that turns browsing into something more personal. Instead of scrolling through endless lists, you pick a mood, describe how you're feeling, and get matched with a book — wrapped like a gift, revealed like a surprise.
 
-Instead of browsing endless lists, users can **choose a mood, type a feeling in their own words, browse blind-date books by genre, and reveal a hidden book**.
-
----
-
-## 🎯 Project Evolution
-
-This project was built in two stages to demonstrate progressive enhancement:
-
-### 🟡 Version 1 — Static Prototype
-
-- Built using HTML, CSS, and JavaScript
-- Used a **small, manually curated dataset**
-- Book suggestions were:
-  - Random or rule-based
-  - Limited in diversity
-- Focus: UI/UX concept and interaction design
-
----
-
-### 🟢 Version 2 — Full Stack Recommendation System (Current)
-
-- Backend powered by **Flask + MySQL**
-- Loads database credentials from a local **`.env`** file
-- Uses **TF-IDF + cosine similarity** to recommend books
-- Supports **AI story continuation** through the Google Gemini API
-- Dynamic data flow:
-
-```text
-Frontend → Flask API → MySQL → TF-IDF Recommendation Engine → Frontend
-```
+Built in two stages: a static prototype first, then a full-stack rebuild with Flask, MySQL, and a TF-IDF recommendation engine.
 
 ---
 
 ## ✨ Features
 
-### 🎭 Mood-Based Discovery
-Choose from multiple emotional states and receive a book that matches your mood.
-
-### ✨ Smart Mood Detection
-Type a natural-language description of how you feel and the app uses the backend mood detector to suggest a matching book.
-
-### 🎁 Blind Reveal Experience
-- Books appear as "wrapped gifts"
-- Only a teaser is shown initially
-- Users reveal the book through an interactive animation
-
-### 🏷️ Genre Filters
-- Filter blind-date books by genre
-- Shuffle through a fresh set of hidden books for each filter
-
-### 🎯 Curated Recommendation System
-- Uses multi-mood tagging
-- Matches books directly based on emotional context
-- Ensures relevant and intentional suggestions
-
-### 📚 Rich Book Details
-- Title, author, genre, teaser, moods
-- Buy link and optional download link in the modal
-- AI-generated "More Like This" suggestions for opened books
-
-### 🧠 Intelligent Data Design
-Each book record contains:
-- Title
-- Author
-- Genre
-- Teaser
-- Moods
-
-The backend combines teaser, genre, author, and mood data to build similarity scores.
-
-### 📝 Community Story Chain
-- Users contribute to a shared story
-- AI (Google Gemini) generates the next line from `/api/story/continue`
-
-### 📤 Share Discoveries
-- One-click copy-to-clipboard sharing
-
-### 💎 Book of the Day
-- Daily rotating recommendation
-
-### 💾 Persistent Story Storage
-- Uses LocalStorage to maintain story progress
-
----
-
-## 🧠 Recommendation Logic
-
-Instead of heavy ML models, the system uses:
-
-- Backend text similarity using **TF-IDF + cosine similarity**
-- Recommendation content built from the book's teaser, genre, author, and moods
-- A simple lookup path that returns the most similar books for a selected book ID
-
-This approach ensures:
-
-- 👉 Better control over quality
-- 👉 More meaningful user experience
-- 👉 Faster performance
-
-### How recommendations work
-
-1. The frontend loads all books from the Flask API.
-2. Mood cards are generated dynamically from the book dataset, so the Flask API must be running for the discovery grid to render.
-3. When a book is opened in the blind-date modal, Flask returns the top similar books using the book's teaser, genre, author, and moods.
-4. The interface displays those suggestions in the **More Like This** panel.
-5. When the story chain needs a next line, the frontend sends the current story to `/api/story/continue`.
+- **Mood Cards** — pick an emotion and get a curated book match
+- **Smart Mood Detection** — type how you're feeling in plain words; the backend figures out the rest
+- **Blind Date with a Book** — books are hidden behind teasers; unwrap them with an interactive reveal
+- **Genre Filters** — narrow down the blind-date grid or shuffle for fresh picks
+- **Book Details Modal** — teaser, cover art, buy link, download link, and "More Like This" suggestions
+- **TF-IDF Recommendations** — similar books ranked by teaser, genre, author, and mood
+- **User Auth** — register, log in, log out, persistent sessions
+- **Onboarding** — new users set their mood and genre preferences on first sign-up
+- **Personal Bookshelf** — save books and manage them from your shelf
+- **Book of the Day** — a different recommendation every day
+- **Community Story Chain** — add a line, or let Gemini continue the story for you
 
 ---
 
@@ -115,100 +26,89 @@ This approach ensures:
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | HTML, CSS, JavaScript |
-| **Backend** | Flask (Python) |
-| **Database** | MySQL |
-| **Data Handling** | Pandas, scikit-learn |
-| **APIs** | Google Gemini API, Web Clipboard API |
-| **Environment** | python-dotenv |
+| Frontend | HTML, CSS, JavaScript, Tailwind CSS, Lucide icons |
+| Backend | Flask, Flask-CORS |
+| Database | MySQL |
+| Data | pandas, scikit-learn |
+| Auth | bcrypt, Flask sessions |
+| AI | Google Gemini API |
+| Config | python-dotenv |
 
 ---
 
-## 🛠️ Setup Instructions
+## 📁 Project Structure
 
-### 1️⃣ Database Setup
-
-1. Install MySQL
-2. Create the database:
-
-```sql
-CREATE DATABASE hidden_chapters;
+```
+app.py              → Flask app, all API routes, session handling, recommendations
+script.js           → Frontend logic: moods, blind date, auth, bookshelf, story chain
+index.html          → Main app shell
+onboarding.html     → First-time preference setup
+style.css           → Custom styles
+books.csv           → Raw book dataset
+prepare.py          → Cleans the CSV into cleaned_books.csv
+setup_database.py   → Creates schema, imports books and mood data
+mood_detector.py    → Detects moods from free-text input
 ```
 
-3. Create a `.env` file in the project root with these values:
+---
+
+## 🛠️ Setup
+
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Create a `.env` file
 
 ```env
 DB_HOST=localhost
 DB_USER=your_mysql_user
 DB_PASSWORD=your_mysql_password
 DB_NAME=hidden_chapters
+SECRET_KEY=your_secret_key
 GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-flash-latest
 ```
 
-4. Import your dataset into the `books` table
+`GEMINI_API_KEY` is only needed for the AI story continuation feature.
 
-If you need to clean and load the CSV data first, run the helper scripts in this order:
+### 3. Prepare the data
 
 ```bash
 python prepare.py
-python import_to_mysql.py
+python setup_database.py
 ```
 
-### 2️⃣ Backend Setup
+`prepare.py` cleans the raw CSV. `setup_database.py` creates the schema, loads the books, sets up mood relationships, and creates the bookshelf and user tables.
 
-Install dependencies:
-
-```bash
-pip install flask flask-cors mysql-connector-python pandas scikit-learn python-dotenv
-```
-
-Run the server:
+### 4. Run the app
 
 ```bash
 python app.py
 ```
 
-### 3️⃣ Frontend Setup
-
-Open `index.html` directly, or run with Live Server:
-
-```
-http://127.0.0.1:5500/
-```
-
-Make sure the Flask backend is already running before opening the page, otherwise the mood cards and book data will not load.
-
-### 4️⃣ API Key Setup *(Optional)*
-
-For AI Story Chain:
-
-1. Get your key from [Google AI Studio](https://aistudio.google.com/)
-2. Add it to the `.env` file as `GEMINI_API_KEY`
-3. The backend will use it automatically when `/api/story/continue` is called
+Open **`http://127.0.0.1:5000`** — not the HTML file directly. Everything runs from Flask so sessions and cookies work correctly.
 
 ---
 
-## 🚀 Future Scope
+## 🧠 How Recommendations Work
 
-- User authentication & profiles
-- Personalized recommendations (hybrid systems)
-- Ratings, reviews, and favorites
-- Mobile application
-- Advanced AI-based recommendation models
+Rather than a heavy ML model, the system uses TF-IDF vectors built from each book's teaser, genre, author, and moods. When you open a book, Flask computes cosine similarity scores against the full dataset and returns the closest matches. It's lightweight, fast, and gives meaningful results without over-engineering.
+
+Smart Mood Detection works differently — it runs sentiment analysis on your input, matches keywords and phrases to one of 18 mood categories, and queries books tagged with those moods.
 
 ---
 
-## 💬 Key Highlights
+## 🚀 What's Next
 
-✔ Full-stack project  
-✔ Curated high-quality dataset  
-✔ Multi-mood recommendation system  
-✔ Unique, immersive UX  
+- Ratings and reviews
+- Smarter hybrid recommendations
+- Reading lists and collections
+- Mobile app
+- Personalized profiles
 
 ---
 
-## 📌 Final Note
-
-> **Hidden Chapters** is not just a book recommendation system —
-> it is an experience-driven platform that blends storytelling and emotion
-> to redefine how users discover books.
+> Hidden Chapters isn't just a recommendation engine — it's built around the idea that finding your next book should feel like an experience, not a search query.
