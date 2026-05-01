@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    checkSession();
     let books = []; // We use 'let' because we will fill this array later
     
     const moods = [
@@ -133,26 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
         aiContinueBtn.innerHTML = '<div class="w-5 h-5 border-2 border-dashed rounded-full animate-spin"></div>';
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/mood/detect', {
+            const storyText = storyChain.join(' ');
+            const response = await fetch(API + '/api/story/continue', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: input })
+                body: JSON.stringify({ story: storyText })
             });
 
+            // ✅ Add AI-generated line to story chain
             const data = await response.json();
-
-            // ✅ Direct recommendation
-            if (data.books && data.books.length > 0) {
-                currentMoodBook = data.books[0];
-                displayMoodBookTeaser();
-
-                setTimeout(() => {
-                    document.getElementById('reveal-mood-book-btn')?.click();
-                }, 400);
+            if (data.line) {
+                storyChain.push('🤖 ' + data.line.trim());
+                updateStoryDisplay();
             }
 
         } catch (error) {
-            console.error('Mood detection failed:', error);
+            console.error('Story continuation failed:', error);
+        } finally {
+            aiContinueBtn.disabled = false;
+            aiContinueBtn.innerHTML = 'AI Continue ✨';
         }
     });
 
@@ -166,7 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const setActiveSection = (sectionId) => {
         sections.forEach(section => {
             section.classList.toggle('active', section.id === sectionId);
-        }); navLinks.forEach(link => { link.classList.toggle('active', link.dataset.section === sectionId); }); window.scrollTo(0,0); if (!mobileMenu.classList.contains('hidden')) { mobileMenu.classList.add('hidden'); } }; navLinks.forEach(link => { link.addEventListener('click', (e) => {
+        }); navLinks.forEach(link => { link.classList.toggle('active', link.dataset.section === sectionId); }); window.scrollTo(0,0); if (!mobileMenu.classList.contains('hidden')) { mobileMenu.classList.add('hidden'); }
+        // Load bookshelf whenever the user navigates to it
+        if (sectionId === 'bookshelf') { loadBookshelf(); }
+    }; navLinks.forEach(link => { link.addEventListener('click', (e) => {
             e.preventDefault();
             // A small fix to make sure clicking the icon inside the link also works
             const sectionId = e.target.closest('.nav-link').dataset.section;
@@ -302,6 +305,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         downloadLink.classList.add('hidden'); 
     }
+
+    // Wire up Add to Library for mood reveal
+    const moodLibBtn = document.getElementById('mood-add-to-library-btn');
+    moodLibBtn.onclick = () => handleAddToLibrary(currentMoodBook);
+    // Reset button state in case it was used before
+    moodLibBtn.className = 'inline-block mt-4 ml-4 bg-purple-600 text-white font-bold py-3 px-6 rounded-full hover:bg-purple-500 transition duration-300';
+    moodLibBtn.innerHTML = '<i data-lucide="library" class="inline mr-2"></i>Add to Library';
+    moodLibBtn.disabled = false;
+
     lucide.createIcons(); // Refresh icons
 });
 
@@ -428,6 +440,8 @@ async function showBookModal(book) {
                 
                 <button id="share-book-btn" class="inline-block mt-6 ml-4 bg-blue-500 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-400 transition duration-300"><i data-lucide="share-2" class="inline mr-2"></i>Share Discovery</button>
                 
+                <button id="add-to-library-btn" data-book-id="${book.id}" class="inline-block mt-6 ml-4 bg-purple-600 text-white font-bold py-3 px-6 rounded-full hover:bg-purple-500 transition duration-300"><i data-lucide="library" class="inline mr-2"></i>Add to Library</button>
+                
                 ${downloadButtonHTML}
 
                 <div id="ai-recommendations" class="mt-8 pt-6 border-t border-gray-700 hidden">
@@ -450,7 +464,8 @@ async function showBookModal(book) {
 
     // 3. --- NEW: FETCH AI RECOMMENDATIONS ---
     try {
-        const recResponse = await fetch(`http://127.0.0.1:5000/api/recommend/${book.id}`);
+        const recResponse = await fetch(`${API}/api/recommend/${book.id}`,
+            { credentials: 'include'  });
         if (recResponse.ok) {
             const recommendations = await recResponse.json();
             const recSection = document.getElementById('ai-recommendations');
@@ -481,6 +496,12 @@ async function showBookModal(book) {
     });
 
     document.getElementById('close-modal-btn-inner').addEventListener('click', closeModal);
+
+    // Add to Library button
+    document.getElementById('add-to-library-btn').addEventListener('click', () => {
+        const bookId = parseInt(document.getElementById('add-to-library-btn').dataset.bookId);
+        handleAddToLibrary(book);
+    });
 }
 
     function closeModal() {
@@ -575,7 +596,7 @@ async function showBookModal(book) {
             btn.classList.add('opacity-60');
 
             try {
-                const res = await fetch('http://127.0.0.1:5000/api/mood/detect', {
+                const res = await fetch(API + '/api/mood/detect', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text })
@@ -629,10 +650,96 @@ async function showBookModal(book) {
 
         }
 
+    // --- BOOKSHELF ---
+    async function loadBookshelf() {
+        const container = document.getElementById('bookshelf-grid');
+        if (!container) return;
+
+        // Show loading state
+        container.innerHTML = `
+            <div class="col-span-full flex flex-col items-center justify-center p-8">
+                <div class="w-10 h-10 border-4 border-dashed rounded-full animate-spin border-[#f7b267]"></div>
+                <p class="mt-4 text-gray-400">Loading your library...</p>
+            </div>`;
+
+        try {
+            const res = await fetch(`${API}/api/bookshelf`, { credentials: 'include' });
+
+            if (res.status === 401) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-400 text-lg mb-4">Sign in to see your saved books.</p>
+                        <button onclick="openAuthModal('login')"
+                            class="bg-[#f7b267] text-gray-900 font-bold px-6 py-3 rounded-full hover:bg-[#f4a24f] transition">
+                            Sign In
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            const savedBooks = await res.json();
+
+            if (!savedBooks.length) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-400 text-lg">Your library is empty.</p>
+                        <p class="text-gray-500 text-sm mt-2">Add books using the "Add to Library" button when browsing.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            savedBooks.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'bg-[#1f294a] rounded-xl p-5 shadow-lg flex flex-col gap-3';
+                card.innerHTML = `
+                    <div class="cover-card w-full" style="height:180px">
+                        ${generateCoverHTML(book)}
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white leading-tight">${escapeHTML(book.title)}</h3>
+                        <p class="text-sm text-gray-400 mb-2">by ${escapeHTML(book.author)}</p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            ${(book.moods || '').split(',').filter(Boolean).map(m =>
+                                `<span class="bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded-full">${escapeHTML(m.trim())}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-auto">
+                        <button class="shelf-open-btn flex-1 bg-[#f7b267] text-gray-900 font-semibold py-2 rounded-lg text-sm hover:bg-[#f4a24f] transition">
+                            View
+                        </button>
+                        <button class="shelf-remove-btn bg-gray-700 text-gray-300 font-semibold py-2 px-3 rounded-lg text-sm hover:bg-red-700 hover:text-white transition">
+                            Remove
+                        </button>
+                    </div>`;
+
+                card.querySelector('.shelf-open-btn').addEventListener('click', () => showBookModal(book));
+                card.querySelector('.shelf-remove-btn').addEventListener('click', async () => {
+                    try {
+                        await fetch(`${API}/api/bookshelf/remove/${book.id}`, {
+                            method: 'DELETE', credentials: 'include'
+                        });
+                        card.remove();
+                        // If grid is now empty, show the empty message
+                        if (!container.children.length) loadBookshelf();
+                    } catch(e) { console.error('Remove failed:', e); }
+                });
+
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+
+        } catch(e) {
+            container.innerHTML = `<p class="col-span-full text-red-400 text-center py-8">Failed to load library. Is Flask running?</p>`;
+        }
+    }
+
     // --- INITIALIZATION ---
     async function init() {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/books');
+            const response = await fetch(API + '/api/books', { credentials: 'include' });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -660,3 +767,209 @@ async function showBookModal(book) {
     }
     init();
 });
+// ─────────────────────────────────────────────
+// AUTH — Login / Register / Session
+// ─────────────────────────────────────────────
+
+const API = 'http://127.0.0.1:5000'; // Keep absolute for backwards compat
+let pendingAction = null;
+
+// Check session on every page load
+async function checkSession() {
+    try {
+        const res = await fetch(`${API}/api/auth/me`, { credentials: 'include' });
+        const data = await res.json();
+        if (data.user) setLoggedInUI(data.user);  // /api/auth/me returns {user: {id, username}}
+    } catch(e) {}
+}
+
+function setLoggedInUI(user) {
+    document.getElementById('auth-guest').classList.add('hidden');
+    document.getElementById('auth-user').classList.remove('hidden');
+    document.getElementById('nav-username').textContent = user.username;
+    // Normalise: /api/auth/me returns {id, username}, login returns {user_id, username}
+    window.currentUser = { id: user.id || user.user_id, username: user.username };
+}
+
+function setLoggedOutUI() {
+    document.getElementById('auth-guest').classList.remove('hidden');
+    document.getElementById('auth-user').classList.add('hidden');
+    window.currentUser = null;
+}
+
+function openAuthModal(tab = 'login', action = null) {
+    pendingAction = action;
+    document.getElementById('auth-modal').classList.remove('hidden');
+    switchTab(tab);
+}
+
+function closeAuthModal() {
+    document.getElementById('auth-modal').classList.add('hidden');
+    ['login-email','login-password','reg-username','reg-email','reg-password'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    ['login-error','reg-error'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+}
+
+function switchTab(tab) {
+    const isLogin = tab === 'login';
+    document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+    document.getElementById('form-register').classList.toggle('hidden', isLogin);
+    document.getElementById('tab-login').className = `flex-1 py-2 rounded-lg text-sm font-semibold transition ${isLogin ? 'bg-[#f7b267] text-gray-900' : 'text-gray-400'}`;
+    document.getElementById('tab-register').className = `flex-1 py-2 rounded-lg text-sm font-semibold transition ${!isLogin ? 'bg-[#f7b267] text-gray-900' : 'text-gray-400'}`;
+}
+
+async function submitLogin() {
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errEl    = document.getElementById('login-error');
+    errEl.classList.add('hidden');
+
+    if (!email || !password) {
+        errEl.textContent = 'Please fill in all fields.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            errEl.textContent = data.error || 'Login failed.';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        // Backend returns { message, username, user_id, is_new_user }
+        setLoggedInUI({ username: data.username, user_id: data.user_id });
+        closeAuthModal();
+
+        // ✅ REDIRECT NEW USERS — preserve pendingAction so it survives the redirect
+        if (data.is_new_user) {
+            if (pendingAction) {
+                // Can't pass a function across pages; re-trigger add-to-library after onboarding
+                sessionStorage.setItem('pendingAddBookId', JSON.stringify(window._pendingBook || null));
+            }
+            window.location.href = "http://127.0.0.1:5000/onboarding.html";
+            return;
+        }
+        if (pendingAction) { pendingAction(); pendingAction = null; }
+    } catch(e) {
+        errEl.textContent = 'Network error. Is Flask running?';
+        errEl.classList.remove('hidden');
+    }
+}
+
+async function submitRegister() {
+    const username = document.getElementById('reg-username').value.trim();
+    const email    = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const errEl    = document.getElementById('reg-error');
+    errEl.classList.add('hidden');
+
+    if (!username || !email || !password) {
+        errEl.textContent = 'Please fill in all fields.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/api/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            errEl.textContent = data.error || 'Registration failed.';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        closeAuthModal();
+        window.location.href = 'http://127.0.0.1:5000/onboarding.html';
+    } catch(e) {
+        errEl.textContent = 'Network error. Is Flask running?';
+        errEl.classList.remove('hidden');
+    }
+}
+
+async function logout() {
+    await fetch(`${API}/api/auth/logout`, { method: 'POST', credentials: 'include' });
+    setLoggedOutUI();
+}
+
+// ─────────────────────────────────────────────
+// ADD TO LIBRARY
+// ─────────────────────────────────────────────
+async function handleAddToLibrary(book) {
+    // If currentUser isn't set yet, re-check session first (handles page-refresh edge case)
+    if (!window.currentUser) {
+        try {
+            const res  = await fetch(`${API}/api/auth/me`, { credentials: 'include' });
+            const data = await res.json();
+            if (data.user) setLoggedInUI(data.user);
+        } catch(e) {}
+    }
+
+    // Still not logged in — open modal and retry after login
+    if (!window.currentUser) {
+        window._pendingBook = book;   // remember for cross-page recovery
+        openAuthModal('login', () => handleAddToLibrary(book));
+        return;
+    }
+
+    const btn = document.activeElement;
+    try {
+        const res = await fetch(`${API}/api/bookshelf/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ book_id: book.id })
+        });
+        const data = await res.json();
+
+        if (res.status === 409) {
+            // Already in library
+            btn.textContent = '✓ Already in Library';
+            btn.classList.replace('bg-purple-600', 'bg-gray-600');
+            return;
+        }
+        if (!res.ok) throw new Error(data.error);
+
+        // Success feedback
+        btn.innerHTML = '<i data-lucide="check" class="inline mr-2"></i>Added!';
+        btn.classList.replace('bg-purple-600', 'bg-green-600');
+        btn.disabled = true;
+        lucide.createIcons();
+
+        const notification = document.getElementById('clipboard-notification');
+        notification.textContent = `"${book.title}" added to your library!`;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+
+    } catch(e) {
+        console.error('Add to library failed:', e);
+    }
+}
+
+// Close auth modal on backdrop click
+document.getElementById('auth-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeAuthModal();
+});
+
+// Enter key on login password
+document.getElementById('login-password')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitLogin();
+});
+
+// Check session on load
+checkSession();

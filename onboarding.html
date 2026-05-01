@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Hidden Chapters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#121829] text-gray-200 min-h-screen">
+
+<div class="container mx-auto px-6 py-12 max-w-3xl">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-3">
+            Welcome to <span class="text-[#f7b267]">Hidden Chapters</span> 📖
+        </h1>
+        <p class="text-gray-400 text-lg">Tell us what you love so we can find the perfect books for you.</p>
+        <p class="text-gray-500 text-sm mt-2">You can always change these later from your profile.</p>
+    </div>
+
+    <!-- Step 1: Moods -->
+    <div class="bg-[#1f294a] rounded-2xl p-8 mb-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 rounded-full bg-[#f7b267] text-gray-900 flex items-center justify-center font-bold text-sm">1</div>
+            <h2 class="text-2xl font-bold">What moods do you enjoy?</h2>
+        </div>
+        <p class="text-gray-400 text-sm mb-5">Pick all that apply — we'll use these to personalise your recommendations.</p>
+        <div id="mood-grid" class="flex flex-wrap gap-3"></div>
+    </div>
+
+    <!-- Step 2: Genres -->
+    <div class="bg-[#1f294a] rounded-2xl p-8 mb-8 shadow-xl">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 rounded-full bg-[#f7b267] text-gray-900 flex items-center justify-center font-bold text-sm">2</div>
+            <h2 class="text-2xl font-bold">Favourite genres?</h2>
+        </div>
+        <p class="text-gray-400 text-sm mb-5">Select the genres you usually reach for.</p>
+        <div id="genre-grid" class="flex flex-wrap gap-3"></div>
+    </div>
+
+    <!-- Error message -->
+    <p id="onboarding-error" class="text-red-400 text-sm text-center mb-4 hidden"></p>
+
+    <!-- Submit -->
+    <div class="text-center">
+        <button id="save-btn" onclick="savePreferences()"
+            class="bg-[#f7b267] text-gray-900 font-bold px-10 py-4 rounded-full text-lg hover:bg-[#f4a24f] transition shadow-lg">
+            Let's Go! 🚀
+        </button>
+        <p class="text-gray-500 text-sm mt-3">
+            <button onclick="skipOnboarding()" class="hover:text-gray-300 underline transition">Skip for now</button>
+        </p>
+    </div>
+
+</div>
+
+<script>
+const MOODS = [
+    'adventurous','romantic','mysterious','suspenseful','humorous',
+    'hopeful','heartbreaking','inspiring','thought-provoking','sci-fi',
+    'scary','dark romance','sexy','bl romance','gl romance',
+    'drama','tragedy','fantasy'
+];
+
+const MOOD_EMOJIS = {
+    'adventurous':'🏕️','romantic':'💕','mysterious':'🔍','suspenseful':'😰',
+    'humorous':'😂','hopeful':'🌟','heartbreaking':'💔','inspiring':'✨',
+    'thought-provoking':'🧠','sci-fi':'🚀','scary':'👻','dark romance':'🖤',
+    'sexy':'🔥','bl romance':'💙','gl romance':'💜','drama':'🎭',
+    'tragedy':'😢','fantasy':'🧙'
+};
+
+const GENRES = [
+    'fantasy','romance','mystery','thriller','sci-fi','horror',
+    'adventure','biography','drama','historical','contemporary','poetry'
+];
+
+let selectedMoods  = new Set();
+let selectedGenres = new Set();
+
+function buildGrid(items, containerId, selectedSet) {
+    const container = document.getElementById(containerId);
+    items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'px-4 py-2 rounded-full border border-gray-600 text-sm font-medium transition hover:border-[#f7b267] hover:text-[#f7b267]';
+        btn.textContent = (MOOD_EMOJIS[item] ? MOOD_EMOJIS[item] + ' ' : '') + item;
+        btn.dataset.value = item;
+        btn.onclick = () => {
+            if (selectedSet.has(item)) {
+                selectedSet.delete(item);
+                btn.classList.remove('bg-[#f7b267]', 'text-gray-900', 'border-[#f7b267]');
+                btn.classList.add('border-gray-600');
+            } else {
+                selectedSet.add(item);
+                btn.classList.add('bg-[#f7b267]', 'text-gray-900', 'border-[#f7b267]');
+                btn.classList.remove('border-gray-600');
+            }
+        };
+        container.appendChild(btn);
+    });
+}
+
+async function savePreferences() {
+    const btn = document.getElementById('save-btn');
+    const err = document.getElementById('onboarding-error');
+    err.classList.add('hidden');
+
+    if (selectedMoods.size === 0 && selectedGenres.size === 0) {
+        err.textContent = 'Please select at least one mood or genre.';
+        err.classList.remove('hidden');
+        return;
+    }
+
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('http://127.0.0.1:5000/api/auth/preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+                moods:  Array.from(selectedMoods),
+                genres: Array.from(selectedGenres)
+            })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to save');
+        window.location.href = 'http://127.0.0.1:5000/';
+    } catch (e) {
+        err.textContent = e.message;
+        err.classList.remove('hidden');
+        btn.textContent = "Let's Go! 🚀";
+        btn.disabled = false;
+    }
+}
+
+async function skipOnboarding() {
+    // Still mark user as not new so they don't see this page again
+    try {
+        await fetch('http://127.0.0.1:5000/api/auth/preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ moods: [], genres: [] })
+        });
+    } catch(e) {}
+    window.location.href = 'http://127.0.0.1:5000/';
+}
+
+async function checkAuth() {
+    document.body.style.visibility = 'hidden';
+    // Retry up to 3 times with a short delay — the session cookie may not be
+    // readable on the very first request immediately after a redirect.
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const res  = await fetch('http://127.0.0.1:5000/api/auth/me', { credentials: 'include' });
+            const data = await res.json();
+            if (data.user) {
+                // Logged in — show the onboarding page
+                document.body.style.visibility = 'visible';
+                return;
+            }
+            // Not logged in yet — wait 300 ms and retry (handles post-redirect timing)
+            if (attempt < 2) {
+                await new Promise(r => setTimeout(r, 300));
+            }
+        } catch(e) {
+            // Network error (Flask not running?) — show the page so user isn't stuck
+            document.body.style.visibility = 'visible';
+            return;
+        }
+    }
+    // After all retries, still no session — redirect to home
+    window.location.href = 'http://127.0.0.1:5000/';
+}
+
+checkAuth();
+buildGrid(MOODS,  'mood-grid',  selectedMoods);
+buildGrid(GENRES, 'genre-grid', selectedGenres);
+lucide.createIcons();
+</script>
+</body>
+</html>

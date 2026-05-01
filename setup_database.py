@@ -190,6 +190,58 @@ print("  ✓ Stored procedure GetBooksByMood created")
 conn.commit()
 
 # ─────────────────────────────────────────────
+# STEP 6b — CREATE users TABLE
+# ─────────────────────────────────────────────
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id            INT AUTO_INCREMENT PRIMARY KEY,
+        username      VARCHAR(100) NOT NULL UNIQUE,
+        email         VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        role          ENUM('user', 'admin') DEFAULT 'user',
+        is_new_user   BOOLEAN DEFAULT TRUE,
+        created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+print("  ✓ users table created")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_preferences (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        user_id    INT NOT NULL,
+        pref_type  ENUM('mood', 'genre') NOT NULL,
+        pref_value VARCHAR(100) NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        UNIQUE KEY unique_pref (user_id, pref_type, pref_value)
+    )
+""")
+print("  ✓ user_preferences table created")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS bookshelf (
+        id       INT AUTO_INCREMENT PRIMARY KEY,
+        user_id  INT NOT NULL,
+        book_id  INT NOT NULL,
+        saved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+        UNIQUE KEY unique_shelf (user_id, book_id)
+    )
+""")
+print("  ✓ bookshelf table created")
+
+for idx_sql in [
+    "CREATE INDEX idx_prefs_user ON user_preferences(user_id)",
+    "CREATE INDEX idx_shelf_user ON bookshelf(user_id)",
+]:
+    try:
+        cursor.execute(idx_sql)
+    except Exception:
+        pass
+print("  ✓ user table indexes added")
+conn.commit()
+
+# ─────────────────────────────────────────────
 # STEP 7 — IMPORT BOOKS FROM CSV
 # ─────────────────────────────────────────────
 print(f"\n📥 Importing {len(df)} books...")
